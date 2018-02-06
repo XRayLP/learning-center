@@ -13,7 +13,7 @@ $GLOBALS['BE_MOD']['learningcenter']['timetable'] = array(
     'tables' => array('tl_timetable')
 );
 $GLOBALS['BE_MOD']['learningcenter']['configuration'] = array(
-    'callback' => array('tl_timetable')
+    'callback' => 'XRayLP\LearningCenterBundle\Modules\ModuleLCConfiguration'
 );
 
 
