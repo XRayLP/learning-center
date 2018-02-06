@@ -1,1 +1,1 @@
-# learning-center-bundle
+# Learning Center - Contao Bundle
