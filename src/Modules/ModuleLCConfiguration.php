@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nikla
- * Date: 05.02.2018
- * Time: 15:47
- */
 
 namespace XRayLP\LearningCenterBundle\Modules;
 
+use XRayLP\LearningCenterBundle\DataQueries\DataCreate;
 
 class ModuleLCConfiguration extends \BackendModule
 {
