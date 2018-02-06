@@ -9,9 +9,9 @@
 $GLOBALS['BE_MOD']['learningcenter']['projects'] = array(
     'tables' => array('tl_projects')
 );
-$GLOBALS['BE_MOD']['learningcenter']['timetable'] = array(
+/*$GLOBALS['BE_MOD']['learningcenter']['timetable'] = array(
     'tables' => array('tl_timetable')
-);
+);*/
 $GLOBALS['BE_MOD']['learningcenter']['configuration'] = array(
     'callback' => 'XRayLP\LearningCenterBundle\Modules\ModuleLCConfiguration'
 );
