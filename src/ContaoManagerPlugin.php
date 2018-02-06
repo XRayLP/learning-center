@@ -8,9 +8,11 @@
 
 namespace XRayLP\LearningCenterBundle;
 
-
-use Contao\Database;
-use XRayLP\LearningCenterBundle\DataQueries\DataSites;
+use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
+use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
+use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
+use XRayLP\LearningCenterBundle\LearningCenterBundle;
+use Contao\CoreBundle\ContaoCoreBundle;
 
 class ContaoManagerPlugin implements BundlePluginInterface
 {
