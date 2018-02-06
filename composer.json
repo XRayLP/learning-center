@@ -10,8 +10,7 @@
 		"contao-bootstrap/core": "~2.0.0-beta2",
 		"contao-bootstrap/layout": "~2.0.0-beta4",
 		"contao-bootstrap/navbar": "~2.0.0-beta1",
-		"contao-bootstrap/grid": "~2.0.0-beta3",
-		"contao-bootstrap/card": "dev-master"
+		"contao-bootstrap/grid": "~2.0.0-beta3"
 	},
 	"autoload" : {
 		"psr-4" : {
