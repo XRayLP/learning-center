@@ -6,7 +6,7 @@
 	"minimum-stability" : "dev",
 	"require" : {
 		"php" : ">=7.0",
-		"contao/core-bundle" : "~4.5",
+		"contao/core-bundle" : "^4.4",
 		"contao-bootstrap/core": "~2.0.0-beta2",
 		"contao-bootstrap/layout": "~2.0.0-beta4",
 		"contao-bootstrap/navbar": "~2.0.0-beta1",
