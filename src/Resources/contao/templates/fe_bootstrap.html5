@@ -7,7 +7,7 @@
     	<meta charset="<?= $this->charset ?>">
     	<title><?= $this->title ?></title>
     	<base href="<?= $this->base ?>">
-
+	
     	<?php $this->block('meta'); ?>
       		<meta name="robots" content="<?= $this->robots ?>">
       		<meta name="description" content="<?= $this->description ?>">
