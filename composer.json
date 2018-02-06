@@ -3,7 +3,7 @@
 	"description" : "Learning Platform",
 	"type" : "contao-bundle",
 	"license" : "GPL-3.0-only",
-	"minimum-stability" : "alpha",
+	"minimum-stability" : "dev",
 	"require" : {
 		"php" : ">=7.0",
 		"contao/core-bundle" : "~4.4",
