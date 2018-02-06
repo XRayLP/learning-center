@@ -19,6 +19,7 @@ class DataModules
                 'tstamp'        => time(),
                 'name'          => 'Loginformular',
                 'type'          => 'login',
+                'customTpl'     => 'mod_login_lc',
                 'autologin'     => 1,
                 'jumpTo'        => 5,
             ),
@@ -30,7 +31,7 @@ class DataModules
                 'type'          => 'personalData',
                 'jumpTo'        => 5,
                 'editable'      => 'a:13:{i:0;s:9:"firstname";i:1;s:8:"lastname";i:2;s:11:"dateOfBirth";i:3;s:6:"gender";i:4;s:6:"street";i:5;s:6:"postal";i:6;s:4:"city";i:7;s:5:"phone";i:8;s:6:"mobile";i:9;s:3:"fax";i:10;s:5:"email";i:11;s:7:"website";i:12;s:8:"password";}',
-                'memberTpl'     => 'member_grouped'
+                'memberTpl'     => 'member_grouped_lc'
             ),
             '3' => array(
                 'id'            => 3,
@@ -42,7 +43,7 @@ class DataModules
                 'showLevel'     => 1,
                 'hardLimit'     => 1,
                 'showProtected' => 1,
-                'navigationTpl' => 'nav_default'
+                'navigationTpl' => 'nav_default_lc'
             ),
             '4' => array(
                 'id'            => 4,
