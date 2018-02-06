@@ -8,6 +8,10 @@
     	<title><?= $this->title ?></title>
     	<base href="<?= $this->base ?>">
 	
+	<?php
+    		$GLOBALS['TL_CSS'][] = 'Resources/public/css/bundle.css';
+	?> 
+	
     	<?php $this->block('meta'); ?>
       		<meta name="robots" content="<?= $this->robots ?>">
       		<meta name="description" content="<?= $this->description ?>">
