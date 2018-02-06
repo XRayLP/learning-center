@@ -37,7 +37,7 @@ class DataModules
                 'pid'           => 1,
                 'tstamp'        => time(),
                 'name'          => 'Seitenleistennavigation',
-                'type'          => 'login',
+                'type'          => 'navigation',
                 'levelOffset'   => 1,
                 'showLevel'     => 1,
                 'hardLimit'     => 1,
