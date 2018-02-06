@@ -1,0 +1,29 @@
+{
+	"name" : "xraylp/learning-center-bundle",
+	"description" : "Learning Platform",
+	"type" : "contao-bundle",
+	"license" : "GPL-3.0-only",
+	"minimum-stability" : "alpha",
+	"require" : {
+		"php" : ">=7.0",
+		"contao/core-bundle" : "~4.4",
+		"contao-bootstrap/core": "~2.0.0-beta2",
+		"contao-bootstrap/layout": "~2.0.0-beta4",
+		"contao-bootstrap/navbar": "~2.0.0-beta1",
+		"contao-bootstrap/grid": "~2.0.0-beta3",
+		"contao-bootstrap/card": "dev-master"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"XRayLP\\LearningCenterBundle\\" : "src"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"XRayLP\\LearningCenterBundle\\Test\\" : "tests"
+		}
+	},
+	"extra" : {
+		"contao-manager-plugin": "XRayLP\\LearningCenterBundle\\ContaoManagerPlugin"
+	}
+}

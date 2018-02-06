@@ -1,0 +1,23 @@
+<?php //echo $this->showTemplateVars(); ?>
+<!-- indexer::stop -->
+<div class="<?= $this->class ?> block"<?= $this->cssID ?><?php if ($this->style): ?> style="<?= $this->style ?>"<?php endif; ?>>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Vorname</th>
+				<th>Nachname</th>
+				<th>E-Mail</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($this->members as $member): ?>
+				<tr>
+					<td><?= $member['firstname'] ?></td>
+					<td><?= $member['lastname'] ?></td>
+					<td><?= $member['email'] ?></td>
+				</tr>
+			<?php endforeach;?>
+		</tbody>
+	</table>
+</div>
+<!-- indexer::continue -->

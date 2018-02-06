@@ -1,0 +1,12 @@
+
+<!-- indexer::stop -->
+<div class="<?= $this->class ?> block"<?= $this->cssID ?>>
+
+	<a class="dropdown-toggle" href="#" id="<?= $this->name ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<?= $this->name ?>
+	</a>
+	
+  <?= $this->items ?>
+
+</div>
+<!-- indexer::continue -->

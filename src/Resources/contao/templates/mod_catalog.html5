@@ -1,0 +1,33 @@
+<?php //echo $this->showTemplateVars(); ?>
+
+<div class="mod_catalog">
+	<?php if ($this->isHomepage == true): ?>
+    <div class="card-deck catalog-courses">
+        <?php foreach ($this->courses as $course): ?>
+            <div class="card col-12 col-md-6 col-lg-3">
+                <div class="card-body">
+                    <?php if ($this->isTeacher == true): ?>
+                        <h4 class="card-title"><?= $course['course'] ?></h4>
+                        <h6 class="card-subtitle"><?= $course['subject'] ?></h6>
+                        <a class="btn btn-primary" href="<?= $course['href'] ?>">Alle Dateien</a>
+                    <?php elseif($this->isStudent == true): ?>
+                        <h4 class="card-title"><?= $course['subject'] ?></h4>
+                        <a href="<?= $course['href'] ?>"><i class="fa fa-angle-right"></i></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach;?>
+    </div>
+    <?php else: ?>
+        <div class="card catalog-files">
+            <div class="card-header">
+                <?= $this->course['subject'] ?>
+            </div>
+            <ul class="list-group list-group-flush">
+                <?php foreach ($this->files as $file): ?>
+                    <li class="list-group-item"><a href="<?= $file['href'] ?>"><?= $file['name'] ?></a> </li>
+                <?php  endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>

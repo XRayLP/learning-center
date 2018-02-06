@@ -1,0 +1,31 @@
+<!-- indexer::stop -->
+<nav class="navbar <?php echo $this->class;?>" <?php if($this->cssID): ?><?php echo $this->cssID; ?><?php endif; ?>>
+    <?php $this->block('content'); ?>
+    <?php if($this->bs_isResponsive): ?>
+         <button
+            class="navbar-toggler"
+            id="sidebarCollapse"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbar-responsive-<?= $this->id ?>"
+            aria-controls="navbar-responsive-<?= $this->id ?>"
+            aria-expanded="false"
+            aria-label="<?= $this->togglerLabel ?>">
+            <i class="fa fa-bars"></i>
+        </button>
+    <?php endif; ?>
+    <?php if($this->bs_addBrand): ?>
+        <?php $this->insert($this->bs_navbarBrandTemplate); ?>
+    <?php endif; ?>
+
+
+
+    <?php foreach($this->modules as $module): ?>
+        <?php if($module['class']): ?><div class="<?php echo $module['class']; ?>"><?php endif; ?>
+        <?php echo $module['module']; ?>
+        <?php if($module['class']): ?></div><?php endif; ?>
+    <?php endforeach; ?>
+
+    <?php $this->endblock(); ?>
+</nav>
+<!-- indexer::continue -->
