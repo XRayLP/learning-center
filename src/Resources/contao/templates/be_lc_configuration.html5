@@ -1,5 +1,10 @@
-<div id="tl_buttons">
-    <a href="<?= $this->href ?>" class="header_back" title="<?= $this->title ?>"><?= $this->button ?></a>
+<div id="be_lc_configuration">
+    <form class="tl_form" action="<?= $this->href ?>" method="post">
+        <input name="FORM_SUBMIT" value="tl_lc_configuration" type="hidden">
+        <input name="REQUEST_TOKEN" value="<?= $this->token ?>" type="hidden">
+        <input name="dataQuery" value="1" type="hidden">
+        <button type="submit" class="tl_submit">Datenbank Einträge erstellen</button>
+    </form>
 </div>
 
 <?= $this->content ?>
