@@ -6,7 +6,11 @@
     <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
 <?php endif; ?>
 
-<img src="bundles/learningcenter/img/logo.png">
+<div class="login-logo">
+    <figure style="text-align: center; margin-bottom: 1em;">
+        <img src="bundles/learningcenter/img/logo.png" height="175">
+    </figure>
+</div>
 
 <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" method="post">
     <div class="formbody form-group">
