@@ -73,7 +73,7 @@ class DataModules
                 'type'          => 'customnav',
                 'showProtected' => 1,
                 'navigationTpl' => 'nav_navbar',
-                'customTpl'     => 'mod_customnav',
+                'customTpl'     => 'mod_customnav_lc',
                 'pages'         => 'a:1:{i:0;i:11;}',
                 'orderPages'    => 'a:1:{i:0;s:1:"11";}',
                 'customLabel'   => 'Abmelden'

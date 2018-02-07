@@ -10,6 +10,7 @@
 			</tr>
 		</thead>
 		<tbody>
+            <?php if(isset($this->members)): ?>
 			<?php foreach ($this->members as $member): ?>
 				<tr>
 					<td><?= $member['firstname'] ?></td>
@@ -17,6 +18,7 @@
 					<td><?= $member['email'] ?></td>
 				</tr>
 			<?php endforeach;?>
+            <?php endif; ?>
 		</tbody>
 	</table>
 </div>

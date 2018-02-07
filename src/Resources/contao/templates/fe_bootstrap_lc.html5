@@ -10,8 +10,8 @@
 	
 	<?php
     		$GLOBALS['TL_CSS'][] = 'bundles/learningcenter/css/bundle.css';
-    		$GLOBALS['TL_JAVASCRIPT'] = 'bundles/learningcenter/js/bundleDep.js';
-            $GLOBALS['TL_JAVASCRIPT'] = 'bundles/learningcenter/js/bundle.js';
+    		$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/learningcenter/js/bundleDep.js';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/learningcenter/js/bundle.js';
 	?> 
 	
     	<?php $this->block('meta'); ?>
