@@ -21,7 +21,7 @@ class UserHelper
      * @return bool
      */
     public static function isTeacher($user){
-        $teacherGroupID = 4;
+        $teacherGroupID = 2;
         $groups = deserialize($user->groups);
 
         //check whether the student is part of the teacher group
