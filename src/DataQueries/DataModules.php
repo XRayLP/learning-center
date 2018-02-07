@@ -60,6 +60,7 @@ class DataModules
                 'name'                      => 'Navigationsleiste',
                 'type'                      => 'bs_navbar',
                 'customTpl'                 => 'mod_bs_navbar_lc',
+                'bs_isResponsive'           => 1,
                 'bs_toggleableSize'         => 'md',
                 'bs_navbarBrandTemplate'    => 'navbar_brand',
                 'bs_navbarModules'          => 'a:1:{i:0;a:3:{s:6:"module";s:1:"6";s:8:"cssClass";s:0:"";s:8:"inactive";s:0:"";}}',
