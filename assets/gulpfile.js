@@ -1,5 +1,5 @@
 //Variablen
-var srcSASS = 'scss';
+var srcSASS = 'scss/';
 var srcJS = 'js/**/*.js';
 var destSASS = '../src/Resources/public/css';
 var destJS = '../src/Resources/public/js';

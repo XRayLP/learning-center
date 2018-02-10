@@ -29,16 +29,21 @@ $(document).ready(function(){
 	});
 
 	//toolbar
-	if (getCheckedBoxes("checks-files") != null) {
-		$('.btn-group.edit').removeClass('sr-only');
-	}
-	$(".form-check-input").click(function () {
-        if(this.checked == true) {
+    if(isOneCheckboxChecked("checks-files")){
+        $('.btn-group.edit').removeClass('sr-only');
+    } else {
+        $('.btn-group.edit').addClass('sr-only');
+    }
+
+    $('input.form-check-input').on('change', function() {
+        $('input.form-check-input').not(this).prop('checked', false);
+        if(isOneCheckboxChecked("checks-files")){
             $('.btn-group.edit').removeClass('sr-only');
-        } else {
+		} else {
             $('.btn-group.edit').addClass('sr-only');
-        }
-	});
+		}
+    });
+    $('p.error').addClass('alert alert-danger').prependTo('div.mod_files');
 });
 
 //Pass the checkbox name to the function
@@ -54,6 +59,19 @@ function getCheckedBoxes(chkboxName, attribute) {
   }
   // Return the array if it is non-empty, or null
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+}
+
+function isOneCheckboxChecked(chkboxName) {
+    var checkboxes = document.getElementsByName(chkboxName);
+    var checkboxesChecked = [];
+    // loop over them all
+    for (var i=0; i<checkboxes.length; i++) {
+        // And stick the checked ones onto an array...
+        if (checkboxes[i].checked) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function cbChange(obj) {
