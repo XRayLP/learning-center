@@ -188,7 +188,7 @@ class FormFileUpload extends \Widget implements \uploadable
         }
 
         $objFile = new \File($file['name']);
-        $uploadTypes = \StringUtil::trimsplit(',', strtolower($this->extensions));
+        /*$uploadTypes = \StringUtil::trimsplit(',', strtolower($this->extensions));
 
         // File type is not allowed
         if (!\in_array($objFile->extension, $uploadTypes))
@@ -197,7 +197,7 @@ class FormFileUpload extends \Widget implements \uploadable
             unset($_FILES[$this->strName]);
 
             return;
-        }
+        }*/
 
         if ($arrImageSize = @getimagesize($file['tmp_name']))
         {
