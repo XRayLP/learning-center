@@ -2,9 +2,10 @@
 
 <div class="mod_catalog">
 	<?php if ($this->isHomepage == true): ?>
-    <div class="card-deck catalog-courses">
+    <div class="catalog-courses row">
         <?php foreach ($this->courses as $course): ?>
-            <div class="card col-12 col-md-6 col-lg-3">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="card">
                 <div class="card-body">
                     <?php if ($this->isTeacher == true): ?>
                         <h4 class="card-title"><?= $course['course'] ?> - <?= $course['subject'] ?></h4>
@@ -15,6 +16,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+        </div>
         <?php endforeach;?>
     </div>
     <?php else: ?>

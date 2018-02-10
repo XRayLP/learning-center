@@ -9,8 +9,9 @@
 		margin-bottom: 1em;
 	}
 	.btn-toolbar {
-		margin-bottom: 2em;
+		margin-bottom: 1em;
 		.btn-group {
+			margin-bottom: 1em;
 			&.create{
 				margin-right: 2em;
 			}
@@ -33,14 +34,27 @@
 				-webkit-font-smoothing: antialiased;
 			}
 		}
+		@include media-breakpoint-down(md) {
+			.btn-group {
+				width: 100%;
+				margin-right: 0 !important;
+				&.create > .btn {
+					width: 50%;
+				}
+				&.edit > .btn {
+					width: 33.333333333%;
+				}
+			}
+		}
 	}
 	
 	.files {
-		div {
+		> div {
 			color: $gray-700;
 			text-align: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			padding-bottom: 2em;
 			&:hover {
 				text-decoration: none;
 			}

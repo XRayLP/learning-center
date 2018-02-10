@@ -21,14 +21,12 @@
     <div class="btn-group btn-group-justified edit invisible" role="group" aria-label="Edit Files">
         <button type="button" class="btn btn-dark btn-delete" data-toggle="modal" data-target="#delete"><i class="fa fa-trash"></i><span>Löschen</span></button>
         <button type="button" class="btn btn-dark btn-download"><i class="fa fa-download"></i><span>Download</span></button>
-        <?php if ($this->isTeacher): ?>
-            <button type="button" class="btn btn-dark btn-share" data-toggle="modal" data-target="#share"><i class="fa fa-share-square"></i><span>Teilen</span></button>
-        <?php endif; ?>
+        <button type="button" class="btn btn-dark btn-share <?php if (!$this->isTeacher):?>disabled<?php endif; ?>" data-toggle="modal" data-target="#share"  <?php if (!$this->isTeacher):?>aria-disabled="true"<?php endif; ?>><i class="fa fa-share-square"></i><span>Teilen</span></button>
     </div>
 </div>
 <div class="row files">
 	<?php foreach($this->files as $file): ?>
-		<div class="col-6 col-md-4 col-lg-2">
+		<div class="col-6 col-md-4 col-lg-3">
 				<div class="icon">
 				<input type="checkbox" name="checks-files" class="form-check-input <?php if($file['shared'] == 1): ?> shared <?php endif; ?>" id="<?= $file['id']?>" data-href="<?= $file['href'] ?>">
 				<?php if($file['type'] == 'folder'): ?>

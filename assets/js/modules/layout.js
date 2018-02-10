@@ -4,10 +4,7 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-$(document).ready(function(){
-	
-	setSidebarHeight();
-	
+$(function() {
 
 	$(window).resize(function(){
 		setSidebarHeight();
@@ -15,7 +12,8 @@ $(document).ready(function(){
 	});
 	
 	centerElement('#loginBox');
-	
+    setSidebarHeight();
+
     $('#sidebarCollapse').on('click', function () {
         $('#nav-sidebar').toggleClass('d-none');
         $('#main').toggleClass('d-none');

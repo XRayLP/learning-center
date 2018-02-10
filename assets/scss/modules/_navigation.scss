@@ -24,11 +24,11 @@
 				font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f2f6";
 		}
 		span {
-			@include media-breakpoint-down(sm) {
+			@include media-breakpoint-down(md) {
 				display: none;
 			}	
 		}
-		@include media-breakpoint-up(md) {
+		@include media-breakpoint-up(lg) {
 			position: absolute;
 			right: 0.2em;
 			top: 0.3em;
@@ -54,6 +54,9 @@
 			    font-variant: normal;
 			    text-rendering: auto;
 			    -webkit-font-smoothing: antialiased;
+				display: inline-block;
+				width: 1.25em;
+				text-align: center;
 		    }
 		}
 		[title=Startseite]::before {
@@ -73,6 +76,17 @@
 		}
 		[title=Profil]::before {
 			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f007";
+		}
+		@include media-breakpoint-down(md) {
+			li {
+				border-bottom: 1px solid $gray-700;
+				&.last {
+					border-bottom: transparent;
+				}
+				a, strong {
+					font-size: 1.3em;
+				}
+			}
 		}
 	}
 }
