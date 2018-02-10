@@ -6,5 +6,9 @@
  */
 
 $GLOBALS['TL_LANG']['MOD']['learningcenter'] = 'Lernzentrum';
-$GLOBALS['TL_LANG']['MOD']['projects'] = 'Projekte';
-$GLOBALS['TL_LANG']['MOD']['timetable'] = 'Stundenplan';
+$GLOBALS['TL_LANG']['MOD']['projects'][0] = 'Projekte';
+$GLOBALS['TL_LANG']['MOD']['projects'][1] = 'Projekte erstellen';
+$GLOBALS['TL_LANG']['MOD']['timetable'][0] = 'Stundenplan';
+$GLOBALS['TL_LANG']['MOD']['timetable'][1] = 'Stundenplan erstellen';
+$GLOBALS['TL_LANG']['MOD']['configuration'][0] = 'Konfiguration';
+$GLOBALS['TL_LANG']['MOD']['configuration'][1] = 'Konfigurieren des Lernzentrums';
