@@ -51,9 +51,7 @@ class FormShareFile extends \Widget
         }
 
         if(isset($fileID) && isset($groupID)) {
-            $groups = serialize($groupID);
             $objFile = FilesModel::findById($fileID);
-
             //for folders: add all subfiles and subfiles to files array
             if ($objFile->type == 'folder')
             {
@@ -62,14 +60,26 @@ class FormShareFile extends \Widget
                 $files[] = $objFile;
             }
 
-            //add the share groups to each file
-            foreach ($files as $objFile)
-            {
-                Database::getInstance()
-                    ->query("UPDATE tl_files SET shared_groups='" . $groups . "' WHERE id='" . $objFile->id . "'");
-                Database::getInstance()
-                    ->query("UPDATE tl_files SET shared='1' WHERE id='" . $objFile->id . "'");
+            if ($groupID == 'false') {
+                foreach ($files as $objFile)
+                {
+                    Database::getInstance()
+                        ->query("UPDATE tl_files SET shared_groups='' WHERE id='" . $objFile->id . "'");
+                    Database::getInstance()
+                        ->query("UPDATE tl_files SET shared='0' WHERE id='" . $objFile->id . "'");
+                }
+            } else {
+                $groups = serialize($groupID);
+                //add the share groups to each file
+                foreach ($files as $objFile)
+                {
+                    Database::getInstance()
+                        ->query("UPDATE tl_files SET shared_groups='" . $groups . "' WHERE id='" . $objFile->id . "'");
+                    Database::getInstance()
+                        ->query("UPDATE tl_files SET shared='1' WHERE id='" . $objFile->id . "'");
+                }
             }
+
         }
     }
 
