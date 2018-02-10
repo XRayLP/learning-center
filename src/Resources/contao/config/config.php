@@ -23,6 +23,7 @@ $GLOBALS['FE_MOD']['projects']['projectlist'] = 'XRayLP\LearningCenterBundle\Mod
 $GLOBALS['FE_MOD']['projects']['projectdetails'] = 'XRayLP\LearningCenterBundle\Modules\ModuleProjectsDetails';
 $GLOBALS['FE_MOD']['files']['filemanager'] = 'XRayLP\LearningCenterBundle\Modules\ModuleFrontendFileManager';
 $GLOBALS['FE_MOD']['files']['catalog'] = 'XRayLP\LearningCenterBundle\Modules\ModuleCatalog';
+$GLOBALS['FE_MOD']['files']['usedSpace'] = 'XRayLP\LearningCenterBundle\Modules\ModuleUsedSpace';
 
 //Formulare
 $GLOBALS['TL_FFL']['upload'] = 'XRayLP\LearningCenterBundle\Forms\FormFileUpload';
