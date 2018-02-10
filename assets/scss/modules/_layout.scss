@@ -10,3 +10,9 @@
 		padding: 1em;
 	}
 }
+
+#dashboard {
+	> div.card {
+		margin-bottom: 2em;
+	}
+}
