@@ -62,7 +62,7 @@ class DataSites
                 'jumpTo'    => 0,
                 'chmod'   => $chmod,
                 'protected '=> '1',
-                'groups'    => 'a:2:{i:0;s:1:"4";i:1;s:1:"1";}',
+                'groups'    => 'a:2:{i:0;s:1:"1";i:1;s:1:"2";}',
                 'includeLayout' => 1,
                 'layout'    => 2,
                 'sitemap'   => 'map_default',
