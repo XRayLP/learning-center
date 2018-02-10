@@ -34,6 +34,7 @@ class DataArticles
                 'author'    => 1,
                 'inColumn'  => 'main',
                 'published' => 1,
+                'cssID'     => 'a:2:{i:0;s:9:"dashboard";i:1;s:0:"";}',
             ),
             '3' => array(
                 'id'        => 3,
