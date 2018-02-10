@@ -2,9 +2,10 @@
 
 <?php $this->block('field'); ?>
 
-  <input name="share-files" value="" type="hidden">
+  <input name="files-share" value="" type="hidden">
 
   <select name="<?= $this->name ?>" id="ctrl_<?= $this->id ?>" class="<?= $this->class ?>"<?= $this->getAttributes() ?>>
+      <option value="false">Datei Nicht Teilen</option>
     <?php foreach ($this->getOptions() as $option): ?>
       <?php if ($option['type'] == 'group_start'): ?>
         <optgroup label="<?= $option['label'] ?>">
