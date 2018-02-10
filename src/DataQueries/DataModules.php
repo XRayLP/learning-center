@@ -107,6 +107,13 @@ class DataModules
                 'name'          => 'Katalog',
                 'type'          => 'catalog',
             ),
+            '11' => array(
+                'id'            => 11,
+                'pid'           => 1,
+                'tstamp'        => time(),
+                'name'          => 'Belegter Speicherplatz',
+                'type'          => 'usedSpace',
+            ),
         );
     }
 }

@@ -50,6 +50,8 @@ class DataContent
                 'type'      => 'text',
                 'headline'  => 'a:2:{s:4:"unit";s:2:"h4";s:5:"value";s:9:"Wilkommen";}',
                 'text'      => '<p>{{user::firstname}} {{user::lastname}}, wilkommen im Learning Center des Gymnasium Stephaneum Aschersleben.</p>',
+                'customTpl' => 'ce_text_card_lc',
+                'cssID'     => 'a:2:{i:0;s:0:"";i:1;s:6:"col-12";}',
             ),
             '5' => array(
                 'id'        => 5,
@@ -104,6 +106,16 @@ class DataContent
                 'tstamp'    => time(),
                 'type'      => 'module',
                 'module'    => 4
+            ),
+            '11' => array(
+                'id'        => 11,
+                'pid'       => 2,
+                'ptable'    => 'tl_article',
+                'sorting'   => 264,
+                'tstamp'    => time(),
+                'type'      => 'module',
+                'module'    => 11,
+                'cssID'     => 'a:2:{i:0;s:0:"";i:1;s:6:"col-12";}',
             ),
         );
     }
