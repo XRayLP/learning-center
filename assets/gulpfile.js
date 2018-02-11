@@ -6,7 +6,7 @@ var destJS = '../src/Resources/public/js';
 
 //Dependencies
 var srcJSDep = [
-	'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', //Bootstrap
+	'node_modules/bootstrap/dist/js/bootstrap.bundle.js', //Bootstrap
 ];
 
 var srcCSSDep = [
@@ -30,7 +30,7 @@ var changed = require('gulp-changed'),
 //Gulp Standardaufgabe
 gulp.task('default', ['watch']);
 
-gulp.task('buildDep', ['DepJS', 'DepCSS', 'styles', 'build-js',] );
+gulp.task('buildDep', ['DepJS', 'styles', 'build-js',] );
 
 //SCSS verarbeiten
 gulp.task('styles', function(){
@@ -38,18 +38,20 @@ gulp.task('styles', function(){
 		.pipe(sass()) //SASS wird zu CSS kompeliert
 		.pipe(autoprefixer({ //Prefixe werden hinzugefügt
 			browsers: [
-						"Android 2.3",
-						"Android >= 4",
-						"Chrome >= 20",
-						"Firefox >= 24",
-						"Explorer >= 8",
-						"iOS >= 6",
-						"Opera >= 12",
-						"Safari >= 6"
-					  ],
+					"last 1 major version",
+					">= 1%",
+					"Chrome >= 45",
+					"Firefox >= 38",
+					"Edge >= 12",
+					"Explorer >= 10",
+					"iOS >= 9",
+					"Safari >= 9",
+					"Android >= 4.4",
+					"Opera >= 30"
+					],
 			cascade: false
 		}))
-		.pipe(cleanCSS()) //CSS wird kompremiert
+		//.pipe(cleanCSS()) //CSS wird kompremiert
 		.pipe(gulp.dest(destSASS))
 });
 //Javascript wird auf Fehler überprüft
@@ -64,7 +66,7 @@ gulp.task('build-js', function(){
 	return gulp.src(srcJS)
 		.pipe(sourcemaps.init())
 			.pipe(concat('bundle.js'))
-			.pipe(uglify())
+			//.pipe(uglify())
 			.pipe(gutil.noop())
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(destJS))
@@ -76,18 +78,10 @@ gulp.task('DepJS', function(){
 	gulp.src(srcJSDep)
 	.pipe(sourcemaps.init())
 		.pipe(concat('bundleDep.js'))
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gutil.noop())
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest(destJS))
-});
-
-//CSS Dependencies werden gebündelt, minimiert und auf den Server geschoben
-gulp.task('DepCSS', function(){
-	gulp.src(srcCSSDep)
-		.pipe(concatCSS('bundleDep.css'))
-		.pipe(cleanCSS()) //CSS wird kompremiert
-		.pipe(gulp.dest(destSASS))
 });
 
 //Aufgabe wird ausgeführt wenn sich eine Datei ändert

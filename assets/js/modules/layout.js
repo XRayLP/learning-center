@@ -10,6 +10,9 @@ $(function() {
 		setSidebarHeight();
 		centerElement('#loginBox');
 	});
+	$(document).scroll(function(){
+        setSidebarHeight();
+	});
 	
 	centerElement('#loginBox');
     setSidebarHeight();
@@ -30,8 +33,7 @@ $(function() {
 function setSidebarHeight(){
 	var dynamic = $(document).height() - $('#nav-intern').outerHeight();
 	   
-	var sidebar = $('#nav-sidebar');    
-	      
+	var sidebar = $('#nav-sidebar');
 	sidebar.css({
 		'min-height': dynamic,
 	    'max-height': dynamic
