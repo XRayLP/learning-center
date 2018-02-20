@@ -19,8 +19,7 @@ $GLOBALS['BE_MOD']['learningcenter']['configuration'] = array(
 
 //Frontend Modules
 $GLOBALS['FE_MOD']['user']['userlist'] = 'XRayLP\LearningCenterBundle\Modules\ModuleUserlist';
-$GLOBALS['FE_MOD']['projects']['projectlist'] = 'XRayLP\LearningCenterBundle\Modules\ModuleProjectsList';
-$GLOBALS['FE_MOD']['projects']['projectdetails'] = 'XRayLP\LearningCenterBundle\Modules\ModuleProjectsDetails';
+$GLOBALS['FE_MOD']['projects']['projects'] = 'XRayLP\LearningCenterBundle\Modules\ModuleProjects';
 $GLOBALS['FE_MOD']['files']['filemanager'] = 'XRayLP\LearningCenterBundle\Modules\ModuleFrontendFileManager';
 $GLOBALS['FE_MOD']['files']['catalog'] = 'XRayLP\LearningCenterBundle\Modules\ModuleCatalog';
 $GLOBALS['FE_MOD']['files']['usedSpace'] = 'XRayLP\LearningCenterBundle\Modules\ModuleUsedSpace';

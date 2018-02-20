@@ -24,5 +24,8 @@
 	},
 	"extra" : {
 		"contao-manager-plugin": "XRayLP\\LearningCenterBundle\\ContaoManagerPlugin"
+	},
+	"require-dev": {
+		"symfony/phpunit-bridge": "^4.1@dev"
 	}
 }

@@ -22,7 +22,7 @@ class ModuleUserlist extends Module {
      * Template
      * @var string
      */
-    protected $strTemplate = 'mod_users_list';
+    protected $strTemplate = 'mod_lc_user_list';
 
     /**
      * Member
@@ -65,10 +65,15 @@ class ModuleUserlist extends Module {
                     unset($memberList[$key]);
                 } 
             }
-            
-            
         }
-        $this->Template->members = $memberList;
+        //Twig
+        $twigRenderer = \System::getContainer()->get('templating');
+        $rendered = $twigRenderer->render('@LearningCenter/mod_lc_user_list.twig',
+            [
+               'members'    => $memberList
+            ]);
+
+        $this->Template->renderedTwig = $rendered;
     }
 
     

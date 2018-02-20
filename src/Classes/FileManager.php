@@ -22,7 +22,7 @@ class FileManager
      * @return \Contao\FilesModel|NULL|\XRayLP\LearningCenterBundle\Classes\FileManager
      * @throws \Exception
      */
-    public static function createFromFolder($strPath)
+    public function createFromFolder($strPath)
     {
         if (($objExisting = \FilesModel::findByPath($strPath)) !== null)
         {
@@ -30,6 +30,7 @@ class FileManager
         }
         //creates the values for the fields in database & saves the object in database and as folder
         $objFolder = new \Folder($strPath);
+        $objFolder->
         $objModel = new self();
         $objModel->pid = static::findParentByPath($strPath);
         $objModel->tstamp = time();

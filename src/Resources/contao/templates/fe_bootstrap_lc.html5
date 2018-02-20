@@ -9,9 +9,14 @@
     	<base href="<?= $this->base ?>">
 	
 	<?php
-    		$GLOBALS['TL_CSS'][] = 'bundles/learningcenter/css/bundle.css';
-    		$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/learningcenter/js/bundleDep.js';
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/learningcenter/js/bundle.js';
+/**
+ * @link https://github.com/XRayLP/learning-center-bundle
+ * @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+ * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+ */
+
+$GLOBALS['TL_CSS'][] = 'bundles/learningcenter/app.css';
+    		$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/learningcenter/app.js';
 	?> 
 	
     	<?php $this->block('meta'); ?>

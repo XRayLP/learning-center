@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link https://github.com/XRayLP/learning-center-bundle
+ * @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+ * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+ */
+
 $GLOBALS['TL_LANG']['FFL']['folder'][0] = 'FDM - Verezichnis erstellen';
 $GLOBALS['TL_LANG']['FFL']['folder'][1] = 'Ein Inputfeld zum erstellen von Verzeichnissen im Frontend Dateimanager';
 $GLOBALS['TL_LANG']['FFL']['delete'][0] = 'FDM - Datei Löschen';
