@@ -1,0 +1,26 @@
+# config/services.yml
+services:
+    kernel_bundle:
+        class: XRayLP\LearningCenterBundle
+    _instanceof:
+        Contao\CoreBundle\Framework\FrameworkAwareInterface:
+            calls:
+                - ["setFramework", ["@contao.framework"]]
+
+        Symfony\Component\DependencyInjection\ContainerAwareInterface:
+            calls:
+                - ["setContainer", ["@service_container"]]
+    learningcenter.project:
+        class: XRayLP\LearningCenterBundle\Service\ProjectService
+        arguments:
+        - '@router'
+        - '@doctrine.orm.default_entity_manager'
+
+    learningcenter.users:
+        class: XRayLP\LearningCenterBundle\Service\MemberService
+
+    learningcenter.files:
+        class: XRayLP\LearningCenterBundle\Service\FilesService
+        arguments:
+        - '@router'
+        - '@doctrine.orm.default_entity_manager'

@@ -1,0 +1,96 @@
+learningcenter:
+    path: /learningcenter
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\LearningCenterController::mainAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_projects:
+    path: /learningcenter/projects
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::mainAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_projects.create:
+    path: /learningcenter/projects/create
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::createAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_projects.details:
+    path: /learningcenter/projects/{alias}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_projects.edit:
+    path: /learningcenter/projects/edit/{alias}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::createAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_user:
+    path: /learningcenter/users
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ListsController::studentAction'
+        _scope: frontend
+        _token_check: true
+        request:
+
+learningcenter_user.details:
+    path: /learningcenter/users/{username}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ListsController::detailsAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_files.details:
+    path: /learningcenter/filemanager/details/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::detailAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_files.upload:
+    path: /learningcenter/filemanager/upload/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::uploadAction'
+        _scope: frontend
+        _token_check: true
+        fid: null
+
+learningcenter_files.download:
+    path: /learningcenter/filemanager/download/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::downloadAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_files.delete:
+    path: /learningcenter/filemanager/delete/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::deleteAction'
+        _scope: frontend
+        _token_check: true
+        fid: null
+
+learningcenter_files.folder:
+    path: /learningcenter/filemanager/folder/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::folderAction'
+        _scope: frontend
+        _token_check: true
+        fid: null
+
+learningcenter_files:
+    path: /learningcenter/filemanager/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::mainAction'
+        _scope: frontend
+        _token_check: true
+        fid: null
+
