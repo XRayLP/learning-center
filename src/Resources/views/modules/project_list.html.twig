@@ -1,0 +1,21 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+                <tr>
+                    <td><a href="{{ project.url }}">{{ project.name }}</a></td>
+                    <td>{{ project.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

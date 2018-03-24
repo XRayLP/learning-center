@@ -1,0 +1,28 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <h1>{{ project.name }}</h1>
+    <div>
+        {{ project.description }}
+    </div>
+    <table class="table table-striped mt-4">
+        <caption>Projekt Mitglieder</caption>
+        <thead>
+            <tr>
+                <th>Profilbild</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in project.members %}
+                <tr class="clickable-row" data-href="{{ user.url }}">
+                    <td><img src="{{ user.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-secondary" href="{{ path('learningcenter_projects') }}">Zurück</a>
+{% endblock %}

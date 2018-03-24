@@ -1,0 +1,36 @@
+{# base.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{% block title %}Learning Center{% endblock %}</title>
+    <link href="{{ asset('bundles/learningcenter/app.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/learningcenter/app.js') }}"></script>
+</head>
+<body>
+    <header id="lc_header">
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">Learning Center</a>
+            <ul class="navbar-nav float-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Abmelden</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div id="container" class="container-fluid">
+        <div class="row">
+        <aside id="lc_sidebar" class="col-12 col-lg-3 col-xl-2 d-none d-lg-block">
+            <nav class="lc_navigation block">
+                {{ knp_menu_render('LearningCenterBundle:Builder:mainMenu') }}
+            </nav>
+        </aside>
+        <main id="lc_main" class="col-12 col-lg-9 col-xl-10">
+            {% block main %}
+            {% endblock %}
+        </main>
+        </div>
+    </div>
+</body>
+</html>

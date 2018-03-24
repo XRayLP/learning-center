@@ -1,0 +1,21 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <h1 class="display-3">{{ member.username }}</h1>
+    <img src="{{ member.avatar }}" alt="{{ member.username }}" class="rounded-circle border-dark" width="250">
+    <div class="details">
+        <dl class="row">
+            <dt class="col-sm-3">Vorname</dt>
+            <dd class="col-sm-9">{{ member.firstname }}</dd>
+
+            <dt class="col-sm-3">Nachname</dt>
+            <dd class="col-sm-9">{{ member.lastname }}</dd>
+
+            <dt class="col-sm-3">E-Mail</dt>
+            <dd class="col-sm-9">{{ member.email }}</dd>
+
+            <dt class="col-sm-3">Geschlecht</dt>
+            <dd class="col-sm-9">{{ member.gender }}</dd>
+        </dl>
+    </div>
+{% endblock %}
