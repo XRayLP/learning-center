@@ -21,3 +21,8 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['cloudSpace'] = array(
     'eval'      => array('rgxp'=>'digit', 'tl_class'=>'w50'),
     'sql'       => "varchar(255) NOT NULL default ''"
 );
+
+//fields
+$GLOBALS['TL_DCA']['tl_member']['fields']['avatar'] = array(
+    'sql'       => "char(1) NOT NULL default '0'"
+);

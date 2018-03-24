@@ -5,14 +5,6 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-/**
- * Created by PhpStorm.
- * User: nikla
- * Date: 01.02.2018
- * Time: 18:49
- */
-
-
 $GLOBALS['TL_DCA']['tl_timetable'] = array(
 
     //Config

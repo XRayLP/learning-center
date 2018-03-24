@@ -30,3 +30,5 @@ $GLOBALS['TL_FFL']['folder'] = 'XRayLP\LearningCenterBundle\Forms\FormCreateFold
 $GLOBALS['TL_FFL']['delete'] = 'XRayLP\LearningCenterBundle\Forms\FormFilesDelete';
 $GLOBALS['TL_FFL']['download'] = 'XRayLP\LearningCenterBundle\Forms\FormFilesDelete';
 $GLOBALS['TL_FFL']['share'] = 'XRayLP\LearningCenterBundle\Forms\FormShareFile';
+
+$GLOBALS['TL_MODELS']['tl_projects'] = 'XRayLP\LearningCenterBundle\Model\ProjectModel';

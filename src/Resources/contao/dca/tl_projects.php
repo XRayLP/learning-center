@@ -6,19 +6,14 @@
  */
 
 $GLOBALS['TL_DCA']['tl_projects'] = array(
-    
+
     //Config
     'config' => array(
         'dataContainer' => 'Table',
         'switchToEdit' => true,
-        'enableVersioning' => true,
-        'sql' => array(
-            'keys' => array(
-                'id' => 'primary'
-            )
-        )
+        'enableVersioning' => true
     ),
-    
+
     //List
     'list' => array(
         
@@ -65,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
     
     // Palettes
     'palettes' => array(
-        'default' => '{main_legend},name,alias,description,members'  
+        'default' => '{main_legend},name,alias,description,groupId'
     ),
     
     //Fields
@@ -88,7 +83,12 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
             'label' => &$GLOBALS['TL_LANG']['tl_projects']['alias'],
             'inputType' => 'text',
             'eval' => array('rgxp' => 'alias', 'maxlength' => 128, 'tl_class'=>'w50'),
-            'save_callback' => array(array('tl_projects', 'generateAlias')),
+            'save_callback' => array(
+                function($varValue, DataContainer $dataContainer)
+                {
+                    return \System::getContainer()->get('learningcenter.project')->generateAlias($varValue, $dataContainer);
+                }
+            ),
             'sql' => "varchar(128) COLLATE utf8_bin NOT NULL default ''"
         ),
         'description' => array(
@@ -100,54 +100,14 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
             'explanation'             => 'insertTags',
             'sql'                     => "mediumtext NULL"
         ),
-        'members' => array(
-            'label'                   => &$GLOBALS['TL_LANG']['tl_projects']['members'],
+        'groupId' => array(
+            'label'                   => &$GLOBALS['TL_LANG']['tl_projects']['groupId'],
             'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'checkbox',
-            'foreignKey'              => 'tl_member.username',
-            'eval'                    => array('mandatory'=>true, 'multiple'=>true),
-            'sql'                     => "blob NULL",
+            'inputType'               => 'select',
+            'foreignKey'              => 'tl_member_group.name',
+            'eval'                    => array('mandatory'=>true),
+            'sql'                     => "int(10) NOT NULL default '0'",
             'relation'                => array('type'=>'hasMany', 'load'=>'lazy')
         )
     )   
 );
-
-class tl_projects extends Backend
-{
-    /**
-     * Generate an alias for an project.
-     *
-     * @param $varValue
-     * @param $dc
-     * @return string
-     * @throws Exception
-     */
-    public function generateAlias($varValue, $dc)
-    {
-        $autoAlias = false;
-        
-        // generate an alias if it doesn't exist
-        if ($varValue == '') {
-            $autoAlias = true;
-            $varValue = StringUtil::generateAlias($dc->activeRecord->title);
-        }
-        
-        // table, for which an alias should be created
-        $table = Input::get('table') ? Input::get('table') : 'tl_projects';
-        
-        $objAlias = $this->Database->prepare("SELECT id FROM " . $table . " WHERE alias=?")->execute($varValue);
-        
-        // check whether the alias already exists
-        if ($objAlias->numRows > 1 && !$autoAlias) {
-            throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
-        }
-        
-        // if alias exist, add an id
-        if ($objAlias->numRows && $autoAlias) {
-            $varValue .= '-' . $dc->id;
-        }
-        
-        return $varValue;
-    }
-}
