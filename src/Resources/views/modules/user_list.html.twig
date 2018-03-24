@@ -1,0 +1,22 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Profilbild</th>
+            <th scope="col">Vorname</th>
+            <th scope="col">Nachname</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in members %}
+            <tr class="clickable-row" data-href="{{ user.url }}">
+                <td><img src="{{ user.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
