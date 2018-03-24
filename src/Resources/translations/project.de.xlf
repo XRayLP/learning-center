@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="name">
+                <source>Name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="description">
+                <source>Description</source>
+                <target>Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="members">
+                <source>Members</source>
+                <target>Mitglieder</target>
+            </trans-unit>
+            <trans-unit id="create_project">
+                <source>Create Project</source>
+                <target>Erstelle Projekt</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

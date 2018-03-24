@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+  ~ @link https://github.com/XRayLP/learning-center-bundle
+  ~ @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+  ~ @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+  -->
+
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="home">
+                <source>Home</source>
+                <target>Startseite</target>
+            </trans-unit>
+            <trans-unit id="files">
+                <source>Filemanager</source>
+                <target>Speicher</target>
+            </trans-unit>
+            <trans-unit id="projects">
+                <source>Projects</source>
+                <target>Projekte</target>
+            </trans-unit>
+            <trans-unit id="lists">
+                <source>Lists</source>
+                <target>Listen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
