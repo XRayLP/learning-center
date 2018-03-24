@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="upload">
+                <source>Upload</source>
+                <target>Hochladen</target>
+            </trans-unit>
+            <trans-unit id="new_folder">
+                <source>New Folder</source>
+                <target>Neues Verzeichnis</target>
+            </trans-unit>
+            <trans-unit id="download">
+                <source>Download</source>
+                <target>Herunterladen</target>
+            </trans-unit>
+            <trans-unit id="delete">
+                <source>Delete</source>
+                <target>Löschen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
