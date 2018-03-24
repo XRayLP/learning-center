@@ -38,14 +38,14 @@
 
 
 
-#nav-sidebar {
+#lc_sidebar {
 	padding-top: 1em;
 	background-color: $dark;
 	min-height: 100vm;
 	a, p, span {
 		color: $white; 
 	}
-	.mod_navigation {
+	.lc_navigation {
 		a, strong {
 			&::before {
 				margin-right: 0.5em;

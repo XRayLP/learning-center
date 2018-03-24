@@ -4,34 +4,17 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-.mod_files {
+#lc_main {
 	.progress {
 		margin-bottom: 1em;
 	}
 	.btn-toolbar {
-		margin-bottom: 1em;
+		margin: 1em;
 		.btn-group {
 			margin-bottom: 1em;
-			&.create{
-				margin-right: 2em;
-			}
-			&.edit {
 
-			}
-			button {
-				/*@include media-breakpoint-down(md) {
-					span {
-						display: none;
-					}
-				}*/
-			}
-			i {
+			svg {
 				margin-right: 0.5em;
-				display: inline-block;
-				font-style: normal;
-				font-variant: normal;
-				text-rendering: auto;
-				-webkit-font-smoothing: antialiased;
 			}
 		}
 		@include media-breakpoint-down(md) {

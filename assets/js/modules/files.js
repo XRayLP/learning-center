@@ -8,7 +8,7 @@ $(document).ready(function(){
 	//delete files
 	$(".btn-delete").click(function(){
 		var checks = getCheckedBoxes("checks-files", "id");
-		var button = $("[name='files-delete']");
+		var button = $("[name='delete_file[id]']");
 		button.val(checks);
 
 	});

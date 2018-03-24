@@ -4,20 +4,13 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-@import "./node_modules/bootstrap/scss/functions";
-@import "modules/variables-bootstrap";
+//assets/scss/global.scss
 
-//Dependencies
-@import "./node_modules/bootstrap/scss/bootstrap";
-//@import "./node_modules/font-awesome/scss/font-awesome";
-@import "modules/font-awesome/fontawesome";
-
-//Variablen
+//customized bootstrap variables
 @import "modules/variables";
-//@import "modules/fonts";
-//test
-//Mixins 
 
+//Bootstrap CSS
+@import "~bootstrap/scss/bootstrap";
 
 //Module
 @import "modules/layout";
@@ -26,4 +19,3 @@
 @import "modules/modules";
 @import "modules/files";
 @import "modules/catalog";
-//Kommentar
