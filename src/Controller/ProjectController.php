@@ -119,6 +119,7 @@ class ProjectController extends Controller
                 $objGroup = new MemberGroupModel();
                 $objGroup->name = 'project_'.$objProject->getAlias();
                 $objGroup->tstamp = time();
+                $objGroup->groupType = 6;
                 $objGroup->save();
                 foreach ($project->getGroupId() as $member)
                 {

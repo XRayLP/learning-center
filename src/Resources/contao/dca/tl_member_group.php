@@ -11,12 +11,13 @@ $GLOBALS['TL_DCA']['tl_member_group']['fields']['groupType'] = array(
     'search'    => true,
     'inputType' => 'select',
     'options'   => array(
-        '0' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['others'],
-        '1' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['student'],
-        '2' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['teacher'],
-        '3' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['class'],
-        '4' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['course'],
-        '5' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['project'],
+        '1' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['others'],
+        '2' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['student'],
+        '3' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['teacher'],
+        '4' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['class'],
+        '5' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['course'],
+        '6' => &$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['project'],
     ),
-    'sql'       => "int(10) Not NULL default '0'"
+    'eval'      => array('mandatory'=>true, 'tl_class'=>'w50'),
+    'sql'       => "int(10) Not NULL default '1'"
 );

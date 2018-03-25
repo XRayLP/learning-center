@@ -16,7 +16,7 @@ $(document).ready(function(){
 	//share files
 	$(".btn-share").click(function(){
 		var checks = getCheckedBoxes("checks-files", "id");
-		var button = $("[name='files-share']");
+		var button = $("[name='share_file[id]']");
 		button.val(checks);
 
 	});

@@ -44,6 +44,7 @@ function setSidebarHeight(){
 //Font Awesome
 import fontawesome from '@fortawesome/fontawesome';
 import faUser from '@fortawesome/fontawesome-free-solid/faUser';
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
 import faSignOutAlt from '@fortawesome/fontawesome-free-solid/faSignOutAlt';
 import faFile from '@fortawesome/fontawesome-free-solid/faFile';
 import faFileImage from '@fortawesome/fontawesome-free-solid/faFileImage';
@@ -63,6 +64,7 @@ import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
 
 //Users
 fontawesome.library.add(faUser);
+fontawesome.library.add(faUsers);
 fontawesome.library.add(faSignOutAlt);
 //Files
 fontawesome.library.add(faFile);

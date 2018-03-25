@@ -86,6 +86,14 @@ learningcenter_files.folder:
         _token_check: true
         fid: null
 
+learningcenter_files.share:
+    path: /learningcenter/filemanager/share/{fid}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\FilesController::shareAction'
+        _scope: frontend
+        _token_check: true
+        fid: null
+
 learningcenter_files:
     path: /learningcenter/filemanager/{fid}
     defaults:

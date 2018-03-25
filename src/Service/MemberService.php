@@ -11,6 +11,7 @@ namespace XRayLP\LearningCenterBundle\Service;
 use Contao\FilesModel;
 use Contao\MemberGroupModel;
 use Contao\MemberModel;
+use Contao\Model\Collection;
 use Contao\StringUtil;
 use LasseRafn\InitialAvatarGenerator\InitialAvatar;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,17 +48,35 @@ class MemberService
     /**
      * Creates a list of members from a collection
      *
-     * @param $collection
+     * @param $collection Collection
      * @return mixed
      */
     public function getMemberList($collection)
     {
+        $members[] = array();
         foreach ($collection as $objMember)
         {
-            $members[$objMember->firstname.' '.$objMember->lastname] =$objMember->id;
+            $members[$objMember->firstname.' '.$objMember->lastname] = $objMember->id;
         }
 
         return $members;
+    }
+
+    /**
+     * Creates a list of member groups form a collection
+     *
+     * @param $collection Collection
+     * @return array
+     */
+    public function getMemberGroupList($collection)
+    {
+        $groups[] = array();
+        foreach ($collection as $objMemberGroup)
+        {
+            $groups[$objMemberGroup->name] = $objMemberGroup->id;
+        }
+
+        return $groups;
     }
 
     /**

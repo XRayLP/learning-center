@@ -7,6 +7,7 @@
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_folder_modal"><i class="fa fa-folder"></i><span>New Folder</span></button>
             <button type="button" class="btn btn-dark btn-download"><i class="fa fa-download"></i><span>Download</span></button>
             <button type="button" class="btn btn-primary btn-dark btn-delete" data-toggle="modal" data-target="#files_delete_modal"><i class="fa fa-trash"></i><span>Delete</span></button>
+            <button type="button" class="btn btn-primary btn-dark btn-share" data-toggle="modal" data-target="#files_share_modal"><i class="fa fa-trash"></i><span>Share</span></button>
         </div>
     </div>
     <div class="row files">
@@ -119,6 +120,30 @@
                 </div>
             </div>
             {{ form_end(folder) }}
+        </div>
+
+        <div class="modal fade" id="files_share_modal" tabindex="-1" role="dialog">
+            {{ form_start(share) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share File</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Would your really like to share this file?</p>
+                        {{ form_widget(share.id) }}
+                        {{ form_widget(share.sharedGroups) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ form_widget(share.submit) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(share) }}
         </div>
     </div>
 {% endblock %}

@@ -21,12 +21,14 @@ use XRayLP\LearningCenterBundle\Entity\File;
 use XRayLP\LearningCenterBundle\Form\CreateFolderType;
 use XRayLP\LearningCenterBundle\Form\DeleteFileType;
 use XRayLP\LearningCenterBundle\Form\FileUploadType;
+use XRayLP\LearningCenterBundle\Form\ShareFileType;
 
 class FilesController extends Controller
 {
     /**
      * @param $fid
      * @return RedirectResponse|Response
+     * @throws \Exception
      */
     public function mainAction($fid)
     {
@@ -46,6 +48,9 @@ class FilesController extends Controller
             $delete = $this->createForm(DeleteFileType::class, $objFile, array(
                 'action' => $this->generateUrl('learningcenter_files.delete', array('fid' => $fid))
             ));
+            $share = $this->createForm(ShareFileType::class, $objFile, array(
+                'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
+            ));
 
 
             $files = \System::getContainer()->get('learningcenter.files')->createFileGrid($fid, $User);
@@ -55,7 +60,8 @@ class FilesController extends Controller
                 'upload' => $upload->createView(),
                 'folder' => $folder->createView(),
                 'delete' => $delete->createView(),
-                'files' => $files
+                'share'  => $share->createView(),
+                'files'  => $files
             ));
             return new Response($rendered);
 
@@ -152,6 +158,28 @@ class FilesController extends Controller
         } else {
             return new RedirectResponse('contao_frontend');
         }
+    }
+
+    /**
+     * for the share file form
+     *
+     * @param $fid
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function shareAction($fid, Request $request)
+    {
+        $objFile = new File();
+        $share = $this->createForm(ShareFileType::class, $objFile);
+        $share->handleRequest($request);
+        if ($share->isSubmitted() && $share->isValid())
+        {
+            $id = $objFile->getId();
+            $courses = $objFile->getSharedGroups();
+            \System::getContainer()->get('learningcenter.files')->shareFile($id, $courses);
+
+        }
+        return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
     }
 
     public function detailAction($fid)

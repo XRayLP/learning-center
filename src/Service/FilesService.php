@@ -179,6 +179,50 @@ class FilesService
     }
 
     /**
+     * shares a file with a group
+     *
+     * @param $id int
+     * @param $gid int
+     */
+    public function shareFile($id, $gid)
+    {
+        //gets the file object
+        $objFile = FilesModel::findById($id);
+
+        //checks whether the file is already shared
+        if ($objFile->shared == 1) {
+            //unshares the file
+            $objFile->shared = 0;
+            $objFile->shared_groups = null;
+        } else {
+            $objFile->shared = 1;
+            $objFile->shared_groups = serialize($gid);
+        }
+        $objFile->save();
+
+        //subfiles of folder are also shared
+        if ($objFile->type == 'folder'){
+            //gets all subfiles
+            $objSubfiles = FilesModel::findMultipleByBasepath($objFile->path.'/');
+            if ($objSubfiles !== null) {
+                while ($objSubfiles->next())
+                {
+                    //checks whether the file is already shared
+                    if ($objFile->shared == 1) {
+                        //unshares the file
+                        $objSubfiles->shared = 0;
+                        $objSubfiles->shared_groups = null;
+                    } else {
+                        $objSubfiles->shared = 1;
+                        $objSubfiles->shared_groups = serialize($gid);
+                    }
+                    $objSubfiles->save();
+                }
+            }
+        }
+    }
+
+    /**
      * Returns the Folder Object, which should be used for the File Grid.
      *
      * @param $fid int
