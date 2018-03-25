@@ -99,7 +99,47 @@ class FilesService
                 }
             }
         }
-        return $files;
+        return $this->sortFilesArrayByTypeAndName($files);
+    }
+
+    /**
+     * Creates a Breadcrumb to navigate through the filemanager
+     *
+     * @param $fid int
+     * @param $objUser FrontendUser|MemberModel
+     * @return array
+     */
+    public function createFilemanagerBreadcrumb($fid, $objUser)
+    {
+        $breadcrumb = array();
+
+        //check if a subfolder
+        if (is_numeric($fid)) {
+            $currentPath = FilesModel::findById($fid)->path;
+            $homePath = FilesModel::findByUuid($objUser->homeDir)->path;
+
+            //create a link for every part of the current path until the homeDir is reached
+            while ($homePath !== $currentPath)
+            {
+                $objFolder = FilesModel::findByPath($currentPath);
+                $breadcrumb[] = array(
+                    'name'  => $objFolder->name,
+                    'href'  => $this->router->generate('learningcenter_files', array('fid' => $objFolder->id))
+                );
+                //cut one part of the string after the last "/" to check the next directory
+                $rmLength = strrpos($currentPath, "/") - strlen($currentPath);
+                $currentPath = substr($currentPath, 0, $rmLength);
+            }
+        }
+
+        //adds the home path to the breadcrumb
+        $breadcrumb[] = array(
+            'name' => 'Home',
+            'href'  => $this->router->generate('learningcenter_files')
+        );
+
+        //returns the array in reverse
+        return array_reverse($breadcrumb);
     }
 
     /**
@@ -276,5 +316,63 @@ class FilesService
             return false;
         }
 
+    }
+
+    /**
+     * Sorts the files array for the filemanager by type and name
+     *
+     * @param $files
+     * @return array
+     */
+    private function sortFilesArrayByTypeAndName($files)
+    {
+        if (isset($files))
+        {
+            $filesFolders = array();
+            $filesFiles = array();
+
+            //sorts the files by types
+            foreach ($files as $file)
+            {
+                if ($file['type'] == 'folder')
+                {
+                    $filesFolders[] = $file;
+                } else {
+                    $filesFiles[] = $file;
+                }
+            }
+
+            //sorts the folders by name
+            for ($i=0; $i<count($filesFolders); $i++)
+            {
+                // position of the smallest element
+                $minpos=$i;
+                for ($j=$i+1; $j<count($filesFolders); $j++)
+                    if ($filesFolders[$j]['name']<$filesFolders[$minpos]['name'])
+                        $minpos=$j;
+                // change elements
+                $tmp=$filesFolders[$minpos];
+                $filesFolders[$minpos]=$filesFolders[$i];
+                $filesFolders[$i]=$tmp;
+            }
+
+            //sorts the files by name
+            for ($i=0; $i<count($filesFiles); $i++)
+            {
+                // position of the smallest element
+                $minpos=$i;
+                for ($j=$i+1; $j<count($filesFiles); $j++)
+                    if ($filesFiles[$j]['name']<$filesFiles[$minpos]['name'])
+                        $minpos=$j;
+                // change elements
+                $tmp=$filesFiles[$minpos];
+                $filesFiles[$minpos]=$filesFiles[$i];
+                $filesFiles[$i]=$tmp;
+            }
+
+            //merge the two temporal arrays
+            $files = array_merge($filesFolders, $filesFiles);
+        }
+        return $files;
     }
 }

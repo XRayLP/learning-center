@@ -23,7 +23,6 @@ class Builder implements ContainerAwareInterface
 
         $menu->setChildrenAttributes(array('class' => 'nav flex-column'));
 
-
         $menu
             ->addChild('Home', array('route' => 'learningcenter'))
             ->setLinkAttribute('class', 'nav-link')

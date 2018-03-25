@@ -54,6 +54,8 @@ class FilesController extends Controller
 
 
             $files = \System::getContainer()->get('learningcenter.files')->createFileGrid($fid, $User);
+
+            $breadcrumb = \System::getContainer()->get('learningcenter.files')->createFilemanagerBreadcrumb($fid, $User);
             //Twig/Renderer
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/files.html.twig', array(
@@ -61,7 +63,8 @@ class FilesController extends Controller
                 'folder' => $folder->createView(),
                 'delete' => $delete->createView(),
                 'share'  => $share->createView(),
-                'files'  => $files
+                'files'  => $files,
+                'breadcrumb' => $breadcrumb
             ));
             return new Response($rendered);
 

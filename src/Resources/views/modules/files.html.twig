@@ -1,6 +1,14 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% for item in breadcrumb %}
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ item.href }}">{{ item.name }}</a></li>
+            {% endfor %}
+        </ol>
+    </nav>
+
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group">
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_upload_modal"><i class="fa fa-upload"></i><span>Upload</span></button>
