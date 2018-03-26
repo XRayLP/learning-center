@@ -10,6 +10,7 @@ namespace XRayLP\LearningCenterBundle\Service;
 
 use Contao\FilesModel;
 use Contao\FrontendUser;
+use Contao\MemberGroupModel;
 use Contao\MemberModel;
 use Doctrine\ORM\EntityManager;
 use http\Exception;
@@ -67,7 +68,7 @@ class FilesService
                         'id' => $objFiles->id,
                         'uuid' => $objFiles->uuid,
                         'type' => $objFiles->type,
-                        'time' => date("d. M Y", $objFolder->mtime),
+                        'time' => date("d. M Y", $objFiles->tstamp),
                         'path' => $objFolder->path,
                         'name' => $objFolder->filename,
                         'href' => $strHref,
@@ -84,7 +85,7 @@ class FilesService
                     (
                         'id' => $objFiles->id,
                         'uuid' => $objFiles->uuid,
-                        'time' => date("d. M Y", $objFile->mtime),
+                        'time' => date("d. M Y", $objFiles->tstamp),
                         'type' => $objFiles->type,
                         'name' => $objFile->basename,
                         'title' => \StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename)),
@@ -140,6 +141,62 @@ class FilesService
 
         //returns the array in reverse
         return array_reverse($breadcrumb);
+    }
+
+    /**
+     * Creates an array of the shared files of a user
+     *
+     * @param $objUser FrontendUser|MemberModel
+     * @return array
+     */
+    public function createCatalogTimeline($objUser)
+    {
+        $files = array();
+
+        $objFiles = FilesModel::findBy('shared', 1);
+
+        $arrGroups = \StringUtil::deserialize($objUser->groups);
+
+        while ($objFiles->next())
+        {
+            if ($objFiles->shared == 1) {
+                foreach ($arrGroups as $id) {
+                    if ($id == unserialize($objFiles->shared_groups)) {
+                        $strHref = $this->router->generate('learningcenter_files.download', array('fid' => $objFiles->id));
+                        $strGroup = MemberGroupModel::findById($id)->name;
+
+                        //add file to array
+                        $files[] = array
+                        (
+                            'id' => $objFiles->id,
+                            'tstamp' => $objFiles->shared_tstamp,
+                            'uuid' => $objFiles->uuid,
+                            'name' => $objFiles->name,
+                            'href' => $strHref,
+                            'filesize' => '',
+                            'extension' => $objFiles->extension,
+                            'shared' => $objFiles->shared,
+                            'shared_group' => $strGroup,
+                            'shared_time' => date('d.m.Y', $objFiles->shared_tstamp)
+                        );
+                    }
+                }
+            }
+        }
+        //sorts the files by tstamp
+        for ($i=0; $i<count($files); $i++)
+        {
+            // position of the biggest element
+            $minpos=$i;
+            for ($j=$i+1; $j<count($files); $j++)
+                if ($files[$j]['tstamp']>$files[$minpos]['tstamp'])
+                    $minpos=$j;
+            // change elements
+            $tmp=$files[$minpos];
+            $files[$minpos]=$files[$i];
+            $files[$i]=$tmp;
+        }
+        return $files;
     }
 
     /**
@@ -234,9 +291,11 @@ class FilesService
             //unshares the file
             $objFile->shared = 0;
             $objFile->shared_groups = null;
+            $objFile->shared_tstamp = null;
         } else {
             $objFile->shared = 1;
             $objFile->shared_groups = serialize($gid);
+            $objFile->shared_tstamp = time();
         }
         $objFile->save();
 
@@ -252,9 +311,11 @@ class FilesService
                         //unshares the file
                         $objSubfiles->shared = 0;
                         $objSubfiles->shared_groups = null;
+                        $objSubfiles->shared_tstamp = null;
                     } else {
                         $objSubfiles->shared = 1;
                         $objSubfiles->shared_groups = serialize($gid);
+                        $objSubfiles->shared_tstamp = time();
                     }
                     $objSubfiles->save();
                 }

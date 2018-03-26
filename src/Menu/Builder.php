@@ -29,6 +29,11 @@ class Builder implements ContainerAwareInterface
             ->setLabelAttribute('class', 'nav-item')
         ;
         $menu
+            ->addChild('Catalog', array('route' => 'learningcenter_catalog'))
+            ->setLinkAttribute('class', 'nav-link')
+            ->setLabelAttribute('class', 'nav-item')
+        ;
+        $menu
             ->addChild('Filemanager', array('route' => 'learningcenter_files'))
             ->setLinkAttribute('class', 'nav-link')
             ->setLabelAttribute('class', 'nav-item')

@@ -12,6 +12,10 @@
                 <source>Home</source>
                 <target>Startseite</target>
             </trans-unit>
+            <trans-unit id="catalog">
+                <source>Catalog</source>
+                <target>Lernkatalog</target>
+            </trans-unit>
             <trans-unit id="files">
                 <source>Filemanager</source>
                 <target>Speicher</target>

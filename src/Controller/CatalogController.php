@@ -7,31 +7,31 @@
 
 namespace XRayLP\LearningCenterBundle\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class LearningCenterController extends Controller
+class CatalogController extends Controller
 {
-
-    /**
-     * SOON: Dashboard
-     *
-     * @return RedirectResponse|Response
-     */
     public function mainAction()
     {
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
+            $User = \FrontendUser::getInstance();
+
+            $files = \System::getContainer()->get('learningcenter.files')->createCatalogTimeline($User);
+
             //Twig
             $twigRenderer = \System::getContainer()->get('templating');
-            $rendered = $twigRenderer->render('@LearningCenter/base.html.twig');
+            $rendered = $twigRenderer->render('@LearningCenter/modules/catalog_timeline.html.twig', array(
+                'files' => $files
+            ));
             return new Response($rendered);
 
         } else {
             return new RedirectResponse('contao_frontend');
         }
-
     }
 }

@@ -102,3 +102,9 @@ learningcenter_files:
         _token_check: true
         fid: null
 
+learningcenter_catalog:
+    path: /learningcenter/catalog
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\CatalogController::mainAction'
+        _scope: frontend
+        _token_check: true

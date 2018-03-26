@@ -12,3 +12,6 @@ $GLOBALS['TL_DCA']['tl_files']['fields']['shared'] = array(
 $GLOBALS['TL_DCA']['tl_files']['fields']['shared_groups'] = array(
     'sql' => "blob NULL"
 );
+$GLOBALS['TL_DCA']['tl_files']['fields']['shared_tstamp'] = array(
+    'sql' => "int(10) NULL"
+);

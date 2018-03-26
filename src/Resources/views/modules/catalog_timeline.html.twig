@@ -1,0 +1,19 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <div class="catalog-timeline">
+    {% for file in files %}
+        <div class="card text-center">
+            <div class="card-header">{{ file.shared_group }}</div>
+            <div class="card-body">
+                <h5>{{ file.name }}</h5>
+
+                <a class="btn btn-primary" href="{{ file.href }}"><i class="fas fa-download"></i><span>Download</span></a>
+            </div>
+            <div class="card-footer text-muted">
+                {{ file.shared_time }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
