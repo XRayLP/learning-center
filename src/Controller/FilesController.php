@@ -69,7 +69,7 @@ class FilesController extends Controller
             return new Response($rendered);
 
         } else {
-            return new RedirectResponse('contao_frontend');
+            return new RedirectResponse('learningcenter_login');
         }
     }
 
@@ -159,7 +159,7 @@ class FilesController extends Controller
 
 
         } else {
-            return new RedirectResponse('contao_frontend');
+            return new RedirectResponse('learningcenter_login');
         }
     }
 

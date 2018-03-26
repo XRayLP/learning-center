@@ -52,7 +52,7 @@ class ProjectController extends Controller
             return new Response($rendered);
 
         } else {
-            return new RedirectResponse('contao_frontend');
+            return $this->redirectToRoute('learningcenter_login');
         }
 
     }
@@ -82,7 +82,7 @@ class ProjectController extends Controller
 
             return new Response($rendered);
         } else {
-            return new RedirectResponse('contao_frontend');
+            return $this->redirectToRoute('learningcenter_login');
         }
     }
 
@@ -142,7 +142,7 @@ class ProjectController extends Controller
 
             return new Response($rendered);
         } else {
-            return new RedirectResponse('contao_frontend');
+            return $this->redirectToRoute('learningcenter_login');
         }
     }
 }

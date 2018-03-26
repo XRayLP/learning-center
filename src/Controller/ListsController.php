@@ -50,7 +50,7 @@ class ListsController extends Controller
         );
         return new Response($rendered);
         } else {
-            return new RedirectResponse('contao_frontend');
+            return $this->redirectToRoute('learningcenter_login');
         }
     }
 
@@ -71,7 +71,7 @@ class ListsController extends Controller
 
             return new Response($rendered);
         } else {
-            return new RedirectResponse('contao_frontend');
+            return $this->redirectToRoute('learningcenter_login');
         }
 
     }

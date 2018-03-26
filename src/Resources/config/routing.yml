@@ -108,3 +108,17 @@ learningcenter_catalog:
         _controller: 'XRayLP\LearningCenterBundle\Controller\CatalogController::mainAction'
         _scope: frontend
         _token_check: true
+
+learningcenter_login:
+    path: /learningcenter/login
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\LoginController::loginAction'
+        _scope: frontend
+        _token_check: true
+
+learningcenter_logout:
+    path: /learningcenter/logout
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\LoginController::logoutAction'
+        _scope: frontend
+        _token_check: true

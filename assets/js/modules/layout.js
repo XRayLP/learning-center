@@ -14,3 +14,11 @@ function setSidebarHeight(){
         'max-height': dynamic
     });
 }
+
+function centerElement(element){
+
+    //Errechnete Werte anwenden
+    $(element).css({
+        'margin-top': ($(window).height() - $(element).outerHeight())/2
+    });
+}

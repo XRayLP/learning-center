@@ -7,37 +7,30 @@
 
 namespace XRayLP\LearningCenterBundle\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use System;
 
-class LearningCenterController extends Controller
+class LoginController extends Controller
 {
-
-    /**
-     * SOON: Dashboard
-     *
-     * @return RedirectResponse|Response
-     */
-    public function mainAction()
+    public function loginAction()
     {
         //Check if the User isn't granted
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $User = \FrontendUser::getInstance();
-
             //Twig
             $twigRenderer = $this->get('templating');
-            $rendered = $twigRenderer->render('@LearningCenter/modules/dashboard.html.twig', array(
-                'name' => $User->firstname.' '.$User->lastname,
-                'schoolname' => 'Stephaneum'
-            ));
+            $rendered = $twigRenderer->render('@LearningCenter/security/login.html.twig');
             return new Response($rendered);
 
         } else {
-            return $this->redirectToRoute('learningcenter_login');
-        }
+            return $this->redirectToRoute('learningcenter');        }
+    }
 
+    public function logoutAction()
+    {
+        return $this->redirectToRoute('contao_frontend_logout');
     }
 }
