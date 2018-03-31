@@ -15,11 +15,11 @@
                 <figure class="login-logo text-center">
                     <img src="{{ asset('bundles/learningcenter/img/logo.png') }}">
                 </figure>
-                <form action="/_contao/login" id="lc_login" method="post">
+                <form action="{{ path('contao_frontend_login') }}" id="lc_login" method="post">
                     <div class="formbody form-group">
                         <input name="FORM_SUBMIT" value="lc_login" type="hidden">
-                        <input name="_target_path" value="{{ path('learningcenter') }}" type="hidden">
-                        <input name="_failure_path" value="{{ path('learningcenter_login') }}" type="hidden">
+                        <input name="_target_path" value="{{ url('learningcenter') }}" type="hidden">
+                        <input name="_failure_path" value="{{ url('learningcenter_login') }}" type="hidden">
                         <input name="_always_use_target_path" value="0" type="hidden">
 
                         <div class="widget widget-text input-group">
