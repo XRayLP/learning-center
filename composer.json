@@ -8,7 +8,8 @@
 		"php" : ">=7.0",
 		"contao/core-bundle" : "^4.4",
 		"knplabs/knp-menu-bundle": "^2.0",
-		"lasserafn/php-initial-avatar-generator": "^2.3"
+		"lasserafn/php-initial-avatar-generator": "^2.3",
+		"doctrine/orm": "^2.6"
 	},
 	"autoload" : {
 		"psr-4" : {
