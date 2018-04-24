@@ -32,6 +32,14 @@
                 <source>Lists</source>
                 <target>Listen</target>
             </trans-unit>
+            <trans-unit id="lc.invalidLogin">
+                <source>Login failed (note that usernames and passwords are case-sensitive)!</source>
+                <target>Anmeldung fehlgeschlagen (Benutzernamen und Passwörter unterscheiden zwischen Groß- und Kleinschreibung)!</target>
+            </trans-unit>
+            <trans-unit id="lc.accountLocked">
+                <source>This account has been locked! You can log in again in %d minutes.</source>
+                <target>Das Konto wurde gesperrt! Sie können sich in %d Minuten erneut anmelden.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
