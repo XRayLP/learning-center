@@ -3,7 +3,6 @@ Contao Bundle, which integrates an Learning Management System in Contao.
 
 ## Requirements
 - Contao 4
-- Contao-Bootstrap (normally auto install)
 
 ## Install
 
@@ -11,7 +10,7 @@ After the Contao CMS is installed, you can start the installation by the followi
 ```bash
 composer require xraylp/learning-center-bundle
 ```
-Don't forget to update the Database after the installation. To install the presets you have to use the Button "Datenbank Einträge erstellen" under LearningCenter > Configuration.
+Don't forget to update the Database after the installation.
 
 ## Copyright
 This project has been created and is maintained by [Niklas Loos](https://github.com/XRayLP) and Alexander Krauß.
