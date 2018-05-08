@@ -9,6 +9,13 @@
         </ol>
     </nav>
 
+    {% if errors %}
+        {% for error in errors %}
+                <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {{ test }}
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group">
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_upload_modal"><i class="fa fa-upload"></i><span>Upload</span></button>
@@ -18,6 +25,7 @@
             <button type="button" class="btn btn-primary btn-dark btn-share" data-toggle="modal" data-target="#files_share_modal"><i class="fa fa-trash"></i><span>Share</span></button>
         </div>
     </div>
+    {% if files %}
     <div class="row files">
         {% for file in files %}
         <div class="col-6 col-md-4 col-lg-3">
@@ -62,6 +70,7 @@
         </div>
         {% endfor %}
     </div>
+    {% endif %}
     <div class="modals">
         <div class="modal fade" id="files_upload_modal" tabindex="-1" role="dialog">
             {{ form_start(upload) }}
@@ -130,28 +139,6 @@
             {{ form_end(folder) }}
         </div>
 
-        <div class="modal fade" id="files_share_modal" tabindex="-1" role="dialog">
-            {{ form_start(share) }}
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Share File</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Would your really like to share this file?</p>
-                        {{ form_widget(share.id) }}
-                        {{ form_widget(share.sharedGroups) }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        {{ form_widget(share.submit) }}
-                    </div>
-                </div>
-            </div>
-            {{ form_end(share) }}
-        </div>
+
     </div>
 {% endblock %}

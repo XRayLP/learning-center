@@ -36,6 +36,7 @@ class FilesController extends Controller
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
             $User = FrontendUser::getInstance();
+            $errors = array();
 
             $objFile = new File();
             //Forms
@@ -48,12 +49,23 @@ class FilesController extends Controller
             $delete = $this->createForm(DeleteFileType::class, $objFile, array(
                 'action' => $this->generateUrl('learningcenter_files.delete', array('fid' => $fid))
             ));
-            $share = $this->createForm(ShareFileType::class, $objFile, array(
-                'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
-            ));
+            try {
+                $share = $this->createForm(ShareFileType::class, $objFile, array(
+                    'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
+                ));
+            } catch (\Exception $e) {
+                array_push($errors, $e->getMessage());
+            }
+
 
 
             $files = \System::getContainer()->get('learningcenter.files')->createFileGrid($fid, $User);
+            $filemanager = \System::getContainer()->get('learningcenter.filemanager');
+            $filemanager->setObjUser($User);
+            $filemanager->setObjFile($fid);
+            $filemanager->loadFiles();
+            $files = $filemanager->getFiles();
+            array_merge($errors, $filemanager->getErrors());
 
             $breadcrumb = \System::getContainer()->get('learningcenter.files')->createFilemanagerBreadcrumb($fid, $User);
             //Twig/Renderer
@@ -62,8 +74,8 @@ class FilesController extends Controller
                 'upload' => $upload->createView(),
                 'folder' => $folder->createView(),
                 'delete' => $delete->createView(),
-                'share'  => $share->createView(),
                 'files'  => $files,
+                'errors' => $errors,
                 'breadcrumb' => $breadcrumb
             ));
             return new Response($rendered);

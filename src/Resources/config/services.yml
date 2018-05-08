@@ -24,3 +24,10 @@ services:
         arguments:
         - '@router'
         - '@doctrine.orm.default_entity_manager'
+
+    learningcenter.filemanager:
+        class: XRayLP\LearningCenterBundle\Service\Filemanager
+        arguments:
+        - '@router'
+        - '@doctrine.orm.default_entity_manager'
+        - '@form.factory'

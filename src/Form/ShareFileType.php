@@ -9,6 +9,7 @@ namespace XRayLP\LearningCenterBundle\Form;
 
 
 use Contao\MemberGroupModel;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -27,9 +28,23 @@ class ShareFileType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('sharedGroups', ChoiceType::class, array(
-                'choices' => \System::getContainer()->get('learningcenter.users')->getMemberGroupList(MemberGroupModel::findBy('groupType', 5))
+                'choices' => $this->getMemberGroups()
             ))
             ->add('submit', SubmitType::class)
         ;
+    }
+
+    private function getMemberGroups() {
+        $objGroups = MemberGroupModel::findBy('groupType', 5);
+        if ($objGroups === null) {
+            throw new \Exception("User has no groups!");
+        } else {
+            $groups[] = array();
+            foreach ($objGroups as $objGroup)
+            {
+                $groups[$objGroup->name] = $objGroup->id;
+            }
+            return $groups;
+        }
     }
 }
