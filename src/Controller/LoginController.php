@@ -7,6 +7,7 @@
 
 namespace XRayLP\LearningCenterBundle\Controller;
 
+use Contao\RequestToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -40,6 +41,7 @@ class LoginController extends Controller
             //Twig
             $twigRenderer = $this->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/security/login.html.twig', array(
+                'token'     => $this->get('contao.csrf.token_manager')->getToken($this->getParameter('contao.csrf_token_name'))->getValue(),
                 'hasError'  => $hasError,
                 'message'   => $message
             ));

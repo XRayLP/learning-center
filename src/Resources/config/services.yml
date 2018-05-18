@@ -31,3 +31,8 @@ services:
         - '@router'
         - '@doctrine.orm.default_entity_manager'
         - '@form.factory'
+
+    learningcenter.catalog:
+        class: XRayLP\LearningCenterBundle\Service\Catalog
+        arguments:
+        - '@router'

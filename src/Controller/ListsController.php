@@ -13,6 +13,7 @@ use Contao\System;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use XRayLP\LearningCenterBundle\Service\Member;
 
 class ListsController extends Controller
 {
@@ -29,14 +30,12 @@ class ListsController extends Controller
         $objMembers = MemberModel::findAll();
         while ($objMembers->next())
         {
-            if ($objMembers->avatar == 0)
-            {
-                System::getContainer()->get('learningcenter.users')->createAvatar($objMembers);
-            }
+            $objMember = new Member($objMembers);
+
             $members[] = array(
                 'firstname' => $objMembers->firstname,
                 'lastname'  => $objMembers->lastname,
-                'avatar'    => "/bundles/learningcenter/avatar/$objMembers->id.png",
+                'avatar'    => $objMember->getAvatar(),
                 'url'       => $this->generateUrl('learningcenter_user.details', array('username' => $objMembers->username))
             );
         }
@@ -60,7 +59,15 @@ class ListsController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $member = System::getContainer()->get('learningcenter.users')->getMemberDetails($username);
+            $objMember = new Member(MemberModel::findByUsername($username));
+            $member = array(
+                'firstname' => $objMember->getUserModel()->firstname,
+                'lastname'  => $objMember->getUserModel()->lastname,
+                'avatar'    => $objMember->getAvatar(true),
+                'username'  => $objMember->getUserModel()->username,
+                'gender'    => $objMember->getUserModel()->gender,
+                'email'     => $objMember->getUserModel()->email,
+            );
             //Twig
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/user_details.html.twig',
