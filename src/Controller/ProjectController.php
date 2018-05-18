@@ -13,16 +13,12 @@ use Contao\MemberGroupModel;
 use Contao\MemberModel;
 use Contao\System;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
-use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use XRayLP\LearningCenterBundle\Entity\Project;
-use XRayLP\LearningCenterBundle\Form\MembersType;
 use XRayLP\LearningCenterBundle\Form\CreateProjectType;
+use XRayLP\LearningCenterBundle\Service\Member;
+use XRayLP\LearningCenterBundle\Service\Project;
 
 class ProjectController extends Controller
 {
@@ -40,13 +36,32 @@ class ProjectController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $projects = \System::getContainer()->get('learningcenter.project')->getProjectsOfUser($User);
+            $errors = array();
+            $member = new Member(FrontendUser::getInstance());
+            $projects = array();
+            $objProjects = $member->getProjects();
+
+            if ($objProjects !== null) {
+                while ($objProjects->next()) {
+                    $url = System::getContainer()->get('router')->generate('learningcenter_projects.details', array('alias' => $objProjects->id));
+
+                    $projects[] = array(
+                        'id' => $objProjects->id,
+                        'name' => $objProjects->projectName,
+                        'description' => $objProjects->projectDescription,
+                        'url' => $url
+                    );
+                }
+            } else {
+                array_push($errors, "You haven't got any projects!");
+            }
 
             //Twig
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/project_list.html.twig',
                 [
-                    'projects'  => $projects
+                    'projects'  => $projects,
+                    'errors'    => $errors
                 ]
             );
             return new Response($rendered);
@@ -65,18 +80,17 @@ class ProjectController extends Controller
      */
     public function detailAction($alias)
     {
-        $this->container->get('contao.framework')->initialize();
-
         $User = FrontendUser::getInstance();
 
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $project = \System::getContainer()->get('learningcenter.project')->getProjectDetails($alias);
+            $objProject = new Project(MemberGroupModel::findById($alias));
+
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/project_details.html.twig',
                 [
-                    'project' => $project
+                    'project' => $objProject->getProjectDetails()
                 ]
             );
 
@@ -100,38 +114,28 @@ class ProjectController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $objProject = new Project();
-
-            $form = $this->createForm(CreateProjectType::class, $objProject);
+            $data = array();
+            $form = $this->createForm(CreateProjectType::class, $data);
             $form->handleRequest($request);
 
 
             if($form->isSubmitted() && $form->isValid())
             {
                 $project = $form->getData();
-                $objProject->setTstamp(time());
-                $objProject->setName($project->getName());
-                $objProject->setAlias($project->getName());
-                $objProject->setDescription($project->getDescription());
+                $objProject = new Project();
+                $objProject->getGroupModel()->tstamp = time();
+                $objProject->getGroupModel()->name = 'Project_'.$project['name'];
+                $objProject->getGroupModel()->projectName = $project['name'];
+                $objProject->getGroupModel()->projectDescription = $project['description'];
+                $objProject->getGroupModel()->save();
 
-                $objGroup = new MemberGroupModel();
-                $objGroup->name = 'project_'.$objProject->getAlias();
-                $objGroup->tstamp = time();
-                $objGroup->groupType = 6;
-                $objGroup->save();
-                foreach ($project->getGroupId() as $member)
+                foreach ($project['groupId'] as $member)
                 {
                     $objMember = MemberModel::findById($member);
-                    System::getContainer()->get('learningcenter.users')->addMemberToGroup($objMember, $objGroup);
+                    $objProject->addMemberToGroup($objMember);
                 }
-                $objProject->setGroupId($objGroup->id);
 
-                $entityManager->persist($objProject);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('learningcenter_projects.details', array('alias' => $objProject->getAlias()));
+                return $this->redirectToRoute('learningcenter_projects.details', array('alias' => $objProject->getGroupModel()->id));
             }
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/project_create.html.twig',

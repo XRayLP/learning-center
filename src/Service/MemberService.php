@@ -8,6 +8,7 @@
 namespace XRayLP\LearningCenterBundle\Service;
 
 
+use Colors\RandomColor;
 use Contao\FilesModel;
 use Contao\MemberGroupModel;
 use Contao\MemberModel;
@@ -82,7 +83,7 @@ class MemberService
     /**
      * Creates a profile image for the user with the first latter of first and last name
      *
-     * @param \MemberModel $objUser
+     * @param \MemberModel|\FrontendUser $objUser
      */
     public function createAvatar($objUser)
     {
@@ -148,11 +149,11 @@ class MemberService
         switch ($gender)
         {
             case 'male':
-                $color = '#2E64FE';
+                $color = $this->generateColor(array('blue', 'green', 'yellow', 'red'));
                 break;
 
             case 'female':
-                $color = '#DF01D7';
+                $color = $this->generateColor(array('purple', 'pink', 'yellow', 'red'));
                 break;
 
             default:
@@ -161,5 +162,15 @@ class MemberService
         }
 
         return $color;
+    }
+    
+    private function generateColor($colorPerence = null) {
+        if (isset($colorPerence)) {
+            return RandomColor::one(array(
+               'hue' => $colorPerence
+            ));
+        } else {
+            return RandomColor::one();
+        }
     }
 }
