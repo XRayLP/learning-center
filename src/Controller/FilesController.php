@@ -8,6 +8,7 @@
 namespace XRayLP\LearningCenterBundle\Controller;
 
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FilesModel;
 use Contao\FrontendUser;
 use http\Exception;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use XRayLP\LearningCenterBundle\Entity\File;
 use XRayLP\LearningCenterBundle\Form\CreateFolderType;
 use XRayLP\LearningCenterBundle\Form\DeleteFileType;
@@ -37,47 +39,52 @@ class FilesController extends Controller
         {
             $User = FrontendUser::getInstance();
             $errors = array();
+            $arrTwig = array();
 
             $objFile = new File();
             //Forms
             $upload = $this->createForm(FileUploadType::class, $objFile, array(
                 'action' => $this->generateUrl('learningcenter_files.upload', array('fid' => $fid))
             ));
+            $arrTwig['upload'] = $upload->createView();
+
             $folder = $this->createForm(CreateFolderType::class, $objFile, array(
                 'action' => $this->generateUrl('learningcenter_files.folder', array('fid' => $fid))
             ));
+            $arrTwig['folder'] = $folder->createView();
+
             $delete = $this->createForm(DeleteFileType::class, $objFile, array(
                 'action' => $this->generateUrl('learningcenter_files.delete', array('fid' => $fid))
             ));
+            $arrTwig['delete'] = $delete->createView();
+
             try {
                 $share = $this->createForm(ShareFileType::class, $objFile, array(
                     'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
                 ));
+                $arrTwig['share'] = $share->createView();
+                $arrTwig['isShare'] = true;
             } catch (\Exception $e) {
                 array_push($errors, $e->getMessage());
+                $arrTwig['isShare'] = false;
             }
 
-
-
-            $files = \System::getContainer()->get('learningcenter.files')->createFileGrid($fid, $User);
             $filemanager = \System::getContainer()->get('learningcenter.filemanager');
             $filemanager->setObjUser($User);
             $filemanager->setObjFile($fid);
             $filemanager->loadFiles();
             $files = $filemanager->getFiles();
+            $arrTwig['files'] = $files;
+
             array_merge($errors, $filemanager->getErrors());
+            $arrTwig['errors'] = $errors;
 
             $breadcrumb = \System::getContainer()->get('learningcenter.files')->createFilemanagerBreadcrumb($fid, $User);
+            $arrTwig['breadcrumb'] = $breadcrumb;
+
             //Twig/Renderer
             $twigRenderer = \System::getContainer()->get('templating');
-            $rendered = $twigRenderer->render('@LearningCenter/modules/files.html.twig', array(
-                'upload' => $upload->createView(),
-                'folder' => $folder->createView(),
-                'delete' => $delete->createView(),
-                'files'  => $files,
-                'errors' => $errors,
-                'breadcrumb' => $breadcrumb
-            ));
+            $rendered = $twigRenderer->render('@LearningCenter/modules/files.html.twig', $arrTwig);
             return new Response($rendered);
 
         } else {

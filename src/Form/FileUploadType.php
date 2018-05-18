@@ -8,9 +8,12 @@
 namespace XRayLP\LearningCenterBundle\Form;
 
 
+use Contao\System;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -32,6 +35,11 @@ class FileUploadType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => File::class,
         ));
+    }
+
+    public function getRequestToken() {
+        $container = System::getContainer();
+        return $container->get('contao.csrf.token_manager')->getToken($container->getParameter('contao.csrf_token_name'))->getValue();
     }
 
 

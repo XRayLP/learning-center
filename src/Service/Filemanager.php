@@ -8,14 +8,14 @@
 namespace XRayLP\LearningCenterBundle\Service;
 
 
+use Contao\Files;
 use Contao\FilesModel;
 use Contao\FrontendUser;
-use Contao\UserModel;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class Filemanager
+class Filemanager extends Files
 {
     /**
      * @var FrontendUser

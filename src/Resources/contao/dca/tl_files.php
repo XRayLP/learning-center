@@ -6,6 +6,9 @@
  */
 
 //fields
+$GLOBALS['TL_DCA']['tl_files']['fields']['owner'] = array(
+    'sql' => "int(10) NULL"
+);
 $GLOBALS['TL_DCA']['tl_files']['fields']['shared'] = array(
     'sql' => "char(1) NOT NULL default ''"
 );

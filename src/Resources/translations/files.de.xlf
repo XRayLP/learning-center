@@ -18,6 +18,10 @@
                 <source>Delete</source>
                 <target>Löschen</target>
             </trans-unit>
+            <trans-unit id="share">
+                <source>Share</source>
+                <target>Teilen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -21,12 +21,19 @@ class CatalogController extends Controller
         {
             $User = \FrontendUser::getInstance();
 
-            $files = \System::getContainer()->get('learningcenter.files')->createCatalogTimeline($User);
+            //$files = \System::getContainer()->get('learningcenter.files')->createCatalogTimeline($User);
+
+            $catalog = \System::getContainer()->get('learningcenter.catalog');
+            $catalog->setMember($User);
+            $files = $catalog->loadFiles();
+            $errors = $catalog->getErrors();
+
 
             //Twig
             $twigRenderer = \System::getContainer()->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/catalog_timeline.html.twig', array(
-                'files' => $files
+                'files' => $files,
+                'errors' => $errors
             ));
             return new Response($rendered);
 
