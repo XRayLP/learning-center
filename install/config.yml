@@ -1,0 +1,8 @@
+twig:
+    form_themes: ['bootstrap_4_horizontal_layout.html.twig']
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    LearningCenterBundle: ~

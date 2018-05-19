@@ -1,0 +1,50 @@
+{
+    "name": "contao/managed-edition",
+    "type": "project",
+    "description": "Contao Open Source CMS",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Leo Feyer",
+            "homepage": "https://github.com/leofeyer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "contao/calendar-bundle": "^4.5",
+        "contao/comments-bundle": "^4.5",
+        "contao/faq-bundle": "^4.5",
+        "contao/listing-bundle": "^4.5",
+        "contao/manager-bundle": "4.5.*",
+        "contao/news-bundle": "^4.5",
+        "contao/newsletter-bundle": "^4.5",
+		"lasserafn/php-initial-avatar-generator": "^2.3",
+        "mistic100/randomcolor": "^1.0",
+		"doctrine/orm": "^2.6"
+    },
+    "config": {
+        "component-dir": "assets"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-4.5": "4.5.x-dev"
+        }
+    },
+	"autoload": {
+	    "classmap": [
+            "src/",
+            "app/ContaoManagerPlugin.php"
+        ],
+		"psr-4": {
+			"XRayLP\\LearningCenterBundle\\": "src/"
+		}
+	},
+    "scripts": {
+        "post-install-cmd": [
+            "Contao\\ManagerBundle\\Composer\\ScriptHandler::initializeApplication"
+        ],
+        "post-update-cmd": [
+            "Contao\\ManagerBundle\\Composer\\ScriptHandler::initializeApplication"
+        ]
+    }
+}
