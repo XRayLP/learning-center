@@ -1,41 +1,66 @@
 #!/bin/bash
-packages=(php7.2-cli php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-xml)
-echo "Installationsvorgang beginnt."
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+echo -e "${BLUE}Installationsvorgang beginnt.${NC}"
 #Root-Überprüfung
 if (($EUID != 0));
-  then echo "Keine Root-Rechte. Bitte Script als Root ausführen."
+  then echo -e "${RED}Keine Root-Rechte. Bitte Script als Root ausführen.${NC}"
   exit
 fi
+www="/var/www/"
 
-#Paketinstallation
-echo "Vorausgesetzte Pakete werden installiert."
-sudo apt-get install php7.2-cli php7.2-curl php7.2-gd php7.2-intl php7.2-mbstring php7.2-xml
-echo "xampp herunterladen"
-sudo mkdir tmp
-wget https://www.apachefriends.org/xampp-files/7.1.17/xampp-linux-x64-7.1.17-0-installer.run tmp/
-sudo chmod 777 tmp/xampp-linux-x64-7.1.17-0-installer.run
-sudo ./tmp/xampp-linux-x64-7.1.17-0-installer.run
+#Paketinstallationen
+echo -e "${BLUE}Vorausgesetzte Pakete werden installiert: ${NC}"
+echo -e "${BLUE}PHP 7.1 wird mit allen nötigen Erweiterungen installiert.${NC}"
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo apt-get install php7.1 php7.1-cli php7.1-gd php7.1-xml php7.1-intl php7.1-mbstring php7.1-mcrypt
+
+echo -e "${BLUE}Apache Webserver wird installiert.${NC}"
+sudo apt-get install apache2 libapache2-mod-php7.1
+
+echo -e "${BLUE}MySQL Datenbankserver wird installiert.${NC}"
+sudo apt-get install mysql-server php-mysql
+
+echo -e "${BLUE}Pakete werden Konfiguriert.${NC}"
+sudo sed -i.bak 's/;extension=php_intl.dll/extension=php_intl.dll/g' /etc/php/7.1/apache2/php.ini
+sudo sed -i.bak 's!/var/www/html!/var/www/contao/web!g' /etc/apache2/sites-enabled/000-default.conf
+sudo service apache2 restart
 #INTL
-echo "Contao Installation"
-sudo rm -R /opt/lampp/htdocs/*
-wget https://download.contao.org/4.5.8/tar
-tar -xzf contao-4.5.8.tar.gz -c /opt/lampp/htdocs contao-4.5.8/*
-wget https://getcomposer.org/composer.phar /opt/lampp/htdocs
-echo "MySQL Datenbank erstellen"
-read -p "Wie soll die Datenbank heißen?:" dbname
-sudo ./opt/lampp/bin/mysql -u root <<EOF
-CREATE DATABASE dbname
-COLLATE SQL_UFT8MB4_GENERAL_CI
-GO
-EOF
-echo "Contao Konfiguration unter http://localhost/contao/install"
-read -p "Zum fortfahren 'enter' drücken..."
-sudo cp config.yml /opt/lampp/htdocs/app/config
-sudo mv /opt/lampp/htdocs/composer.json /opt/lampp/htdocs/composer.json.bak
-sudo cp composer.json /opt/lampp/htdocs
-sudo cp -R ../src/ /opt/lampp/htdocs
-sudo rm /opt/lampp/htdocs/src/ContaoMangerPlugin.php
-sudo cp ContaoManagerPlugin.php /opt/lampp/htdocs/app
-sudo chmod -R 777 /opt/lampp/htdocs
-sudo php /opt/lampp/htdocs/composer.phar update --optimize-autoloader
-echo "Datenbankaktualisierung unter http://localhost/contao/install"
+echo -e "${BLUE}Contao Installation${NC}"
+mkdir tmp
+wget -O tmp/contao.tar.gz https://download.contao.org/4.5.8/tar
+tar -xzf tmp/contao.tar.gz -C $www
+sudo mv -R ${www}contao-4.5.8/ ${www}contao/
+wget https://getcomposer.org/composer.phar ${www}contao/
+
+
+echo -e "${BLUE}MySQL Datenbank erstellen:${NC}"
+PASSWDDB="$(openssl rand -base64 12)"
+read -p "Wie soll die Datenbank heißen?: " MAINDB
+
+# If /root/.my.cnf exists then it won't ask for root password
+if [ -f /root/.my.cnf ]; then
+
+    mysql -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8mb4 */;"
+
+# If /root/.my.cnf doesn't exist then it'll ask for root password
+else
+    mysql -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8mb4 */;"
+
+fi
+
+echo -e "${BLUE}Contao Konfiguration unter http://localhost/contao/install ${NC}"
+read -p "Zum fortfahren 'enter' drücken... "
+sudo cp config.yml ${www}contao/app/config
+sudo mv ${www}contao/composer.json ${www}contao/composer.json.bak
+sudo cp composer.json ${www}contao/
+sudo cp -R ../src/ ${www}contao/
+sudo rm ${www}contao/src/ContaoMangerPlugin.php
+sudo cp ContaoManagerPlugin.php ${www}contao/app
+sudo chmod -R 777 ${www}contao/
+sudo php ${www}contao/composer.phar update --optimize-autoloader
+
+echo -e "${BLUE}Datenbankaktualisierung unter http://localhost/contao/install ${NC}"
