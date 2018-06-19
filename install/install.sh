@@ -33,24 +33,15 @@ echo -e "${BLUE}Contao Installation${NC}"
 mkdir tmp
 wget -O tmp/contao.tar.gz https://download.contao.org/4.5.8/tar
 tar -xzf tmp/contao.tar.gz -C $www
-sudo mv -R ${www}contao-4.5.8/ ${www}contao/
+sudo mv ${www}contao-4.5.8/ ${www}contao/
 wget https://getcomposer.org/composer.phar ${www}contao/
+sudo chmod -R 777 ${www}contao/
 
 
 echo -e "${BLUE}MySQL Datenbank erstellen:${NC}"
-PASSWDDB="$(openssl rand -base64 12)"
-read -p "Wie soll die Datenbank heißen?: " MAINDB
-
-# If /root/.my.cnf exists then it won't ask for root password
-if [ -f /root/.my.cnf ]; then
-
-    mysql -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8mb4 */;"
-
-# If /root/.my.cnf doesn't exist then it'll ask for root password
-else
-    mysql -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8mb4 */;"
-
-fi
+ead -p "Wie soll die Datenbank heißen?: " MAINDB
+read -p "Datenbanknutzer (z.B: root): " DBUSER
+mysql -u${DBUSER} -p -e "CREATE DATABASE ${MAINDB} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
 echo -e "${BLUE}Contao Konfiguration unter http://localhost/contao/install ${NC}"
 read -p "Zum fortfahren 'enter' drücken... "
