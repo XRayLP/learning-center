@@ -5,7 +5,7 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-namespace XRayLP\LearningCenterBundle\Service;
+namespace XRayLP\LearningCenterBundle\Member;
 
 
 use Colors\RandomColor;
@@ -16,7 +16,7 @@ use Contao\StringUtil;
 use LasseRafn\InitialAvatarGenerator\InitialAvatar;
 use Model\Collection;
 
-class Member
+class FrontendMember
 {
     /**
      * @var MemberModel|FrontendUser
@@ -41,13 +41,28 @@ class Member
     }
 
     /**
+     * @return null|Permissions
+     * Get a Right Object for User
+     */
+    public function getRights(){
+        /*$objMemberGroups = $this->getMemberGroups();
+        foreach ($objMemberGroups as $objGroup) {
+            if ($objGroup->type == 2){
+                $objRightGroup = $objGroup;
+                return new Rights(new RightGroup($objRightGroup));
+            }
+        }*/
+        return new Permissions(new PermissionsGroup(MemberGroupModel::findById(1)));
+    }
+
+    /**
      * Returns an array of projects, of which a user is part of
      *
      * @return MemberGroupModel|Collection
      */
     public function getProjects()
     {
-        $objProjects = MemberGroupModel::findBy('groupType', 6);
+        $objProjects = MemberGroupModel::findBy('groupType', 5);
         /*if ($objProjects !== null) {
             while ($objProjects->next()) {
                 if (in_array($objProjects->id, StringUtil::deserialize($this->objMember->groups))) {

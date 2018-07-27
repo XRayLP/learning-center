@@ -13,7 +13,6 @@ use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use XRayLP\LearningCenterBundle\LearningCenterBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 
 class ContaoManagerPlugin implements BundlePluginInterface, RoutingPluginInterface
@@ -33,4 +32,8 @@ class ContaoManagerPlugin implements BundlePluginInterface, RoutingPluginInterfa
             ->load(__DIR__.'/Resources/config/routing.yml')
             ;
     }
+
+
+
+
 }
