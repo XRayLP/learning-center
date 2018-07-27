@@ -5,16 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>{% block title %}Learning Center{% endblock %}</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
     <link href="{{ asset('bundles/learningcenter/app.css') }}" rel="stylesheet" />
     <script src="{{ asset('bundles/learningcenter/app.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#notificationsDropdown').on('click', function () {
+                notifications.load('{{ path('learningcenter_notifications.ajax.load') }}');
+            });
+        });
+    </script>
+    {% block javascripts %}
+    {% endblock %}
 </head>
 <body>
     <header id="lc_header">
-        <nav class="navbar navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Learning Center</a>
-            <ul class="navbar-nav float-right">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('learningcenter_logout') }}"><i class="fas fa-sign-out-alt mr-1"></i><span>Logout</span></a>
+        <nav class="navbar navbar-expand navbar-dark bg-primary">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Learning Center</a>
+            </div>
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa-layers fa-fw fa-2x">
+                            <i class="fas fa-bell"></i>
+                            <span class="fa-layers-counter" style="background:Tomato">{{ notificationsCount() }}</span>
+                        </span>
+                    </a>
+                    <div id="notifications-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
+                        {% for notification in notifications() %}
+                            <a class="dropdown-item notification" href="#" data-id="{{ notification.id }}"><i class="fas fa-{{ notification.icon }} fa-fw"></i><span> {{ notification.message }}</span></a>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    {% set frontendUser = member() %}
+                    <a class="nav-link dropdown-toggle" href="#" id="memberDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="lc-nav-thumbnail img-thumbnail rounded-circle" src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="memberDropdown">
+                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-fw"></i><span> Profile</span></a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i><span> Settings</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('learningcenter_logout') }}"><i class="fas fa-sign-out-alt fa-fw"></i><span> Logout</span></a>
+                    </div>
                 </li>
             </ul>
         </nav>
@@ -23,7 +62,7 @@
         <div class="row">
         <aside id="lc_sidebar" class="col-12 col-lg-3 col-xl-2 d-none d-lg-block">
             <nav class="lc_navigation block">
-                {{ knp_menu_render('LearningCenterBundle:Builder:mainMenu') }}
+                {{ knp_menu_render('main',{'template': 'LearningCenterBundle:Menu:primaryNav.html.twig'}) }}
             </nav>
         </aside>
         <main id="lc_main" class="col-12 col-lg-9 col-xl-10">

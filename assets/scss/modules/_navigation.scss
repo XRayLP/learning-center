@@ -36,6 +36,16 @@
 	}
 }
 
+#lc_header {
+	.lc-nav-thumbnail {
+		height: $navbar-brand-height*1.2;
+		padding: 0;
+	}
+	.dropdown a:after {
+		display: none;
+	}
+}
+
 
 
 #lc_sidebar {
