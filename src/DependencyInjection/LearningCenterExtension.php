@@ -7,14 +7,14 @@
 
 namespace XRayLP\LearningCenterBundle\DependencyInjection;
 
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class LearningCenterExtension extends Extension
+class LearningCenterExtension extends Extension implements PrependExtensionInterface
 {
 
     /**
@@ -36,5 +36,15 @@ class LearningCenterExtension extends Extension
 
         $loaderXML->load('form.xml');
         $loader->load('services.yml');
-        }
+    }
+    /**
+     * ! ! ! LOAD THE WORKFLOW HERE ! ! !
+     *
+     * @param ContainerBuilder $container
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('workflows.yml');
+    }
 }

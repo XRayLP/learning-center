@@ -13,7 +13,9 @@ use Contao\System;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use XRayLP\LearningCenterBundle\Service\Member;
+use XRayLP\LearningCenterBundle\Entity\Member;
+use XRayLP\LearningCenterBundle\Member\MemberManagement;
+use XRayLP\LearningCenterBundle\Service\FrontendMember;
 
 class ListsController extends Controller
 {
@@ -27,16 +29,17 @@ class ListsController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-        $objMembers = MemberModel::findAll();
-        while ($objMembers->next())
+        $objMembers = $this->getDoctrine()->getRepository(Member::class)->findAll();
+        $members = array();
+        foreach ($objMembers as $objMember)
         {
-            $objMember = new Member($objMembers);
+            $memberManagement = new MemberManagement($objMember);
 
             $members[] = array(
-                'firstname' => $objMembers->firstname,
-                'lastname'  => $objMembers->lastname,
-                'avatar'    => $objMember->getAvatar(),
-                'url'       => $this->generateUrl('learningcenter_user.details', array('username' => $objMembers->username))
+                'firstname' => $objMember->getFirstname(),
+                'lastname'  => $objMember->getLastname(),
+                'avatar'    => $memberManagement->getAvatar(),
+                'url'       => $this->generateUrl('learningcenter_user.details', array('username' => $objMember->getUsername()))
             );
         }
 
@@ -59,14 +62,15 @@ class ListsController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $objMember = new Member(MemberModel::findByUsername($username));
+            $objMember = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('username' => $username));
+            $memberManagement = new MemberManagement($objMember);
             $member = array(
-                'firstname' => $objMember->getUserModel()->firstname,
-                'lastname'  => $objMember->getUserModel()->lastname,
-                'avatar'    => $objMember->getAvatar(true),
-                'username'  => $objMember->getUserModel()->username,
-                'gender'    => $objMember->getUserModel()->gender,
-                'email'     => $objMember->getUserModel()->email,
+                'firstname' => $objMember->getFirstname(),
+                'lastname'  => $objMember->getLastname(),
+                'avatar'    => $memberManagement->getAvatar(true),
+                'username'  => $objMember->getUsername(),
+                'gender'    => $objMember->getGender(),
+                'email'     => $objMember->getEmail(),
             );
             //Twig
             $twigRenderer = \System::getContainer()->get('templating');

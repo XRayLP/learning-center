@@ -10,7 +10,7 @@ namespace XRayLP\LearningCenterBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use System;
+use XRayLP\LearningCenterBundle\Member\FrontendMember;
 
 class LearningCenterController extends Controller
 {
@@ -25,13 +25,13 @@ class LearningCenterController extends Controller
         //Check if the User isn't granted
         if ($this->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $User = \FrontendUser::getInstance();
+            $objMember = new FrontendMember(\FrontendUser::getInstance());
 
             //Twig
             $twigRenderer = $this->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/dashboard.html.twig', array(
-                'name' => $User->firstname.' '.$User->lastname,
-                'schoolname' => 'Stephaneum'
+                'name' => $objMember->getUserModel()->firstname.' '.$objMember->getUserModel()->lastname,
+                'schoolname' => 'Stephaneum',
             ));
             return new Response($rendered);
 
