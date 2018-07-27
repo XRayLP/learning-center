@@ -7,7 +7,6 @@
 
 namespace XRayLP\LearningCenterBundle\Member;
 
-
 use Colors\RandomColor;
 use Contao\StringUtil;
 use LasseRafn\InitialAvatarGenerator\InitialAvatar;
