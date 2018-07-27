@@ -1,7 +1,7 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
-    {{ knp_menu_render('project',{'template': 'LearningCenterBundle:Menu:projectNav.html.twig'}) }}
+    {{ knp_menu_render('project',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
     <h2>{{ project.name }}</h2>
     {% block project %}
 
