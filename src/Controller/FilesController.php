@@ -79,7 +79,7 @@ class FilesController extends Controller
             array_merge($errors, $filemanager->getErrors());
             $arrTwig['errors'] = $errors;
 
-            $breadcrumb = \System::getContainer()->get('learningcenter.files')->createFilemanagerBreadcrumb($fid, $User);
+            $breadcrumb = $filemanager->loadBreadcrumb();
             $arrTwig['breadcrumb'] = $breadcrumb;
 
             //Twig/Renderer

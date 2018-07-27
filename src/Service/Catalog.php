@@ -11,9 +11,13 @@ namespace XRayLP\LearningCenterBundle\Service;
 use Contao\FilesModel;
 use Contao\MemberGroupModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use XRayLP\LearningCenterBundle\Entity\Member;
 
 class Catalog
 {
+    /**
+     * @var Member
+     */
     protected $member;
 
     protected $objFiles;
@@ -33,14 +37,16 @@ class Catalog
     }
 
     /**
+     * @param Member $objMember
      */
-    public function setMember($objUser)
+    public function setMember(Member $objMember)
     {
-        $this->member = new Member($objUser);
+        $this->member = $objMember;
     }
 
-    public function getUser(){
-        return $this->member->getUserModel();
+    public function getMember(): Member
+    {
+        return $this->member;
     }
 
     /**
@@ -70,8 +76,8 @@ class Catalog
                 array_push($this->errors, $e->getMessage());
             }
         } else {
-            if ($this->getUser()->groups != null) {
-                $arrGroups = \StringUtil::deserialize($this->getUser()->groups);
+            if ($this->member->getGroups() != null) {
+                $arrGroups = \StringUtil::deserialize($this->member->getGroups());
 
                 while ($this->objFiles->next()) {
                     if ($this->objFiles->shared == 1) {

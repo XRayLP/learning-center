@@ -90,6 +90,34 @@ class Filemanager extends Files
         }
     }
 
+    public function loadBreadcrumb() {
+        $breadcrumb = array();
+        //check if a subfolder
+
+        $currentPath = $this->objFile->path;
+        $homePath = FilesModel::findByUuid($this->objUser->homeDir)->path;
+        //create a link for every part of the current path until the homeDir is reached
+        while ($homePath !== $currentPath)
+        {
+            $objFolder = FilesModel::findByPath($currentPath);
+            $breadcrumb[] = array(
+                'name'  => $objFolder->name,
+                'href'  => $this->router->generate('learningcenter_files', array('fid' => $objFolder->id))
+            );
+            //cut one part of the string after the last "/" to check the next directory
+            $rmLength = strrpos($currentPath, "/") - strlen($currentPath);
+            $currentPath = substr($currentPath, 0, $rmLength);
+        }
+
+        //adds the home path to the breadcrumb
+        $breadcrumb[] = array(
+            'name' => 'Home',
+            'href'  => $this->router->generate('learningcenter_files')
+        );
+        //returns the array in reverse
+        return array_reverse($breadcrumb);
+    }
+
     public function loadToolbar() {
     }
 

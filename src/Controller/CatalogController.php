@@ -11,6 +11,7 @@ namespace XRayLP\LearningCenterBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use XRayLP\LearningCenterBundle\Entity\Member;
 
 class CatalogController extends Controller
 {
@@ -19,12 +20,12 @@ class CatalogController extends Controller
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $User = \FrontendUser::getInstance();
 
             //$files = \System::getContainer()->get('learningcenter.files')->createCatalogTimeline($User);
 
+            //creates the catalog object
             $catalog = \System::getContainer()->get('learningcenter.catalog');
-            $catalog->setMember($User);
+            $catalog->setMember($this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => \FrontendUser::getInstance()->id)));
             $files = $catalog->loadFiles();
             $errors = $catalog->getErrors();
 
