@@ -8,12 +8,14 @@
 $GLOBALS['TL_LANG']['tl_member_group']['groupType'][0] = 'Gruppen Typ';
 $GLOBALS['TL_LANG']['tl_member_group']['groupType'][1] = 'Typ der Gruppe auswählen.';
 $GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['others'] = 'Andere';
-$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['student'] = 'Schüler';
 $GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['class'] = 'Klasse';
-$GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['teacher'] = 'Lehrer';
 $GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['course'] = 'Kurs';
 $GLOBALS['TL_LANG']['tl_member_group']['groupType']['options']['project'] = 'Projekt';
+
+$GLOBALS['TL_LANG']['tl_member_group']['right_legend'] = 'Rechtekonfiguration';
 $GLOBALS['TL_LANG']['tl_member_group']['class_legend'] = 'Klassenkonfiguration';
+$GLOBALS['TL_LANG']['tl_member_group']['course_legend'] = 'Kurskonfiguration';
+$GLOBALS['TL_LANG']['tl_member_group']['project_legend'] = 'Projektkonfiguration';
 $GLOBALS['TL_LANG']['tl_member_group']['classNumber'][0] = 'Klassennummer';
 $GLOBALS['TL_LANG']['tl_member_group']['classNumber'][1] = 'Nummer der Klassengruppe, z.B: 11/5 oder 7e';
 $GLOBALS['TL_LANG']['tl_member_group']['course_legend'] = 'Kurskonfiguration';
