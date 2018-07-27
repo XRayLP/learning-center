@@ -7,8 +7,6 @@
 
 namespace XRayLP\LearningCenterBundle\Repository;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 use XRayLP\LearningCenterBundle\Entity\Project;
@@ -25,6 +23,10 @@ class ProjectRepository extends EntityRepository
         return parent::findAll();
     }
 
+    /**
+     * @param $var
+     * @return array(Project)
+     */
     public function findAllByUserId($var): array
     {
         $qb = $this->createQueryBuilder('p');
@@ -36,6 +38,10 @@ class ProjectRepository extends EntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * @param array $groupIds
+     * @return Project
+     */
     public function findByGroups(array $groupIds)
     {
         $qb = $this->createQueryBuilder('p');
@@ -44,5 +50,14 @@ class ProjectRepository extends EntityRepository
         ;
         return $qb->getQuery()->execute();
 
+    }
+
+    /**
+     * @param int $id
+     * @return Project|object
+     */
+    public function findOneById(int $id)
+    {
+        return parent::findOneBy(array('id' => $id));
     }
 }

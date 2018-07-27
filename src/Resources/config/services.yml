@@ -10,20 +10,6 @@ services:
         Symfony\Component\DependencyInjection\ContainerAwareInterface:
             calls:
                 - ["setContainer", ["@service_container"]]
-    learningcenter.project:
-        class: XRayLP\LearningCenterBundle\Service\ProjectService
-        arguments:
-        - '@router'
-        - '@doctrine.orm.default_entity_manager'
-
-    learningcenter.users:
-        class: XRayLP\LearningCenterBundle\Service\MemberService
-
-    learningcenter.files:
-        class: XRayLP\LearningCenterBundle\Service\FilesService
-        arguments:
-        - '@router'
-        - '@doctrine.orm.default_entity_manager'
 
     learningcenter.filemanager:
         class: XRayLP\LearningCenterBundle\Service\Filemanager
@@ -36,3 +22,117 @@ services:
         class: XRayLP\LearningCenterBundle\Service\Catalog
         arguments:
         - '@router'
+
+    learningcenter.security.authentication_provider:
+        class: Contao\CoreBundle\Security\Authentication\Provider\AuthenticationProvider
+        abstract: true
+        arguments:
+            - ~ # User provider
+            - ~ # User checker
+            - ~ # Provider-shared key
+            - "@security.encoder_factory"
+            - "@contao.framework"
+            - "@translator"
+            - "@request_stack"
+            - "@mailer"
+
+    acme.post_generate_schema_table:
+        class: XRayLP\LearningCenterBundle\EventListener\PostGenerateSchemaTable
+        tags:
+            - {name: doctrine.event_listener, event: postGenerateSchemaTable }
+
+    ##############
+    #Menu Builder#
+    ##############
+    lerningcenter.menu_builder:
+        class: XRayLP\LearningCenterBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", '@learningcenter.security.voter.route_key', '@request_stack']
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createProjectDetailsMenu, alias: project }
+
+    ################
+    #Security Voter#
+    ################
+    learningcenter.security.voter.project:
+        class: XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectVoter
+        tags:
+            - { name: security.voter }
+
+    learningcenter.security.voter.route_key:
+        class: XRayLP\LearningCenterBundle\Security\Authorization\Voter\RouteKeyVoter
+        scope: request
+        tags:
+            - { name: knp_menu.voter }
+
+    ##########
+    #Listener#
+    ##########
+
+    # authentication failure event listener
+    acme.security.authentication_failure_event_listener:
+        class: XRayLP\LearningCenterBundle\Listener\LoginListener
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+
+    # authentication success event listener
+    acme.security.interactive_login_listener:
+        class: XRayLP\LearningCenterBundle\Listener\LoginListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+
+    learningcenter.security.frontend_user_provider:
+        class: XRayLP\LearningCenterBundle\Member\ContaoUserProvider
+        arguments:
+            - "@contao.framework"
+            - "@session"
+            - "XRayLP\\LearningCenterBundle\\Member\\FrontendUser"
+            - "@logger"
+
+    learningcenter.listener.project_event_listener:
+        class: XRayLP\LearningCenterBundle\EventListener\ProjectEventListener
+        arguments:
+          - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: project.create.success, method: onProjectCreateSuccess }
+
+    learningcenter.listener.authentication_event_listener:
+        class: XRayLP\LearningCenterBundle\EventListener\AuthenticationEventListener
+        arguments:
+          - '@twig'
+          - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
+
+
+    #############
+    #Controller#
+    ############
+    XRayLP\LearningCenterBundle\Controller\ProjectController:
+        public: true
+        arguments:
+            - '@event_dispatcher'
+
+    XRayLP\LearningCenterBundle\Controller\NotificationsController:
+        public: true
+        arguments:
+            - '@doctrine'
+    ############
+    #Extensions#
+    ############
+    learningcenter.notifications_extension:
+        class: XRayLP\LearningCenterBundle\Extension\NotificationsExtension
+        arguments:
+            - "@security.token_storage"
+            - "@doctrine"
+            - "@translator.default"
+        tags:
+            - { name: twig.extension }
+
+    learningcenter.member_extension:
+        class: XRayLP\LearningCenterBundle\Extension\MemberExtension
+        arguments:
+            - "@security.token_storage"
+            - "@doctrine"
+        tags:
+            - { name: twig.extension }

@@ -20,3 +20,21 @@
 .clickable-row {
 	cursor: pointer;
 }
+
+.clickable {
+	cursor: pointer;
+}
+
+.btn-fa {
+	background: none;
+	padding: 0px;
+	border: none;
+	cursor: pointer;
+}
+
+.hover-success:hover {
+	color: $success;
+}
+.hover-danger:hover {
+	color: $danger;
+}

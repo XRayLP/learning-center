@@ -10,13 +10,21 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col">State</th>
                 <th scope="col">Name</th>
-                <th scope="col">Beschreibung</th>
+                <th scope="col">Description</th>
             </tr>
         </thead>
         <tbody>
             {% for project in projects %}
                 <tr>
+                    <td>
+                        {% if project.confirmed %}
+                            <i class="fas fa-check-circle mr-1 text-success" data-toggle="tooltip" data-placement="top" title="The project has to be confirmed by a teacher!"></i>
+                        {% else %}
+                            <i class="fas fa-clock mr-1 text-danger" data-toggle="tooltip" data-placement="top" title="Project is confirmed by a teacher!"></i>
+                        {% endif %}
+                    </td>
                     <td><a href="{{ project.url }}">{{ project.name }}</a></td>
                     <td>{{ project.description }}</td>
                 </tr>

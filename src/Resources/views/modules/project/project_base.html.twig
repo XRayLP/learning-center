@@ -1,0 +1,9 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    {{ knp_menu_render('project',{'template': 'LearningCenterBundle:Menu:projectNav.html.twig'}) }}
+    <h2>{{ project.name }}</h2>
+    {% block project %}
+
+    {% endblock %}
+{% endblock %}

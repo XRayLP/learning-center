@@ -26,22 +26,27 @@ class Project
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"}, nullable=true)
      */
     protected $tstamp;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default":""})
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="integer", length=10)
      */
-    protected $alias;
+    protected $leader;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255, options={"default":""})
+     */
+    protected $admins;
+
+    /**
+     * @ORM\Column(type="text", options={"default":""})
      */
     protected $description;
 
@@ -49,6 +54,11 @@ class Project
      * @ORM\Column(type="integer")
      */
     protected $groupId;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":"0"})
+     */
+    protected $confirmed;
 
 
     /**
@@ -91,20 +101,9 @@ class Project
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAlias()
+    public function getConfirmed()
     {
-        return $this->alias;
-    }
-
-    /**
-     * @param mixed $alias
-     */
-    public function setAlias($alias): void
-    {
-        $this->alias = $alias;
+        return $this->confirmed;
     }
 
     /**
@@ -139,5 +138,44 @@ class Project
         $this->groupId = $group;
     }
 
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = $confirmed;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getLeader()
+    {
+        return $this->leader;
+    }
+
+    /**
+     * @param mixed $leader
+     */
+    public function setLeader($leader)
+    {
+        $this->leader = $leader;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
+    }
+
+    /**
+     * @param mixed $admins
+     */
+    public function setAdmins($admins)
+    {
+        $this->admins = $admins;
+    }
+
+    public function getGroup(): MemberGroup{
+        return \System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findOneBy(array('id' => $this->getGroupId()));
+    }
 }

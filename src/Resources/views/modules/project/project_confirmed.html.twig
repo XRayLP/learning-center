@@ -1,0 +1,20 @@
+{% extends '@LearningCenter/modules/project/project_base.html.twig' %}
+
+{% block project %}
+    <h3 class="text-center">{{ message }}</h3>
+    {% if confirmed %}
+    <div class="text-center"><i class="fas fa-6x fa-check-circle text-success"></i></div>
+    {% else %}
+        <div class="text-center">
+            {% if form is defined %}
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                    <button type="submit" name="confirm" value="1" class="btn-fa hover-success"><i class="fas fa-6x fa-check-circle"></i></button>
+                    <button type="submit" name="confirm" value="0" class="btn-fa hover-danger"><i class="fas fa-6x fa-times-circle"></i></button>
+                {{ form_end(form) }}
+            {% else %}
+                <i class="fas fa-6x fa-clock text-danger"></i>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

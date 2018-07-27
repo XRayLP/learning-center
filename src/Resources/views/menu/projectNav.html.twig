@@ -1,0 +1,19 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+
+{% block linkElement %}
+    <a href="{{ item.uri }}"{{ item.attributes(item.linkAttributes) }} class="nav-link">
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }} fa-fw"></i>
+        {% endif %}
+        {{ block('label') }}
+    </a>
+{% endblock %}
+
+{% block spanElement %}
+    <span class="nav-item">{{ item.attributes(item.labelAttributes) }}>
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }} fa-fw"></i>
+        {% endif %}
+        {{ block('label') }}
+	</span>
+{% endblock %}

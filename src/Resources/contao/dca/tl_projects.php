@@ -9,13 +9,13 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
 
     //Config
     'config' => array(
-        'dataContainer' => 'Table',
+        'dataContainer' => \XRayLP\LearningCenterBundle\Entity\Project::class,
         'switchToEdit' => true,
         'enableVersioning' => true
     ),
 
     //List
-    'list' => array(
+    /*'list' => array(
         
         'sorting' => array(
             'mode'          => 1,
@@ -109,5 +109,5 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
             'sql'                     => "int(10) NOT NULL default '0'",
             'relation'                => array('type'=>'hasMany', 'load'=>'lazy')
         )
-    )   
+    )*/
 );

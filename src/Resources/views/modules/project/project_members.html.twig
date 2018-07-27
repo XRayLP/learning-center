@@ -1,0 +1,98 @@
+{% extends '@LearningCenter/modules/project/project_base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#usertable_body').on("click", "td.add", function(){
+                var group = '{{ project.group }}';
+                var user = $(this).attr('data-user');
+                var url = '{{ (path('learningcenter_members.ajax.add')) }}';
+                members.addUsers(user, group, url);
+            });
+            $('#user_search').on("keyup", function () {
+                var value = $(this).val();
+                var url = '{{ (path('learningcenter_members.ajax.search')) }}';
+                var group = '{{ project.group }}';
+                members.searchUsers(value, url, group);
+            })
+        });
+
+
+    </script>
+
+{% endblock %}
+
+{% block project %}
+    <table class="table table-striped mt-4">
+        <caption>Projekt Mitglieder</caption>
+        <thead>
+        <tr>
+            <th>Rang</th>
+            <th>Profilbild</th>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in project.members %}
+            <tr class="clickable-row" data-href="{{ user.url }}">
+
+                {% if user.isLeader %}
+                    <td><i class="fas fa-crown text-center text-warning"></i></td>
+                {% elseif user.isAdmin %}
+                    <td><i class="fas fa-angular text-center text-danger"></i></td>
+                {% else %}
+                    <td><i class="fas fa-user text-center"></i></td>
+                {% endif %}
+                <td><img src="{{ user.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>...</td>
+            </tr>
+        {% endfor %}
+            <tr id="add-users">
+                <td class="clickable" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus text-success"></i></td>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Search</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal_alerts"></div>
+                    <form>
+                        <input id="user_search" type="text" class="form-control" size="30">
+                        <table class="table table-striped mt-4">
+                            <thead>
+                                <th>#</th>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>Add</th>
+                            </thead>
+                            <tbody id="usertable_body">
+
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

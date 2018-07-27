@@ -8,25 +8,19 @@
 namespace XRayLP\LearningCenterBundle\Form;
 
 
-use Contao\MemberModel;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use XRayLP\LearningCenterBundle\Entity\Member;
-use XRayLP\LearningCenterBundle\Entity\Project;
-use XRayLP\LearningCenterBundle\Request\CreateProjectRequest;
+use XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
 
-class CreateProjectType extends AbstractType
+class UpdateProjectType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -61,7 +55,7 @@ class CreateProjectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'        => CreateProjectRequest::class,
+            'data_class'        => UpdateProjectRequest::class,
             'csrf_protection'   => true,
             'csrf_field_name'   => '_token',
             'csrf_token_id'     => 'project_item'

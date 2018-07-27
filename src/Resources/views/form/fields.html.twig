@@ -1,0 +1,23 @@
+{% block chooseuser_widget %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">E-Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in form.members %}
+            {% set id = member.vars('id') %}
+            <tr>
+                <td>{{ form_widget(member) }}</td>
+                <td>{{ members[id].firstname }}</td>
+                <td>{{ members[id].lastname }}</td>
+                <td>{{ members[id].email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -2,21 +2,33 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
     <file original="file.ext" source-language="en" datatype="plaintext">
         <body>
-            <trans-unit id="name">
-                <source>Name</source>
+            <trans-unit id="project.name">
+                <source>project.name</source>
                 <target>Name</target>
             </trans-unit>
-            <trans-unit id="description">
-                <source>Description</source>
+            <trans-unit id="project.description">
+                <source>project.description</source>
                 <target>Beschreibung</target>
             </trans-unit>
-            <trans-unit id="members">
-                <source>Members</source>
+            <trans-unit id="project.leader">
+                <source>project.leader</source>
+                <target>Gruppenleiter</target>
+            </trans-unit>
+            <trans-unit id="project.members">
+                <source>project.members</source>
                 <target>Mitglieder</target>
             </trans-unit>
-            <trans-unit id="create_project">
-                <source>Create Project</source>
+            <trans-unit id="project.create">
+                <source>project.create</source>
                 <target>Erstelle Projekt</target>
+            </trans-unit>
+            <trans-unit id="project.continue">
+                <source>project.continue</source>
+                <target>Weiter</target>
+            </trans-unit>
+            <trans-unit id="project.confirmed">
+                <source>project.confirmed</source>
+                <target>Das Projekt %name% wurde vom Gruppenleiter bestätigt und besitzt nun die vollen Funktionen.</target>
             </trans-unit>
         </body>
     </file>
