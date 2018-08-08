@@ -5,7 +5,7 @@
 
         $(document).ready(function () {
             $('#usertable_body').on("click", "td.add", function(){
-                var group = '{{ project.group }}';
+                var group = '{{ project.group.id }}';
                 var user = $(this).attr('data-user');
                 var url = '{{ (path('learningcenter_members.ajax.add')) }}';
                 members.addUsers(user, group, url);
@@ -13,9 +13,10 @@
             $('#user_search').on("keyup", function () {
                 var value = $(this).val();
                 var url = '{{ (path('learningcenter_members.ajax.search')) }}';
-                var group = '{{ project.group }}';
+                var group = '{{ project.group.id }}';
                 members.searchUsers(value, url, group);
-            })
+            });
+
         });
 
 
@@ -37,27 +38,39 @@
         </thead>
         <tbody>
         {% for user in project.members %}
-            <tr class="clickable-row" data-href="{{ user.url }}">
+            <tr>
 
                 {% if user.isLeader %}
-                    <td><i class="fas fa-crown text-center text-warning"></i></td>
+                    <td><i class="fas fa-crown text-center text-warning fa-fw"></i></td>
                 {% elseif user.isAdmin %}
-                    <td><i class="fas fa-angular text-center text-danger"></i></td>
+                    <td><i class="fab fa-angular text-center text-danger fa-fw"></i></td>
                 {% else %}
-                    <td><i class="fas fa-user text-center"></i></td>
+                    <td><i class="fas fa-user text-center fa-fw"></i></td>
                 {% endif %}
                 <td><img src="{{ user.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
-                <td>...</td>
+                <td>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Optionen
+                    </button>
+                    <div class="dropdown-menu">
+                        {% for option in user.options %}
+                            <a class="dropdown-item" href="{{ option.url }}">{{ option.label }}</a>
+                        {% endfor %}
+                    </div>
+                </td>
             </tr>
         {% endfor %}
+        {% if canEdit %}
             <tr id="add-users">
                 <td class="clickable" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus text-success"></i></td>
                 <td>...</td>
                 <td>...</td>
                 <td>...</td>
+                <td>...</td>
             </tr>
+        {% endif %}
         </tbody>
     </table>
 

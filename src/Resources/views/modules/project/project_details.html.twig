@@ -1,6 +1,25 @@
 {% extends '@LearningCenter/modules/project/project_base.html.twig' %}
 
 {% block project %}
+    {% for error in errors %}
+        <div class="alert alert-warning alert-dismissible">
+            {% for message in error.message %}
+                {% if loop.first == false %}
+                    <hr>
+                {% endif %}
+                {% if message.link is defined %}
+                    <a href="{{ message.link }}">
+                {% endif %}
+                <p class="{% if loop.first == false %}mb-0{% endif %}">{{ message.message }}</p>
+                {% if message.link is defined %}
+                    </a>
+                {% endif %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            {% endfor %}
+        </div>
+    {% endfor %}
     <div>
         {{ project.description }}
     </div>

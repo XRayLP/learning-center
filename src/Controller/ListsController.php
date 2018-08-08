@@ -8,14 +8,11 @@
 
 namespace XRayLP\LearningCenterBundle\Controller;
 
-use Contao\MemberModel;
-use Contao\System;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use XRayLP\LearningCenterBundle\Entity\Member;
 use XRayLP\LearningCenterBundle\Member\MemberManagement;
-use XRayLP\LearningCenterBundle\Service\FrontendMember;
 
 class ListsController extends Controller
 {

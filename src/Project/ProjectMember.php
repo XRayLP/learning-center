@@ -5,29 +5,30 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
+namespace XRayLP\LearningCenterBundle\Project;
 
-namespace XRayLP\LearningCenterBundle\Event;
 
-
-use Symfony\Component\EventDispatcher\Event;
 use XRayLP\LearningCenterBundle\Entity\Member;
 use XRayLP\LearningCenterBundle\Entity\Project;
-use XRayLP\LearningCenterBundle\Project\ProjectMemberManagement;
 
-class ProjectEvent extends Event
+class ProjectMember
 {
-    /**
-     * @var Project $project
-     */
-    protected $project;
+    private $project;
 
-    /**
-     * ProjectEvent constructor.
-     * @param Project $project
-     */
-    public function __construct(Project $project)
+    private $member;
+
+    public function __construct(Project $project, Member $member)
     {
         $this->project = $project;
+        $this->member = $member;
+    }
+
+    /**
+     * @return Member
+     */
+    public function getMember(): Member
+    {
+        return $this->member;
     }
 
     /**

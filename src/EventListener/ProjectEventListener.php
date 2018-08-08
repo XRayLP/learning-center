@@ -32,12 +32,13 @@ class ProjectEventListener
     {
         $entityManager = $this->entityManager;
 
-        foreach ($event->getMembers() as $member) {
+        foreach ($event->getProject()->getGroupId()->getMembers() as $member) {
             $notification = new Notification();
             $notification->setMember($member);
             if (!$event->getProject()->getConfirmed()) {
-                if ($member->getId() == $event->getProject()->getLeader()) {
+                if ($member == $event->getProject()->getLeader()) {
                     $message = $this::PROJECT_CREATE_LEADER_MESSAGE_CONFIRM;
+                    $variables['user'] = $event->getProject()->getGroupId()->getMembers()->first()->getFirstname();
                 } else {
                     $message = $this::PROJECT_CREATE_MEMBER_MESSAGE_NEED_CONFIRM;
                 }
@@ -45,6 +46,8 @@ class ProjectEventListener
                 $message = $this::PROJECT_CREATE_MEMBER_MESSAGE;
             }
             $notification->setMessage($message);
+            $variables['name'] = $event->getProject()->getName();
+            $notification->setVariables($variables);
 
             $entityManager->persist($notification);
             $entityManager->flush();

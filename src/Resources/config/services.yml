@@ -51,11 +51,16 @@ services:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: createProjectDetailsMenu, alias: project }
 
-    ################
-    #Security Voter#
-    ################
+    ###########
+    #Security #
+    ###########
     learningcenter.security.voter.project:
         class: XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectVoter
+        tags:
+            - { name: security.voter }
+
+    learningcenter.security.voter.project_member:
+        class: XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectMemberVoter
         tags:
             - { name: security.voter }
 
@@ -104,6 +109,20 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
 
+    learningcenter.listener.member_entity_listener:
+        class: XRayLP\LearningCenterBundle\EventListener\MemberEntityListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad, priority: 1000 }
+            - { name: doctrine.event_listener, event: preUpdate }
+        arguments:
+            - '@doctrine'
+
+    learningcenter.listener.member_group_entity_listener:
+        class: XRayLP\LearningCenterBundle\EventListener\MemberGroupEntityListener
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+        arguments:
+            - '@doctrine'
 
     #############
     #Controller#
@@ -112,11 +131,17 @@ services:
         public: true
         arguments:
             - '@event_dispatcher'
+            - '@translator.default'
 
     XRayLP\LearningCenterBundle\Controller\NotificationsController:
         public: true
         arguments:
             - '@doctrine'
+
+    XRayLP\LearningCenterBundle\Controller\SecurityController:
+        public: true
+        arguments:
+            - '@security.authentication_utils'
     ############
     #Extensions#
     ############
@@ -136,3 +161,19 @@ services:
             - "@doctrine"
         tags:
             - { name: twig.extension }
+
+    #######
+    #Utils#
+    #######
+    learningcenter.utils.blob_converter:
+        class: XRayLP\LearningCenterBundle\Util\BlobConverter
+        arguments:
+            - "@doctrine"
+
+    ###########
+    #Entities#
+    ##########
+    learningcenter.entity.member:
+        class: XRayLP\LearningCenterBundle\Entity\Member
+        arguments:
+            - "@doctrine"

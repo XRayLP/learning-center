@@ -35,7 +35,7 @@ learningcenter_projects.details:
         _menu_key: projects_home|projects
 
 learningcenter_projects.details.members:
-    path: /learningcenter/projects/members/{alias}
+    path: /learningcenter/projects/{alias}/members
     defaults:
         _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::membersAction'
         _token_check: true
@@ -43,7 +43,7 @@ learningcenter_projects.details.members:
         _menu_key: projects_members|projects
 
 learningcenter_projects.details.events:
-    path: /learningcenter/projects/events/{alias}
+    path: /learningcenter/projects/{alias}/events
     defaults:
         _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
         _token_check: true
@@ -51,7 +51,7 @@ learningcenter_projects.details.events:
         _menu_key: projects_events
 
 learningcenter_projects.details.chat:
-    path: /learningcenter/projects/chat/{alias}
+    path: /learningcenter/projects/{alias}/chat
     defaults:
         _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
         _token_check: true
@@ -59,7 +59,7 @@ learningcenter_projects.details.chat:
         _menu_key: projects_chat
 
 learningcenter_projects.edit:
-    path: /learningcenter/projects/edit/{alias}
+    path: /learningcenter/projects/{alias}/edit
     defaults:
         _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::updateAction'
         _token_check: true
@@ -74,13 +74,33 @@ learningcenter_projects.confirm:
         _scope: frontend
         _menu_key: projects
 
-learningcenter_projects.confirm.process:
-    path: /learningcenter/projects/{alias}/confirm/{confirm}
+learningcenter_projects.members.remove:
+    path: /learningcenter/projects/{project}/members/remove/{member}
     defaults:
-        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::confirmProcessAction'
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::removeMemberAction'
         _token_check: true
         _scope: frontend
-        _menu_key: projects
+
+learningcenter_projects.members.promote.admin:
+    path: /learningcenter/projects/{project}/members/promoteAdmin/{member}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::promoteToAdminAction'
+        _token_check: true
+        _scope: frontend
+
+learningcenter_projects.members.promote.leader:
+    path: /learningcenter/projects/{project}/members/promoteLeader/{member}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::promoteToLeaderAction'
+        _token_check: true
+        _scope: frontend
+
+learningcenter_projects.members.degrade.member:
+    path: /learningcenter/projects/{project}/members/degradeMember/{member}
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::degradeToMemberAction'
+        _token_check: true
+        _scope: frontend
 
 #################
 #User Management#
@@ -202,3 +222,11 @@ learningcenter_notifications.ajax.load:
         _token_check: true
         _scope: frontend
 
+
+
+learningcenter_security.login:
+    path: /learningcenter/security/login
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\SecurityController::loginAction'
+        _token_check: true
+        _scope: frontend

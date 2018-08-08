@@ -11,6 +11,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
+use FOS\UserBundle\FOSUserBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Contao\CoreBundle\ContaoCoreBundle;
@@ -21,7 +22,7 @@ class ContaoManagerPlugin implements BundlePluginInterface, RoutingPluginInterfa
     {
         return [
             BundleConfig::create(LearningCenterBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class])
+                ->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }
 

@@ -1,5 +1,7 @@
 members = {
     searchUsers: function (value, url, group){
+        var loading = "<tr id='loadingDiv'><td></td><td></td><td><i class='fas fa-spinner fa-3x fa-spin'></i></td><td></td></tr>";
+
         if (value.length >= 3 || value == '#') {
         //ajax request
             $.ajax({
@@ -8,6 +10,11 @@ members = {
                 type: 'POST',
                 dataType: 'json',
                 async: true,
+
+                beforeSend: function () {
+                    $('#usertable_body').html('');
+                    $('#usertable_body').append(loading);
+                },
 
                 success: function (data, status) {
                     $('#usertable_body').html('');
@@ -43,7 +50,8 @@ members = {
             async: true,
 
             success: function (data, status) {
-
+                this.searchUsers('#', '/learningcenter/projects/members/search/ajax', group);
+                alert('test');
             },
             error: function (xhr, textStatus, errorThrown) {
                 alert('Ajax request failed.');

@@ -12,6 +12,7 @@ use Contao\FrontendUser;
 use Contao\StringUtil;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use XRayLP\LearningCenterBundle\Entity\Member;
 use XRayLP\LearningCenterBundle\Entity\Project;
 
 class ProjectVoter extends Voter
@@ -20,6 +21,11 @@ class ProjectVoter extends Voter
     const EDIT = 'edit';
     const CREATE = 'create';
     const LEAD = 'lead';
+    const CONFIRM = 'confirm';
+    const ISADMIN = 'isAdmin';
+    const ISLEADER = 'isLeader';
+    const ISMEMBER = 'isMember';
+
 
 
     /**
@@ -32,7 +38,7 @@ class ProjectVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::CREATE, self::LEAD))){
+        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::CREATE, self::LEAD, self::CONFIRM))){
             return false;
         }
 
@@ -58,40 +64,70 @@ class ProjectVoter extends Voter
         if (!$user instanceof FrontendUser) {
             return false;
         }
+        $member = \System::getContainer()->get('doctrine')->getRepository(Member::class)->findOneById($user->id);
 
         $project = $subject;
 
         switch ($attribute){
             case self::VIEW:
-                return $this->canView($project, $user);
+                return $this->canView($project, $member);
             case self::EDIT:
-                return $this->canEdit($project, $user);
+                return $this->canEdit($project, $member);
             case self::CREATE:
-                return $this->canCreate($project, $user);
+                return $this->canCreate($project, $member);
             case self::LEAD:
-                return $this->canLead($project, $user);
+                return $this->canLead($project, $member);
+            case self::CONFIRM:
+                return $this->canConfirm($project, $member);
+            case self::ISADMIN:
+                return $this->isAdmin($project, $member);
+            case self::ISLEADER:
+                return $this->isLeader($project, $member);
+            case self::ISMEMBER:
+                return $this->isMember($project, $member);
         }
         throw new \LogicException('This code should not be reached!');
     }
 
-    private function canView(Project $project,FrontendUser $user)
+    private function canView(Project $project, Member $member)
     {
-        return in_array($project->getGroupId(), StringUtil::deserialize($user->groups)) || $user->memberType == 'ROLE_ADMIN';
+        return $this->isMember($project, $member);
     }
 
-    private function canEdit(Project $project,FrontendUser $user)
+    private function canEdit(Project $project, Member $member)
     {
-        return in_array($user->id, StringUtil::deserialize($project->getAdmins())) || ($user->id == $project->getLeader()) || ($user->memberType == 'ROLE_ADMIN');
+        return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
     }
 
-    private function canLead(Project $project,FrontendUser $user)
+    private function canLead(Project $project, Member $member)
     {
-        return $user->memberType == 'ROLE_TEACHER';
+        return $member->getMemberType() == 'ROLE_TEACHER';
     }
 
-    private function canCreate(Project $project,FrontendUser $user)
+    private function canCreate(Project $project, Member $member)
     {
-        return true;
+        return $member->getMemberType() == ('ROLE_TEACHER' || 'ROLE_STUDENT');
+    }
+
+    private function canConfirm(Project $project, Member $member)
+    {
+        return $this->isLeader($project, $member);
+    }
+
+    private function isLeader(Project $project, Member $member)
+    {
+        return ($this->isMember($project, $member)) && ($project->getLeader() == $member);
+    }
+
+    private function isAdmin(Project $project, Member $member)
+    {
+        return ($this->isMember($project, $member)) && ($project->getAdmins()->contains($member));
+    }
+
+    private function isMember(Project $project, Member $member)
+    {
+        //check whether user is already part of this project
+        return $member->getGroups()->contains($project->getGroupId());
     }
 
 

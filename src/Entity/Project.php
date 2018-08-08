@@ -7,7 +7,9 @@
 
 namespace XRayLP\LearningCenterBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
+use StringUtil;
 
 /**
  * Project Entity
@@ -123,19 +125,16 @@ class Project
     }
 
     /**
-     * @return mixed
+     * @return MemberGroup
      */
-    public function getGroupId()
+    public function getGroupId(): MemberGroup
     {
-        return $this->groupId;
+        return \System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findOneBy(['id' => $this->groupId]);
     }
 
-    /**
-     * @param int $group
-     */
-    public function setGroupId($group): void
+    public function setGroupId(MemberGroup $memberGroup)
     {
-        $this->groupId = $group;
+        $this->groupId = $memberGroup->getId();
     }
 
     public function setConfirmed($confirmed)
@@ -146,25 +145,63 @@ class Project
     /**
      * @return mixed
      */
-    public function getLeader()
+    public function getLeader(): Member
     {
-        return $this->leader;
+        return \System::getContainer()->get('doctrine')->getRepository(Member::class)->findOneBy(['id' => $this->leader]);;
     }
 
     /**
-     * @param mixed $leader
+     * @param Member $member
      */
-    public function setLeader($leader)
+    public function setLeader(Member $member)
     {
-        $this->leader = $leader;
+        $this->leader = $member->getId();
+    }
+
+    public function addAdmin(Member $member)
+    {
+        $arrAdmins = array();
+        $collection = $this->getAdmins();
+        $collection->add($member);
+        $arrCollection = $collection->toArray();
+        foreach ($arrCollection as $admin)
+        {
+            if ($admin instanceof Member)
+            {
+                $arrAdmins[] = $admin->getId();
+            }
+        }
+
+        $this->admins = serialize($arrAdmins);
+    }
+
+    public function removeAdmin(Member $member)
+    {
+        $arrAdmins = array();
+        $collection = $this->getAdmins();
+        $collection->removeElement($member);
+        $arrCollection = $collection->toArray();
+        foreach ($arrCollection as $admin)
+        {
+            if ($admin instanceof Member)
+            {
+                $arrAdmins[] = $admin->getId();
+            }
+        }
+
+        $this->admins = serialize($arrAdmins);
     }
 
     /**
      * @return mixed
      */
-    public function getAdmins()
+    public function getAdmins(): ArrayCollection
     {
-        return $this->admins;
+        $arrGroups = StringUtil::deserialize($this->admins);
+        $groups = \System::getContainer()->get('doctrine')->getRepository(Member::class)->findBy(['id' => $arrGroups]);
+        $collection = new ArrayCollection($groups);
+
+        return $collection;
     }
 
     /**
@@ -173,9 +210,5 @@ class Project
     public function setAdmins($admins)
     {
         $this->admins = $admins;
-    }
-
-    public function getGroup(): MemberGroup{
-        return \System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findOneBy(array('id' => $this->getGroupId()));
     }
 }

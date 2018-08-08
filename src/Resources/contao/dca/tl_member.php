@@ -24,6 +24,10 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['cloudSpace'] = array(
     'sql'       => "varchar(255) NOT NULL default ''"
 );
 
+$GLOBALS['TL_DCA']['tl_member']['fields']['groups1'] = array(
+    'sql'       => "varchar(255) NOT NULL default ''"
+);
+
 $GLOBALS['TL_DCA']['tl_member']['fields']['permissions'] = array(
     'label'     => &$GLOBALS['TL_LANG']['tl_member']['permissions'],
     'search'    => true,
