@@ -90,6 +90,7 @@ import faBell from '@fortawesome/fontawesome-free-solid/faBell';
 import faEnvelope from '@fortawesome/fontawesome-free-solid/faEnvelope';
 import faEnvelopeOpen from '@fortawesome/fontawesome-free-solid/faEnvelopeOpen';
 import faCog from '@fortawesome/fontawesome-free-solid/faCog';
+import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner';
 
 import faAngular from '@fortawesome/fontawesome-free-brands/faAngular';
 
@@ -136,6 +137,7 @@ fontawesome.library.add(faBell);
 fontawesome.library.add(faEnvelope);
 fontawesome.library.add(faEnvelopeOpen);
 fontawesome.library.add(faCog);
+fontawesome.library.add(faSpinner);
 
 fontawesome.library.add(faCrown);
 fontawesome.library.add(faAngular);

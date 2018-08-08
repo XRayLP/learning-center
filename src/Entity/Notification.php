@@ -26,7 +26,7 @@ class Notification
     protected $id;
 
     /**
-     * @ORM\Column(type="datetime", length=255, options={"default":"CURRENT_TIMESTAMP"}, nullable=true)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     protected $tstamp;
 
@@ -34,6 +34,11 @@ class Notification
      * @ORM\Column(type="string", length=255)
      */
     protected $message;
+
+    /**
+     * @ORM\Column(type="string", length=255, options={"default":""})
+     */
+    protected $variables;
 
     /**
      * @ORM\Column(type="integer")
@@ -96,6 +101,16 @@ class Notification
     public function setMessage($message)
     {
         $this->message = $message;
+    }
+
+    public function getVariables()
+    {
+        return \StringUtil::deserialize($this->variables);
+    }
+
+    public function setVariables($variables)
+    {
+        $this->variables = serialize($variables);
     }
 
     /**

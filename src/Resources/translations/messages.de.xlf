@@ -42,7 +42,7 @@
             </trans-unit>
             <trans-unit id="project.need.confirm">
                 <source>project.need.confirm</source>
-                <target>Das Projekt %name% muss noch vom Gruppenleiter bestätigt werden um die vollen Funktionen freizuschalten.</target>
+                <target>Das Projekt muss noch vom Gruppenleiter bestätigt werden um die vollen Funktionen freizuschalten.</target>
             </trans-unit>
             <trans-unit id="project.confirmed">
                 <source>project.confirmed</source>
@@ -64,13 +64,49 @@
                 <source>project.decline.confirm</source>
                 <target>Wollen Sie wirklich das Projekt %name% ablehnen.</target>
             </trans-unit>
+            <trans-unit id="project.confirm.now">
+                <source>project.confirm.now</source>
+                <target>Bestätigen Sie als Gruppenleiter das Projekt jetzt!</target>
+            </trans-unit>
             <trans-unit id="project.create.member.message">
                 <source>project.create.member.message</source>
-                <target>Das Projekt wurde erstellt.</target>
+                <target>Das Projekt %name% wurde erfolgreich erstellt.</target>
             </trans-unit>
             <trans-unit id="project.create.member.message.need.confirm">
                 <source>project.create.member.message.need.confirm</source>
-                <target>Das Projekt wurde erfolgreich erstellt, jedoch um alle Funktionen frei zu schalten muss das Projekt noch vom Gruppenleiter bestätigt werden.</target>
+                <target>Das Projekt %name% wurde erfolgreich erstellt, jedoch um alle Funktionen frei zu schalten muss das Projekt noch vom Gruppenleiter bestätigt werden.</target>
+            </trans-unit>
+            <trans-unit id="project.create.leader.message.confirm">
+                <source>project.create.leader.message.confirm</source>
+                <target>Sie wurden von dem Nutzer %user% vorgeschlagen Gruppenleiter für das Projekt %name% zu werden. Bestätigen Sie dies bitte damit alle Funktionen des Projektes freigeschaltet werden..</target>
+            </trans-unit>
+            <trans-unit id="project.members.options">
+                <source>project.members.options</source>
+                <target>Optionen</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.goto">
+                <source>project.members.options.goto</source>
+                <target>Mitgliedsdetails</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.remove">
+                <source>project.members.options.remove</source>
+                <target>Entferne Mitglied</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.degrade.member">
+                <source>project.members.options.degrade.member</source>
+                <target>Zum Mitglied degradieren</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.promote.admin">
+                <source>project.members.options.promote.admin</source>
+                <target>Befördern zum Admin</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.promote.leader">
+                <source>project.members.options.promote.leader</source>
+                <target>Befördern zum Gruppenleiter</target>
+            </trans-unit>
+            <trans-unit id="project.members.options.promote.leader.confirm">
+                <source>project.members.options.promote.leader.confirm</source>
+                <target>Wollen Sie den Nutzer %name% wirklich zum Projektleiter befördern? Sie werden damit automatisch zum Admin degradiert.</target>
             </trans-unit>
         </body>
     </file>

@@ -49,10 +49,17 @@ class NotificationsExtension extends \Twig_Extension
         if ($user instanceof FrontendUser)
         {
             $notifications = $this->doctrine->getRepository(Notification::class)->findBy(array('member' => $user->id));
+
             //Translation
             foreach ($notifications as $notification)
             {
-                $notification->setMessage($this->translator->trans($notification->getMessage()));
+                //change the variable key, so that the placeholders are fully replaced
+                foreach($notification->getVariables() as $key => $variable)
+                {
+                    $key = '%'.$key.'%';
+                    $var[$key] = $variable;
+                }
+                $notification->setMessage($this->translator->trans($notification->getMessage(), $var));
             }
             return $notifications;
         }

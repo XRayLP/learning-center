@@ -11,13 +11,6 @@
             crossorigin="anonymous"></script>
     <link href="{{ asset('bundles/learningcenter/app.css') }}" rel="stylesheet" />
     <script src="{{ asset('bundles/learningcenter/app.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            $('#notificationsDropdown').on('click', function () {
-                notifications.load('{{ path('learningcenter_notifications.ajax.load') }}');
-            });
-        });
-    </script>
     {% block javascripts %}
     {% endblock %}
 </head>
