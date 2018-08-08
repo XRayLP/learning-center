@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{% block title %}Learning Center{% endblock %}</title>
+    <link href="{{ asset('bundles/learningcenter/app.css') }}" rel="stylesheet" />
+    <script src="{{ asset('bundles/learningcenter/app.js') }}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Login!</h1>
+            {% if error %}
+            <div class="alert alert-danger">
+                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            </div>
+            {% endif %}
+            {{ form_start(form) }}
+                {{ form_row(form._username) }}
+                {{ form_row(form._password) }}
+                <button type="submit" class="btn btn-success">Login <span class="fa fa-lock"></span></button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+</body>
+</html>
