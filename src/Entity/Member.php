@@ -8,7 +8,14 @@
 namespace XRayLP\LearningCenterBundle\Entity;
 
 use Contao\StringUtil;
+use DateTime;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * Member Entity
  *
@@ -18,6 +25,15 @@ use \Doctrine\ORM\Mapping as ORM;
  */
 class Member
 {
+    /*
+     *      * @ORM\ManyToMany(
+     *     targetEntity="XRayLP\LearningCenterBundle\Entity\MemberGroup")
+     * @ORM\JoinTable(name="tl_member_group")
+     * @ORM\JoinTable(name="tl_member_group",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *      )
+     */
 
     /**
      * @ORM\Id
@@ -35,198 +51,199 @@ class Member
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $firstname;
+    protected $firstname = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $lastname;
+    protected $lastname = '';
 
     /**
      * @ORM\Column(type="string", length=11, options={"default":""})
      */
-    protected $dateOfBirth;
+    protected $dateOfBirth = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $gender;
+    protected $gender= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $company;
+    protected $company= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $street;
+    protected $street= '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    protected $postal;
+    protected $postal= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $city;
+    protected $city= '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $state;
+    protected $state= '';
 
     /**
      * @ORM\Column(type="string", length=2, options={"default":""})
      */
-    protected $country;
+    protected $country= '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $phone;
+    protected $phone= '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $mobile;
+    protected $mobile= '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $fax;
+    protected $fax= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $email;
+    protected $email= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $website;
+    protected $website= '';
 
     /**
      * @ORM\Column(type="string", length=5, options={"default":""})
      */
-    protected $language;
+    protected $language= '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $groups;
 
-    /** c
+    /**
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $login;
+    protected $login= '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $username;
+    protected $username= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $password;
+    protected $password= '';
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $assignDir;
+    protected $assignDir= '';
 
     /**
      * @ORM\Column(type="binary", length=16, options={"default":""})
      */
-    protected $homeDir;
+    protected $homeDir= '';
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $disable;
+    protected $disable= '';
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    protected $start;
+    protected $start= '';
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    protected $stop;
+    protected $stop= '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $dateAdded;
+    protected $dateAdded= '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $lastLogin;
+    protected $lastLogin= '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $currentLogin;
+    protected $currentLogin= '';
 
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":"3"})
      */
-    protected $loginCount;
+    protected $loginCount= '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $locked;
+    protected $locked= '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $session;
+    protected $session= '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $createdOn;
+    protected $createdOn= '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    protected $activation;
+    protected $activation= '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $newsletter;
+    protected $newsletter= '';
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    protected $avatar;
+    protected $avatar= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $cloudSpace;
+    protected $cloudSpace= '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $memberType;
+    protected $memberType= '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $permissions;
+    protected $permissions= '';
 
-    /**
-     * @ORM\Column(type="array")
-     */
-    //protected $projects;
+    private $doctrine;
 
+    public function __construct(Registry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
 
     /**
      * @return mixed
@@ -516,12 +533,51 @@ class Member
         $this->language = $language;
     }
 
+    public function removeGroup(MemberGroup $memberGroup)
+    {
+        $arrGroups = array();
+        $collection = $this->getGroups();
+        $collection->removeElement($memberGroup);
+        $arrCollection = $collection->toArray();
+
+        foreach ($arrCollection as $memberGroup)
+        {
+            if ($memberGroup instanceof MemberGroup)
+            {
+                $arrGroups[] = $memberGroup->getId();
+            }
+        }
+        $this->groups = serialize($arrGroups);
+    }
+
+    public function addGroup(MemberGroup $memberGroup)
+    {
+        $arrGroups = array();
+        $collection = $this->getGroups();
+        $collection->add($memberGroup);
+        $arrCollection = $collection->toArray();
+        dump($collection);
+        foreach ($arrCollection as $memberGroup)
+        {
+            if ($memberGroup instanceof MemberGroup)
+            {
+                $arrGroups[] = $memberGroup->getId();
+            }
+        }
+
+        $this->groups = serialize($arrGroups);
+    }
+
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getGroups()
     {
-        return $this->groups;
+        $arrGroups = StringUtil::deserialize($this->groups);
+        $groups = \System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findBy(['id' => $arrGroups]);
+        $collection = new ArrayCollection($groups);
+
+        return $collection;
     }
 
     /**
@@ -687,7 +743,7 @@ class Member
     /**
      * @param mixed $lastLogin
      */
-    public function setLastLogin($lastLogin)
+    public function setLastLogin(DateTime $lastLogin = NULL)
     {
         $this->lastLogin = $lastLogin;
     }
@@ -871,8 +927,8 @@ class Member
     public function getProjects()
     {
         $entityManager = \System::getContainer()->get('doctrine')->getRepository(Project::class);
+        dump(StringUtil::deserialize($this->groups));
 
-        return $entityManager->findBy(array('groupId' => StringUtil::deserialize($this->getGroups())));
+        return $entityManager->findBy(array('groupId' => StringUtil::deserialize($this->groups)));
     }
-
 }

@@ -24,7 +24,7 @@ class MemberManagement
     }
 
     public function isMemberOf(MemberGroup $memberGroup) {
-        if (in_array($memberGroup->getId(), StringUtil::deserialize($this->member->getGroups()))){
+        if ($this->member->getGroups()->contains($memberGroup)){
             return true;
         } else {
             return false;
@@ -39,10 +39,6 @@ class MemberManagement
      */
     public function getAvatar($highQuality = false): string
     {
-        if (!$this->isAvatar($highQuality)) {
-            $this->createAvatar();
-        }
-
         if ($highQuality) {
             return "/bundles/learningcenter/avatar/" . $this->member->getId() . "_hq.png";
         } else {

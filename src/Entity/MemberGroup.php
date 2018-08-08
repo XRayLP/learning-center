@@ -7,7 +7,9 @@
 
 namespace XRayLP\LearningCenterBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\Group as BaseGroup;
 
 /**
  * Member Group Entity
@@ -89,6 +91,11 @@ class MemberGroup
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
     protected $projectName = '';
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $members;
 
     /**
      * @return mixed
@@ -315,16 +322,46 @@ class MemberGroup
     }
 
     /**
+     * Only use this function after this entity was saved for the first time!
      *
+     * @param Member $member
      */
-    public function getMembers(){
-        $objMembers = \System::getContainer()->get('doctrine')->getRepository(Member::class)->findAll();
-        foreach($objMembers as $key => $objMember)
+    public function addMember(Member $member)
+    {
+        $doctrine = \System::getContainer()->get('doctrine')->getManager();
+        $member->addGroup($this);
+        dump($member->getGroups());
+        $doctrine->persist($member);
+        $doctrine->flush();
+    }
+
+    /**
+     * Only use this function after this entity was saved for the first time!
+     *
+     * @param Member $member
+     */
+    public function removeMember(Member $member)
+    {
+        $doctrine = \System::getContainer()->get('doctrine')->getManager();
+        $member->removeGroup($this);
+        $doctrine->persist($member);
+        $doctrine->flush();
+    }
+
+    public function getMembers(): ArrayCollection
+    {
+        //check if each user is member of this group
+        $members = \System::getContainer()->get('doctrine')->getRepository(Member::class)->findAll();
+        foreach ($members as $key => $member)
         {
-            if (!in_array($this->getId(), \StringUtil::deserialize($objMember->getGroups()))) {
-                unset($objMembers[$key]);
+            $groups = $member->getGroups();
+            //delete member out of array, if he isn't
+            if (!$groups->contains($this)) {
+                unset($members[$key]);
             }
         }
-        return $objMembers;
+        $membersCollection = new ArrayCollection($members);
+
+        return $membersCollection;
     }
 }

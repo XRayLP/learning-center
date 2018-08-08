@@ -83,8 +83,13 @@ class MemberController extends Controller
 
         //adding the user to the project group
         try {
-            $memberGroupManagement = new MemberGroupManagement($doctrine->getRepository(MemberGroup::class)->findOneBy(array('id' => $group)));
-            $memberGroupManagement->add($doctrine->getRepository(Member::class)->findOneBy(array('id' => $user)));
+            $member = $doctrine->getRepository(Member::class)->findOneBy(array('id' => $user));
+            $memberGroup = $doctrine->getRepository(MemberGroup::class)->findOneBy(array('id' => $group));
+
+            $member->addGroup($memberGroup);
+            $doctrine->getManager()->persist($member);
+            $doctrine->getManager()->flush();
+
             $message = 'The User was added to the project.';
         } catch (\Exception $e) {
             $message = 'Something went wrong. Try it again after reloading the page.';

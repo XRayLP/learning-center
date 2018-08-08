@@ -42,23 +42,21 @@ class ProjectMemberManagement extends MemberGroupManagement
 
     }
 
-    public function isLeader(Member $entityMember){
-        return ($this->isMember($entityMember)) && ($entityMember->getId() == $this->project->getLeader());
+    public function isLeader(Member $entityMember)
+    {
+        return ($this->isMember($entityMember)) && ($entityMember == $this->project->getLeader());
     }
 
-    public function isAdmin(Member $entityMember){
-        $admins = StringUtil::deserialize($this->project->getAdmins());
-        if (!is_array($admins)) {
-            return false;
-        }
-        return ($this->isMember($entityMember)) && (in_array($entityMember->getId(), $admins));
+    public function isAdmin(Member $entityMember)
+    {
+        return ($this->isMember($entityMember)) && ($this->project->getAdmins()->contains($entityMember));
     }
 
-    public function isMember(Member $entityMember){
-        $currentGroups = StringUtil::deserialize($entityMember->getGroups());
+    public function isMember(Member $entityMember)
+    {
+        $currentGroups = $entityMember->getGroups();
 
         //check whether user is already part of this project
-        return in_array($this->entityGroup->getId(), $currentGroups);
-
+        return $currentGroups->contains($this->memberGroup);
     }
 }
