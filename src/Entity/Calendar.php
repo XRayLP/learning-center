@@ -7,12 +7,15 @@
 
 namespace XRayLP\LearningCenterBundle\Entity;
 
+use Contao\StringUtil;
+use Contao\System;
+use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
 
 /**
  * Calendar Entity
  *
- * @ORM\Entity(repositoryClass="XRayLP\LearningCenterBundle\Repository\MemberRepository")
+ * @ORM\Entity(repositoryClass="XRayLP\LearningCenterBundle\Repository\CalendarRepository")
  * @ORM\Table(name="tl_calendar")
  * @package XRayLP\LearningCenterBundle\Entity
  */
@@ -171,12 +174,51 @@ class Calendar
         $this->protected = $protected;
     }
 
+    public function removeGroup(MemberGroup $memberGroup)
+    {
+        $arrGroups = array();
+        $collection = $this->getGroups();
+        $collection->removeElement($memberGroup);
+        $arrCollection = $collection->toArray();
+
+        foreach ($arrCollection as $memberGroup)
+        {
+            if ($memberGroup instanceof MemberGroup)
+            {
+                $arrGroups[] = $memberGroup->getId();
+            }
+        }
+        $this->groups = serialize($arrGroups);
+    }
+
+    public function addGroup(MemberGroup $memberGroup)
+    {
+        $arrGroups = array();
+        $collection = $this->getGroups();
+        $collection->add($memberGroup);
+        $arrCollection = $collection->toArray();
+        dump($collection);
+        foreach ($arrCollection as $memberGroup)
+        {
+            if ($memberGroup instanceof MemberGroup)
+            {
+                $arrGroups[] = $memberGroup->getId();
+            }
+        }
+
+        $this->groups = serialize($arrGroups);
+    }
+
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getGroups()
     {
-        return $this->groups;
+        $arrGroups = StringUtil::deserialize($this->groups);
+        $groups = System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findBy(['id' => $arrGroups]);
+        $collection = new ArrayCollection($groups);
+
+        return $collection;
     }
 
     /**

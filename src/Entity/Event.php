@@ -7,12 +7,14 @@
 
 namespace XRayLP\LearningCenterBundle\Entity;
 
+use Contao\System;
 use \Doctrine\ORM\Mapping as ORM;
+use XRayLP\LearningCenterBundle\Repository\EventRepository;
 
 /**
  * Event Entity
  *
- * @ORM\Entity(repositoryClass="XRayLP\LearningCenterBundle\Repository\MemberRepository")
+ * @ORM\Entity(repositoryClass="XRayLP\LearningCenterBundle\Repository\EventRepository")
  * @ORM\Table(name="tl_calendar_events")
  * @package XRayLP\LearningCenterBundle\Entity
  */
@@ -249,17 +251,17 @@ class Event
     /**
      * @return mixed
      */
-    public function getPid()
+    public function getPid(): Calendar
     {
-        return $this->pid;
+        return System::getContainer()->get('doctrine')->getRepository(Event::class)->findOneById($this->pid);
     }
 
     /**
-     * @param mixed $pid
+     * @param Calendar $calendar
      */
-    public function setPid($pid)
+    public function setPid(Calendar $calendar)
     {
-        $this->pid = $pid;
+        $this->pid = $calendar->getId();
     }
 
     /**
