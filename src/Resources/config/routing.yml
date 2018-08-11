@@ -6,6 +6,14 @@ learningcenter:
         _scope: frontend
         _menu_key: home
 
+learningcenter_:
+    path: /learningcenter/
+    defaults:
+        _controller: 'XRayLP\LearningCenterBundle\Controller\LearningCenterController::mainAction'
+        _token_check: true
+        _scope: frontend
+        _menu_key: home
+
 ####################
 #Project Management#
 ####################
@@ -230,3 +238,17 @@ learningcenter_security.login:
         _controller: 'XRayLP\LearningCenterBundle\Controller\SecurityController::loginAction'
         _token_check: true
         _scope: frontend
+
+
+#######
+#Extra#
+#######
+frontend_demo_remove_trailing_slash:
+    path: /learningcenter/{url}
+    defaults:
+        _controller: LearningCenterBundle:LearningCenter:removeTrailingSlash
+        _scope: frontend
+        _token_check: false
+    requirements:
+        url: .*/$
+    methods: [GET]
