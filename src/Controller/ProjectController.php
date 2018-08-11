@@ -29,12 +29,14 @@ use XRayLP\LearningCenterBundle\Event\Events;
 use XRayLP\LearningCenterBundle\Event\ProjectEvent;
 use XRayLP\LearningCenterBundle\Form\ChooseUserType;
 use XRayLP\LearningCenterBundle\Form\ConfirmProjectType;
+use XRayLP\LearningCenterBundle\Form\CreateEventType;
 use XRayLP\LearningCenterBundle\Form\CreateProjectType;
 use XRayLP\LearningCenterBundle\Form\UpdateProjectType;
 use XRayLP\LearningCenterBundle\Member\MemberGroupManagement;
 use XRayLP\LearningCenterBundle\Member\MemberManagement;
 use XRayLP\LearningCenterBundle\Project\ProjectMember;
 use XRayLP\LearningCenterBundle\Project\ProjectMemberManagement;
+use XRayLP\LearningCenterBundle\Request\CreateEventRequest;
 use XRayLP\LearningCenterBundle\Request\CreateProjectRequest;
 use XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
 use XRayLP\LearningCenterBundle\Request\UpdateUserGroupRequest;
@@ -475,6 +477,23 @@ class ProjectController extends AbstractController
 
         $twigRenderer = \System::getContainer()->get('templating');
         $rendered = $twigRenderer->render('@LearningCenter/modules/project/project_confirmed.html.twig', $render);
+
+        return new Response($rendered);
+    }
+
+    public function createEventAction(Request $request, int $alias)
+    {
+
+        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($alias);
+        $createEventRequest = new CreateEventRequest();
+
+        $form = $this->createForm(CreateEventType::class, $createEventRequest);
+
+        $twigRenderer = \System::getContainer()->get('templating');
+        $rendered = $twigRenderer->render('@LearningCenter/modules/project/project_create_event.html.twig', array(
+            'form' => $form->createView(),
+            'project' => $project
+        ));
 
         return new Response($rendered);
     }

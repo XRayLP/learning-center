@@ -25,16 +25,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class Member
 {
-    /*
-     *      * @ORM\ManyToMany(
-     *     targetEntity="XRayLP\LearningCenterBundle\Entity\MemberGroup")
-     * @ORM\JoinTable(name="tl_member_group")
-     * @ORM\JoinTable(name="tl_member_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     *      )
-     */
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

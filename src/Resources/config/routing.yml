@@ -53,7 +53,7 @@ learningcenter_projects.details.members:
 learningcenter_projects.details.events:
     path: /learningcenter/projects/{alias}/events
     defaults:
-        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
+        _controller: 'XRayLP\LearningCenterBundle\Controller\ProjectController::createEventAction'
         _token_check: true
         _scope: frontend
         _menu_key: projects_events
