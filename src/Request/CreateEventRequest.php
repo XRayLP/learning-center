@@ -8,6 +8,7 @@
 namespace XRayLP\LearningCenterBundle\Request;
 
 use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class CreateEventRequest
 {
@@ -39,7 +40,7 @@ class CreateEventRequest
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -55,7 +56,7 @@ class CreateEventRequest
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -71,10 +72,11 @@ class CreateEventRequest
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getStartTime()
     {
+
         return $this->startTime;
     }
 
@@ -87,7 +89,7 @@ class CreateEventRequest
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getEndTime()
     {

@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
+use XRayLP\LearningCenterBundle\Entity\Calendar;
+use XRayLP\LearningCenterBundle\Entity\Event;
 use XRayLP\LearningCenterBundle\Entity\Member;
 use XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use XRayLP\LearningCenterBundle\Entity\Project;
@@ -488,6 +491,26 @@ class ProjectController extends AbstractController
         $createEventRequest = new CreateEventRequest();
 
         $form = $this->createForm(CreateEventType::class, $createEventRequest);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            //creates event from the request
+            $event = new Event();
+            $event->setTitle($createEventRequest->getName());
+            $event->setTstamp(time());
+            $event->setStartDate($createEventRequest->getStartDate()->getTimestamp());
+            $event->setEndDate($createEventRequest->getEndDate()->getTimestamp());
+            $event->setStartTime($createEventRequest->getStartTime()->getTimestamp() + time());
+            $event->setEndTime($createEventRequest->getEndTime()->getTimestamp() + time());
+            $event->setAddress($createEventRequest->getAddress());
+            $event->setPid($this->getDoctrine()->getRepository(Calendar::class)->findOneByGroup($project->getGroupId()));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($event);
+            $entityManager->flush();
+        }
 
         $twigRenderer = \System::getContainer()->get('templating');
         $rendered = $twigRenderer->render('@LearningCenter/modules/project/project_create_event.html.twig', array(

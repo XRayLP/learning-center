@@ -41,57 +41,57 @@ class Calendar
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $jumpTo;
+    private $jumpTo = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $protected;
+    private $protected = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $groups;
+    private $groups = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $allowComments;
+    private $allowComments = '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    private $notify;
+    private $notify = '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    private $sortOrder;
+    private $sortOrder = '';
 
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":""})
      */
-    private $perPage;
+    private $perPage = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $moderate;
+    private $moderate = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $bbcode;
+    private $bbcode = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $requireLogin;
+    private $requireLogin = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $disableCaptcha;
+    private $disableCaptcha = '';
 
 
     /**

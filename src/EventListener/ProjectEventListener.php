@@ -9,6 +9,7 @@ namespace XRayLP\LearningCenterBundle\EventListener;
 
 
 use Doctrine\ORM\EntityManager;
+use XRayLP\LearningCenterBundle\Entity\Calendar;
 use XRayLP\LearningCenterBundle\Entity\Notification;
 use XRayLP\LearningCenterBundle\Event\ProjectEvent;
 
@@ -52,6 +53,13 @@ class ProjectEventListener
             $entityManager->persist($notification);
             $entityManager->flush();
         }
+
+        $calendar = new Calendar();
+        $calendar->addGroup($event->getProject()->getGroupId());
+        $calendar->setTstamp(time());
+        $calendar->setTitle('Project: '.$event->getProject()->getName());
+        $entityManager->persist($calendar);
+        $entityManager->flush();
 
     }
 }

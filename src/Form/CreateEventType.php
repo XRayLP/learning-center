@@ -28,21 +28,25 @@ class CreateEventType extends AbstractType
             ->add('startDate', DateType::class, array(
                 'label' => 'startDate',
                 'widget' => 'choice',
+                'input' => 'datetime',
                 'translation_domain' => 'project'
             ))
             ->add('endDate', DateType::class, array(
                 'label' => 'endDate',
                 'widget' => 'choice',
+                'input' => 'datetime',
                 'translation_domain' => 'project'
             ))
             ->add('startTime', TimeType::class, array(
                 'label' => 'startTime',
                 'widget' => 'choice',
+                'input' => 'datetime',
                 'translation_domain' => 'project'
             ))
             ->add('endTime', TimeType::class, array(
                 'label' => 'endTime',
                 'widget' => 'choice',
+                'input' => 'datetime',
                 'translation_domain' => 'project'
             ))
             ->add('address', TextType::class, array(

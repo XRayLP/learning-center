@@ -10,6 +10,7 @@ namespace XRayLP\LearningCenterBundle\Repository;
 use Doctrine\ORM\Mapping;
 use Doctrine\ORM\EntityRepository;
 use XRayLP\LearningCenterBundle\Entity\Calendar;
+use XRayLP\LearningCenterBundle\Entity\MemberGroup;
 
 class CalendarRepository extends EntityRepository
 {
@@ -30,5 +31,20 @@ class CalendarRepository extends EntityRepository
     public function findOneById(int $id): Calendar
     {
         return parent::findOneBy(array('id' => $id));
+    }
+
+    public function findOneByGroup(MemberGroup $memberGroup): Calendar
+    {
+        $calendars = $this->findAll();
+
+        foreach ($calendars as $calendar)
+        {
+            if ($calendar instanceof Calendar)
+            {
+                if ($calendar->getGroups()->contains($memberGroup)){
+                    return $calendar;
+                }
+            }
+        }
     }
 }

@@ -35,7 +35,7 @@ class Event
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $tstamp;
+    private $tstamp = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
@@ -45,192 +45,192 @@ class Event
     /**
      * @ORM\Column(type="string", length=128, options={"default":""})
      */
-    private $alias;
+    private $alias = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $author;
+    private $author = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $addTime;
+    private $addTime = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $startTime;
+    private $startTime = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $endTime;
+    private $endTime = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $startDate;
+    private $startDate = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $endDate;
+    private $endDate = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $location;
+    private $location = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $address;
+    private $address = '';
 
     /**
      * @ORM\Column(type="text", options={"default":""})
      */
-    private $teaser;
+    private $teaser = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $addImage;
+    private $addImage = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $overwriteMeta;
+    private $overwriteMeta = '';
 
     /**
      * @ORM\Column(type="binary", length=16, options={"default":""})
      */
-    private $singleSRC;
+    private $singleSRC = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $alt;
+    private $alt = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $imageTitle;
+    private $imageTitle = '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    private $size;
+    private $size = '';
 
     /**
      * @ORM\Column(type="string", length=128, options={"default":""})
      */
-    private $imagemargin;
+    private $imagemargin = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $imageUrl;
+    private $imageUrl = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $fullsize;
+    private $fullsize = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $caption;
+    private $caption = '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    private $floating;
+    private $floating = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $recurring;
+    private $recurring = '';
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    private $repeatEach;
+    private $repeatEach = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $repeatEnd;
+    private $repeatEnd = '';
 
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":"0"})
      */
-    private $recurrences;
+    private $recurrences = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $addEnclosure;
+    private $addEnclosure = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $enclosure;
+    private $enclosure = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $orderEnclosure;
+    private $orderEnclosure = '';
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    private $source;
+    private $source = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $jumpTo;
+    private $jumpTo = '';
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $articleId;
+    private $articleId = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $url;
+    private $url = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $target;
+    private $target = '';
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    private $cssClass;
+    private $cssClass = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $noComments;
+    private $noComments = '';
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    private $published;
+    private $published = '';
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    private $start;
+    private $start = '';
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    private $stop;
+    private $stop = '';
 
     /**
      * @return mixed
