@@ -8,6 +8,8 @@
 namespace XRayLP\LearningCenterBundle\EventListener;
 
 use Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs;
+use XRayLP\LearningCenterBundle\Entity\Calendar;
+use XRayLP\LearningCenterBundle\Entity\Event;
 use XRayLP\LearningCenterBundle\Entity\Member;
 use XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use XRayLP\LearningCenterBundle\Entity\Notification;
@@ -28,6 +30,8 @@ class PostGenerateSchemaTable
     private $ignoredEntities = [
         Member::class, // -> tl_member
         MemberGroup::class, // -> tl_member_group
+        Event::class,
+        Calendar::class,
     ];
 
     /**
