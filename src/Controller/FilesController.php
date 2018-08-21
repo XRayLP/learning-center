@@ -152,7 +152,12 @@ class FilesController extends Controller
         if ($delete->isSubmitted() && $delete->isValid())
         {
             $id = $objFile->getId();
-            \System::getContainer()->get('learningcenter.files')->deleteFile($id);
+
+            //TODO: deleting doesn't work
+            $file = FilesModel::findById($id);
+            $strFile = $file->path;
+            \Dbafs::deleteResource($strFile);
+            $file->delete();
 
         }
         return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
