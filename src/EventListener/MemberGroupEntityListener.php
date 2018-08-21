@@ -36,7 +36,7 @@ class MemberGroupEntityListener
     private function saveAllUserGroups(MemberGroup $memberGroup)
     {
         $members = $memberGroup->getMembers()->toArray();
-        dump($members);
+
         //check for each member of the group, whether he was added in the current instance of this entity or before
         foreach ($members as $member)
         {

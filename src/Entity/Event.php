@@ -50,7 +50,7 @@ class Event
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $author = '';
+    private $author = 0;
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
@@ -160,12 +160,12 @@ class Event
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $repeatEnd = '';
+    private $repeatEnd = 0;
 
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":"0"})
      */
-    private $recurrences = '';
+    private $recurrences = 0;
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
@@ -190,12 +190,12 @@ class Event
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $jumpTo = '';
+    private $jumpTo = 0;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $articleId = '';
+    private $articleId = 0;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})

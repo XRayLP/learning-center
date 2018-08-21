@@ -41,7 +41,7 @@ class Calendar
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    private $jumpTo = '';
+    private $jumpTo = 0;
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
@@ -71,7 +71,7 @@ class Calendar
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":""})
      */
-    private $perPage = '';
+    private $perPage = 0;
 
     /**
      * @ORM\Column(type="string", length=1, options={"default":"0"})
@@ -197,7 +197,7 @@ class Calendar
         $collection = $this->getGroups();
         $collection->add($memberGroup);
         $arrCollection = $collection->toArray();
-        dump($collection);
+
         foreach ($arrCollection as $memberGroup)
         {
             if ($memberGroup instanceof MemberGroup)

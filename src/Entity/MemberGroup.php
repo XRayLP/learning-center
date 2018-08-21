@@ -330,7 +330,6 @@ class MemberGroup
     {
         $doctrine = \System::getContainer()->get('doctrine')->getManager();
         $member->addGroup($this);
-        dump($member->getGroups());
         $doctrine->persist($member);
         $doctrine->flush();
     }

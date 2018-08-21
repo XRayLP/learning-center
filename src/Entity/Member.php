@@ -546,7 +546,7 @@ class Member
         $collection = $this->getGroups();
         $collection->add($memberGroup);
         $arrCollection = $collection->toArray();
-        dump($collection);
+
         foreach ($arrCollection as $memberGroup)
         {
             if ($memberGroup instanceof MemberGroup)
@@ -917,7 +917,6 @@ class Member
     public function getProjects()
     {
         $entityManager = \System::getContainer()->get('doctrine')->getRepository(Project::class);
-        dump(StringUtil::deserialize($this->groups));
 
         return $entityManager->findBy(array('groupId' => StringUtil::deserialize($this->groups)));
     }

@@ -44,7 +44,6 @@ class MemberGroupManagement
     public function add(Member $entityMember){
         $currentGroups = StringUtil::deserialize($entityMember->getGroups());
 
-        var_dump($currentGroups);
         //test whether user already has a group
         if (isset($currentGroups)){
             //check whether user is already part of this project

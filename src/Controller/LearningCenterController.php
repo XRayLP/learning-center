@@ -44,11 +44,6 @@ class LearningCenterController extends Controller
 
             $group->addMember($member);
 
-
-            dump($group->getMembers());
-
-
-
             //Twig
             $twigRenderer = $this->get('templating');
             $rendered = $twigRenderer->render('@LearningCenter/modules/dashboard.html.twig', array(
