@@ -1,0 +1,19 @@
+<div id="tl_buttons">
+    <a href="<?= $this->href ?>" class="header_back" title="<?= $this->title ?>"><?= $this->button ?></a>
+</div>
+<div class="tl_lc_configuration_database maintenance_inactive">
+    <h2 class="sub_headline">Datenbank Einträge</h2>
+    <form class="tl_form" action="<?= $this->href ?>" method="post">
+        <div class="tl_formbody_edit">
+            <input name="FORM_SUBMIT" value="tl_lc_configuration" type="hidden">
+            <input name="REQUEST_TOKEN" value="<?= $this->token ?>" type="hidden">
+            <input name="dataQuery" value="1" type="hidden">
+        </div>
+        <div class="tl_submit_container">
+            <button type="submit" class="tl_submit">Datenbank Einträge erstellen</button>
+        </div>
+    </form>
+</div>
+
+
+<?= $this->content ?>

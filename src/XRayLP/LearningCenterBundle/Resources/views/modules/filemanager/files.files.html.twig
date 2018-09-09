@@ -1,0 +1,5 @@
+{% if files %}
+        {% for file in files %}
+            {{ include('@LearningCenter/modules/filemanager/files.file.html.twig', {'file': file}) }}
+        {% endfor %}
+{% endif %}

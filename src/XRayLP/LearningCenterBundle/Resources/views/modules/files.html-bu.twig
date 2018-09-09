@@ -1,0 +1,170 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% for item in breadcrumb %}
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ item.href }}">{{ item.name }}</a></li>
+            {% endfor %}
+        </ol>
+    </nav>
+
+    {% if errors %}
+        {% for error in errors %}
+                <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {{ form_errors(upload) }}
+
+    {{ test|raw }}
+
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group">
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_upload_modal"><i class="fa fa-upload"></i><span>Upload</span></button>
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_folder_modal"><i class="fa fa-folder"></i><span>New Folder</span></button>
+            <button type="button" class="btn btn-dark btn-download"><i class="fa fa-download"></i><span>Download</span></button>
+            <button type="button" class="btn btn-primary btn-dark btn-delete" data-toggle="modal" data-target="#files_delete_modal"><i class="fa fa-trash"></i><span>Delete</span></button>
+            <button type="button" class="btn btn-primary btn-dark btn-share" data-toggle="modal" data-target="#files_share_modal"><i class="fa fa-trash"></i><span>Share</span></button>
+        </div>
+    </div>
+    {% if files %}
+    <div class="row files">
+        {% for file in files %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="icon">
+                <input type="checkbox" name="checks-files" class="form-check-input {% if file.shared == 1 %} shared {% endif %}" id="{{ file.id }}" data-href="{{ file.href }}">
+
+                {% if file.type == 'folder' %}
+                    <a href="{{ file.href }}">
+                    <i class="fa fa-folder fa-5x"></i>
+                {% else %}
+                    {% if file.extension == 'jpg' %}
+                    <i class="fa fa-file-image fa-5x"></i>
+                    {% elseif file.extension == 'docx' %}
+                    <i class="fa fa-file-word fa-5x"></i>
+                    {% elseif file.extension == 'pptx' %}
+                    <i class="fa fa-file-powerpoint fa-5x"></i>
+                    {% elseif file.extension == 'xlsx' %}
+                    <i class="fa fa-file-excel fa-5x"></i>
+                    {% elseif file.extension == 'pdf' %}
+                    <i class="fa fa-file-pdf fa-5x"></i>
+                    {% elseif file.extension == 'zip' %}
+                    <i class="fa fa-file-archive fa-5x"></i>
+                    {% elseif file.extension == 'mp4' %}
+                    <i class="fa fa-file-video fa-5x"></i>
+                    {% elseif file.extension == 'mp3' %}
+                    <i class="fa fa-file-audio fa-5x"></i>
+                    {% elseif file.extension == 'txt' %}
+                    <i class="fa fa-file-text fa-5x"></i>
+                    {% else %}
+                    <i class="fa fa-file fa-5x"></i>
+                    {% endif %}
+                {% endif %}
+                </a>
+            </div>
+            <span class="name" title="{{ file.name }}">{{ file.name }}</span><br>
+            <span class="date">
+                {% if file.shared == 1 %}
+                <i class="fa fa-users"></i>
+                {% endif %}
+                {{ file.time }}
+                </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="modals">
+        <div class="modal fade" id="files_upload_modal" tabindex="-1" role="dialog">
+            {{ form_start(upload) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(upload.path) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ form_widget(upload.submit) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(upload) }}
+        </div>
+
+        <div class="modal fade" id="files_folder_modal" tabindex="-1" role="dialog">
+            {{ form_start(folder) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Folder</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(folder.name) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ form_widget(folder.submit) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(folder) }}
+        </div>
+
+        <div class="modal fade" id="files_delete_modal" tabindex="-1" role="dialog">
+            {{ form_start(delete) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Folder</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Would your really like to delete this file?</p>
+                        {{ form_widget(delete.id) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ form_widget(delete.submit) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(folder) }}
+        </div>
+        {% if isShare %}
+        <div class="modal fade" id="files_share_modal" tabindex="-1" role="dialog">
+            {{ form_start(share) }}
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share File</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Would your really like to share this file?</p>
+                        {{ form_widget(share.id) }}
+                        {{ form_widget(share.sharedGroups) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{ form_widget(share.submit) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(share) }}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

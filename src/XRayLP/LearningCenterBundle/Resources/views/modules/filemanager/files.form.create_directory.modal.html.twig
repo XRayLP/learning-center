@@ -1,0 +1,15 @@
+{% extends '@LearningCenter/modules/widgets/modal.form.html.twig' %}
+
+{% set form = create_directory %}
+
+{% block modal_header %}
+    New Folder
+{% endblock %}
+
+{% block modal_body %}
+    {{ form_widget(form.name) }}
+{% endblock %}
+
+{% block modal_footer %}
+    {{ form_widget(form.submit) }}
+{% endblock %}

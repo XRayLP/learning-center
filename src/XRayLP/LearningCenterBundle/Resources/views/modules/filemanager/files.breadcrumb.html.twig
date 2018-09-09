@@ -1,0 +1,8 @@
+{# var breadcrumb: File[] Object #}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% for item in breadcrumb %}
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('learningcenter_files', {'fid': item.id}) }}">{{ item.name }}</a></li>
+        {% endfor %}
+    </ol>
+</nav>

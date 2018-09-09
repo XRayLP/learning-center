@@ -1,0 +1,16 @@
+{% extends '@LearningCenter/modules/widgets/modal.default.html.twig' %}
+
+{% block modal_header %}
+    New Folder
+{% endblock %}
+
+{% block modal_body %}
+    <form action="{{ path('learningcenter_files.upload', {'fid': fid}) }}" class="dropzone">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+        </div>
+    </form>
+{% endblock %}
+
+{% block modal_footer %}
+{% endblock %}

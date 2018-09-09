@@ -1,0 +1,16 @@
+{% extends '@LearningCenter/modules/widgets/modal.form.html.twig' %}
+
+{% set form = share_edit %}
+
+{% block modal_header %}
+    New Folder
+{% endblock %}
+
+{% block modal_body %}
+    <p>Do you really want to delete this Share?</p>
+    {{ form_widget(form.file) }}
+{% endblock %}
+
+{% block modal_footer %}
+    {{ form_widget(form.submit) }}
+{% endblock %}

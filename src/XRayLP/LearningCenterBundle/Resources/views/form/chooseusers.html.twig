@@ -1,0 +1,22 @@
+{% block chooseusers_widget %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">E-Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for child in form %}
+            <tr>
+                <td>{{ form_widget(child.id) }}</td>
+                <td>{{ form_label(child.firstname) }}</td>
+                <td>{{ form_label(child.lastname) }}</td>
+                <td>{{ form_label(child.email) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

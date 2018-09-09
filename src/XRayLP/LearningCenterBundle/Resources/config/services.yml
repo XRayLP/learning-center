@@ -1,0 +1,161 @@
+# config/services.yml
+services:
+    kernel_bundle:
+        class: App\XRayLP\LearningCenterBundle
+    _instanceof:
+        Contao\CoreBundle\Framework\FrameworkAwareInterface:
+            calls:
+                - ["setFramework", ["@contao.framework"]]
+
+        Symfony\Component\DependencyInjection\ContainerAwareInterface:
+            calls:
+                - ["setContainer", ["@service_container"]]
+
+    learningcenter.filemanager:
+        class: App\XRayLP\LearningCenterBundle\LearningCenter\Filemanager\Filemanager
+        arguments:
+          - '@security.token_storage'
+          - '@doctrine'
+          - '@twig'
+
+    learningcenter.catalog:
+        class: App\XRayLP\LearningCenterBundle\Service\Catalog
+        arguments:
+        - '@router'
+
+    learningcenter.security.authentication_provider:
+        class: Contao\CoreBundle\Security\Authentication\Provider\AuthenticationProvider
+        abstract: true
+        arguments:
+            - ~ # User provider
+            - ~ # User checker
+            - ~ # Provider-shared key
+            - "@security.encoder_factory"
+            - "@contao.framework"
+            - "@translator"
+            - "@request_stack"
+            - "@mailer"
+
+    acme.post_generate_schema_table:
+        class: App\XRayLP\LearningCenterBundle\EventListener\PostGenerateSchemaTable
+        tags:
+            - {name: doctrine.event_listener, event: postGenerateSchemaTable }
+    #############
+    #Controllers#
+    #############
+    App\XRayLP\LearningCenterBundle\Controller\FilesController:
+        arguments:
+          - '@learningcenter.filemanager'
+          - '@twig'
+
+    #######
+    #Forms#
+    #######
+    learningcenter.form.share_file:
+        class: App\XRayLP\LearningCenterBundle\Form\ShareFileType
+        arguments:
+          - '@doctrine'
+        tags: [form.type]
+    learningcenter.form.edit_share_file:
+        class: App\XRayLP\LearningCenterBundle\Form\UpdateShareFileType
+        arguments:
+          - '@doctrine'
+        tags: [form.type]
+    ##############
+    #Menu Builder#
+    ##############
+    lerningcenter.menu_builder:
+        class: App\XRayLP\LearningCenterBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", '@learningcenter.security.voter.route_key', '@request_stack']
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createProjectDetailsMenu, alias: project }
+
+    ###########
+    #Security #
+    ###########
+    learningcenter.security.voter.project:
+        class: App\XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectVoter
+        tags:
+            - { name: security.voter }
+
+    learningcenter.security.voter.project_member:
+        class: App\XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectMemberVoter
+        tags:
+            - { name: security.voter }
+
+    learningcenter.security.voter.route_key:
+        class: App\XRayLP\LearningCenterBundle\Security\Authorization\Voter\RouteKeyVoter
+        tags:
+            - { name: knp_menu.voter }
+
+    ##########
+    #Listener#
+    ##########
+
+
+
+    learningcenter.listener.project_event_listener:
+        class: App\XRayLP\LearningCenterBundle\EventListener\ProjectEventListener
+        arguments:
+          - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: project.create.success, method: onProjectCreateSuccess }
+
+    learningcenter.listener.authentication_event_listener:
+        class: App\XRayLP\LearningCenterBundle\EventListener\AuthenticationEventListener
+        arguments:
+          - '@twig'
+          - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
+
+    learningcenter.listener.member_entity_listener:
+        class: App\XRayLP\LearningCenterBundle\EventListener\MemberEntityListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad, priority: 1000 }
+            - { name: doctrine.event_listener, event: preUpdate }
+        arguments:
+            - '@doctrine'
+
+    learningcenter.listener.member_group_entity_listener:
+        class: App\XRayLP\LearningCenterBundle\EventListener\MemberGroupEntityListener
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+        arguments:
+            - '@doctrine'
+
+    #############
+    #Controller#
+    ############
+    App\XRayLP\LearningCenterBundle\Controller\ProjectController:
+        public: true
+        arguments:
+            - '@event_dispatcher'
+            - '@translator.default'
+
+    App\XRayLP\LearningCenterBundle\Controller\NotificationsController:
+        public: true
+        arguments:
+            - '@doctrine'
+
+    App\XRayLP\LearningCenterBundle\Controller\SecurityController:
+        public: true
+        arguments:
+            - '@security.authentication_utils'
+
+    #######
+    #Utils#
+    #######
+    learningcenter.utils.blob_converter:
+        class: App\XRayLP\LearningCenterBundle\Util\BlobConverter
+        arguments:
+            - "@doctrine"
+
+    ###########
+    #Entities#
+    ##########
+    learningcenter.entity.member:
+        class: App\XRayLP\LearningCenterBundle\Entity\Member
+        arguments:
+            - "@doctrine"

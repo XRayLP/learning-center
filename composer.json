@@ -1,31 +1,96 @@
 {
-	"name" : "xraylp/learning-center-bundle",
-	"description" : "Learning Platform",
-	"type" : "contao-bundle",
-	"license" : "GPL-3.0-only",
-	"minimum-stability" : "dev",
-	"require" : {
-		"php" : ">=7.0",
-		"contao/core-bundle" : "^4.4",
-		"knplabs/knp-menu-bundle": "^2.0",
-		"lasserafn/php-initial-avatar-generator": "^2.3",
-		"doctrine/orm": "^2.6",
-		"mistic100/randomcolor": "^1.0"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"XRayLP\\LearningCenterBundle\\" : "src"
-		}
-	},
-	"autoload-dev" : {
-		"psr-4" : {
-			"XRayLP\\LearningCenterBundle\\Test\\" : "tests"
-		}
-	},
-	"extra" : {
-		"contao-manager-plugin": "XRayLP\\LearningCenterBundle\\ContaoManagerPlugin"
-	},
-	"require-dev": {
-		"symfony/phpunit-bridge": "^4.1@dev"
-	}
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.1.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "contao/calendar-bundle": "^4.6",
+        "contao/comments-bundle": "^4.6",
+        "contao/core-bundle": "4.6.*",
+        "contao/faq-bundle": "^4.6",
+        "contao/installation-bundle": "4.6",
+        "contao/listing-bundle": "^4.6",
+        "contao/news-bundle": "^4.6",
+        "contao/newsletter-bundle": "^4.6",
+        "doctrine/annotations": "^1.6",
+        "friendsofsymfony/jsrouting-bundle": "^2.2",
+        "lasserafn/php-initial-avatar-generator": "^2.3",
+        "mistic100/randomcolor": "^1.0",
+        "php-http/guzzle6-adapter": "1.1",
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/apache-pack": "^1.0",
+        "symfony/asset": "*",
+        "symfony/console": "*",
+        "symfony/expression-language": "*",
+        "symfony/flex": "^1.1",
+        "symfony/form": "*",
+        "symfony/framework-bundle": "*",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "*",
+        "symfony/process": "*",
+        "symfony/security-bundle": "*",
+        "symfony/serializer-pack": "*",
+        "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/twig-bundle": "*",
+        "symfony/validator": "*",
+        "symfony/web-link": "*",
+        "symfony/yaml": "*"
+    },
+    "require-dev": {
+        "symfony/debug-pack": "*",
+        "symfony/dotenv": "*",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/profiler-pack": "*",
+        "symfony/test-pack": "*",
+        "symfony/web-server-bundle": "*"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "paragonie/random_compat": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "contao:install %PUBLIC_DIR%": "symfony-cmd",
+            "contao:symlinks %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": "true",
+            "require": "4.1.*"
+        },
+        "contao-component-dir": "assets"
+    }
 }

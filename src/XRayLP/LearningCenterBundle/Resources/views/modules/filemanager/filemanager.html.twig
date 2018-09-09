@@ -1,0 +1,26 @@
+{#
+    var breadcrumb: File[] Object
+    var files: File[] Object
+#}
+
+    {{ include('@LearningCenter/modules/filemanager/files.breadcrumb.html.twig', {'breadcrumb': breadcrumb}) }}
+
+    {{ include('@LearningCenter/modules/filemanager/files.toolbar.html.twig') }}
+
+    {% if files %}
+    <div class="row files">
+        {% for file in files %}
+            {{ include('@LearningCenter/modules/filemanager/files.file.html.twig', {'file': file}) }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {{ include('@LearningCenter/modules/filemanager/files.form.upload.modal.html.twig', {'upload': upload, 'modal_id': 'files_upload_modal'}) }}
+
+    {{ include('@LearningCenter/modules/filemanager/files.form.create_directory.modal.html.twig', {'create_directory': create_directory, 'modal_id': 'files_create_directory_modal'}) }}
+
+    {{ include('@LearningCenter/modules/filemanager/files.form.delete.html.twig', {'delete': delete, 'modal_id': 'files_delete_modal'}) }}
+
+    {{ include('@LearningCenter/modules/filemanager/files.form.share.modal.html.twig', {'share': share, 'modal_id': 'files_share_modal'}) }}
+
+    {{ include('@LearningCenter/modules/filemanager/files.form.share.edit.modal.html.twig', {'share_edit': share_edit, 'modal_id': 'files_share_edit_modal'}) }}
