@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
 
-class UpdateProjectType extends AbstractType
+class UpdateProjectType extends ContaoAbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,9 +56,7 @@ class UpdateProjectType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class'        => UpdateProjectRequest::class,
-            'csrf_protection'   => true,
-            'csrf_field_name'   => '_token',
-            'csrf_token_id'     => 'project_item'
         ));
+        parent::configureOptions($resolver);
     }
 }

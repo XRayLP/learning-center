@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Request\CreateEventRequest;
 
-class CreateEventType extends AbstractType
+class CreateEventType extends ContaoAbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -64,9 +64,7 @@ class CreateEventType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class'        => CreateEventRequest::class,
-            'csrf_protection'   => true,
-            'csrf_field_name'   => '_token',
-            'csrf_token_id'     => 'event_item'
         ));
+        parent::configureOptions($resolver);
     }
 }

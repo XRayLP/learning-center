@@ -8,7 +8,9 @@
 namespace App\XRayLP\LearningCenterBundle\Form;
 
 
+use App\XRayLP\LearningCenterBundle\Security\Csrf\ContaoCsrfTokenManager;
 use Contao\MemberModel;
+use Contao\System;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Csrf\Type\FormTypeCsrfExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -24,7 +27,7 @@ use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\Project;
 use App\XRayLP\LearningCenterBundle\Request\CreateProjectRequest;
 
-class CreateProjectType extends AbstractType
+class CreateProjectType extends ContaoAbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -50,21 +53,18 @@ class CreateProjectType extends AbstractType
                 'choice_value' => 'id'
 
             ))
-
             ->add('save', SubmitType::class, array(
                 'label' => 'Continue',
                 'translation_domain' => 'project'
-            ))
-        ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'        => CreateProjectRequest::class,
-            'csrf_protection'   => true,
-            'csrf_field_name'   => '_token',
-            'csrf_token_id'     => 'project_item'
+            'data_class' => CreateProjectRequest::class,
         ));
+        parent::configureOptions($resolver);
     }
+
 }

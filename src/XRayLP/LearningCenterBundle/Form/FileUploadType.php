@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\Request\UploadFileRequest;
 
-class FileUploadType extends AbstractType
+class FileUploadType extends ContaoAbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,12 +37,6 @@ class FileUploadType extends AbstractType
             'data_class' => UploadFileRequest::class,
             'attr'       => ['class' => 'dropzone']
         ));
+        parent::configureOptions($resolver);
     }
-
-    public function getRequestToken() {
-        $container = System::getContainer();
-        return $container->get('contao.csrf.token_manager')->getToken($container->getParameter('contao.csrf_token_name'))->getValue();
-    }
-
-
 }

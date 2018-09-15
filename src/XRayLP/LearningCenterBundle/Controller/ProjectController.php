@@ -9,6 +9,7 @@ namespace App\XRayLP\LearningCenterBundle\Controller;
 
 
 use Contao\FrontendUser;
+use Contao\RequestToken;
 use Contao\System;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Translation\TranslatorInterfaceInterface;
@@ -50,10 +52,13 @@ class ProjectController extends AbstractController
 
     protected $translator;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator)
+    protected $csrfTokenManager;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, CsrfTokenManagerInterface $csrfTokenManager)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
+        $this->csrfTokenManager = $csrfTokenManager;
     }
 
 
@@ -435,9 +440,13 @@ class ProjectController extends AbstractController
 
             return $this->redirectToRoute('learningcenter_projects.details', ['alias' => $project->getId()]);
         }
+
+        $container = \System::getContainer();
+
         $rendered = $this->renderView('@LearningCenter/modules/project_create.html.twig',
             [
-                'form' => $form->createView(),
+                'form'  => $form->createView(),
+                'token' => $container->get('contao.csrf.token_manager')->getToken($container->getParameter('contao.csrf_token_name'))->getValue(),
             ]
         );
 

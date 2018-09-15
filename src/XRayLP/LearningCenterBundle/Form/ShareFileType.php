@@ -22,7 +22,7 @@ use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use App\XRayLP\LearningCenterBundle\Request\ShareFileRequest;
 
-class ShareFileType extends AbstractType
+class ShareFileType extends ContaoAbstractType
 {
 
     private $doctrine;
@@ -62,6 +62,7 @@ class ShareFileType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => ShareFileRequest::class,
         ));
+        parent::configureOptions($resolver);
     }
 
     /**

@@ -8,28 +8,26 @@
 namespace App\XRayLP\LearningCenterBundle\Form;
 
 
+use Contao\System;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\XRayLP\LearningCenterBundle\Request\DeleteFileRequest;
 
-class DeleteFileType extends ContaoAbstractType
+class ContaoAbstractType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('id', HiddenType::class)
-            ->add('submit', SubmitType::class)
-        ;
-    }
-
+    //configures the standard Request Token for Contao
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => DeleteFileRequest::class,
+            'csrf_token_manager' => System::getContainer()->get('contao.csrf.token_manager'),
+            'csrf_token_id' => System::getContainer()->getParameter('contao.csrf_token_name'),
+            'csrf_field_name' => 'REQUEST_TOKEN',
         ));
         parent::configureOptions($resolver);
     }
+
+    public function getBlockPrefix()
+    {
+        return null;
+    }
+
 }

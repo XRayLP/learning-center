@@ -18,7 +18,7 @@ use App\XRayLP\LearningCenterBundle\Request\CreateDirectoryRequest;
  * Class CreateFolderType
  * @package App\XRayLP\LearningCenterBundle\Form
  */
-class CreateDirectoryType extends AbstractType
+class CreateDirectoryType extends ContaoAbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -37,5 +37,6 @@ class CreateDirectoryType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => CreateDirectoryRequest::class,
         ));
+        parent::configureOptions($resolver);
     }
 }

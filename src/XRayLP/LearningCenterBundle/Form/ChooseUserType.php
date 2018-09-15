@@ -7,21 +7,14 @@
 
 namespace App\XRayLP\LearningCenterBundle\Form;
 
-
-use Contao\MemberModel;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
-use App\XRayLP\LearningCenterBundle\Repository\MemberRepository;
-use App\XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
 use App\XRayLP\LearningCenterBundle\Request\UpdateUserGroupRequest;
 
-class ChooseUserType extends AbstractType
+class ChooseUserType extends ContaoAbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -43,11 +36,6 @@ class ChooseUserType extends AbstractType
                 'translation_domain' => 'project'
             ))
         ;
-
-
-
-
-
     }
 
     public static function getAllUsers() {

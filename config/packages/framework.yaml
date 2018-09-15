@@ -1,6 +1,6 @@
 framework:
     esi: true
-    
+
     secret: '%env(APP_SECRET)%'
     #default_locale: en
     #csrf_protection: true

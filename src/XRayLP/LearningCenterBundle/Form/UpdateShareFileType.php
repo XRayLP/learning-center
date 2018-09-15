@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\Request\UpdateShareFileRequest;
 
-class UpdateShareFileType extends AbstractType
+class UpdateShareFileType extends ContaoAbstractType
 {
 
     private $doctrine;
@@ -52,5 +52,6 @@ class UpdateShareFileType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => UpdateShareFileRequest::class,
         ));
+        parent::configureOptions($resolver);
     }
 }

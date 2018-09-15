@@ -22,5 +22,6 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="REQUEST_TOKEN" value="{{ csrf_token('authenticate') }}">
     {{ form_end(form) }}
 </div>
