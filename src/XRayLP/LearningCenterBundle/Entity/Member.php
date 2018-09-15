@@ -854,7 +854,25 @@ class Member
      */
     public function getCloudSpace()
     {
-        return $this->cloudSpace;
+        $arrSpace = StringUtil::deserialize($this->cloudSpace);
+
+        //gets and build the max space for the current user
+        switch($arrSpace['unit']){
+            case 'B':
+                $maxSpace = $arrSpace['value'];
+                break;
+            case 'KB':
+                $maxSpace = $arrSpace['value']*1024;
+                break;
+            case 'MB':
+                $maxSpace = $arrSpace['value']*1024*1024;
+                break;
+            case 'GB':
+                $maxSpace = $arrSpace['value']*1024*1024*1024;
+                break;
+        }
+
+        return $maxSpace;
     }
 
     /**

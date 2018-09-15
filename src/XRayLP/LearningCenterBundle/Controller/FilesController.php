@@ -96,6 +96,7 @@ class FilesController extends Controller
             {
                 $this->filemanager->setCurDir($this->getDoctrine()->getRepository(File::class)->findOneById($fid));
             }
+            $arrTwig['usedSpace'] = $this->filemanager->getUsedSpacePercent();
             $arrTwig['breadcrumb'] = $this->filemanager->generateBreadcrumb();
             $arrTwig['files'] = $this->filemanager->loadFiles();
             $arrTwig['fid'] = $fid;

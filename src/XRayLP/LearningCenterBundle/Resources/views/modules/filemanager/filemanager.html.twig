@@ -7,6 +7,8 @@
 
     {{ include('@LearningCenter/modules/filemanager/files.toolbar.html.twig') }}
 
+    {{ include('@LearningCenter/modules/filemanager/files.widget.used_space.html.twig', {'usedSpace': usedSpace}) }}
+
     {% if files %}
     <div class="row files">
         {% for file in files %}

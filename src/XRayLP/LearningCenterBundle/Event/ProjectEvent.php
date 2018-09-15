@@ -10,9 +10,7 @@ namespace App\XRayLP\LearningCenterBundle\Event;
 
 
 use Symfony\Component\EventDispatcher\Event;
-use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\Project;
-use App\XRayLP\LearningCenterBundle\Project\ProjectMemberManagement;
 
 class ProjectEvent extends Event
 {

@@ -32,6 +32,8 @@ class Filemanager
 
     private $files;
 
+    private $usedSpace;
+
     /**
      * @var File $curDir
      */
@@ -50,6 +52,11 @@ class Filemanager
         $this->curDir = $this->doctrine->getRepository(File::class)->findOneByUuid($currentDirectory->getUuid());
     }
 
+    /**
+     * Returns the current directory of the filemanager
+     *
+     * @return File $curDir
+     */
     public function getCurDir(): File
     {
         if (isset($this->curDir))
@@ -57,6 +64,49 @@ class Filemanager
             return $this->curDir;
         } else {
             return $this->user->getHomeDir();
+        }
+    }
+
+    /**
+     * Returns the percentage of used space of an Users cloud
+     *
+     * @return float
+     */
+    public function getUsedSpacePercent()
+    {
+        $usedSpace = $this->getUsedSpace();
+        $maxSpace = $this->user->getCloudSpace();
+
+        $usedSpaceDegree = round(($usedSpace/$maxSpace)*360);
+        $usedSpacePercent = round(($usedSpace/$maxSpace)*100);
+
+        return $usedSpacePercent;
+    }
+
+    private function getUsedSpace()
+    {
+        $this->usedSpace = 0;
+
+        $this->getDirSpace($this->user->getHomeDir());
+
+        return $this->usedSpace;
+    }
+
+    private function getDirSpace(File $dir)
+    {
+        if ($dir->getType() == 'folder')
+        {
+            $files = $this->doctrine->getRepository(File::class)->findByPid($dir->getUuid());
+            foreach ($files as $file)
+            {
+                if ($file->getType() == 'folder')
+                {
+                    $this->getDirSpace($file);
+                } else {
+                    $objFile = new \Symfony\Component\HttpFoundation\File\File($file->getPath());
+                    $this->usedSpace += $objFile->getSize();
+                }
+            }
         }
     }
 
@@ -143,26 +193,30 @@ class Filemanager
 
     public function uploadFile(UploadedFile $uploadedFile)
     {
-        if (isset($this->curDir))
-        {
-            $uploadDir = $this->curDir;
-        } else {
-            $uploadDir = $this->user->getHomeDir();
-        }
+        $filesize = $uploadedFile->getSize();
+        $cloudSpace = $this->user->getCloudSpace();
 
-        $filename = $uploadedFile->getClientOriginalName();
+        if ($cloudSpace > $this->getUsedSpace() + $filesize || true) {
 
-        $uploadedFile->move('../'.$uploadDir->getPath(), $filename);
 
-        if (Dbafs::shouldBeSynchronized($uploadDir->getPath().'/'.$filename))
-        {
-            $objModel = FilesModel::findByPath($uploadDir->getPath().'/'.$filename);
-            if ($objModel === null)
-            {
-                $objModel = Dbafs::addResource($uploadDir->getPath().'/'.$filename);
+            if (isset($this->curDir)) {
+                $uploadDir = $this->curDir;
+            } else {
+                $uploadDir = $this->user->getHomeDir();
             }
-            // Update the hash of the target folder
-            Dbafs::updateFolderHashes($uploadDir->getPath());
+
+            $filename = $uploadedFile->getClientOriginalName();
+
+            $uploadedFile->move('../' . $uploadDir->getPath(), $filename);
+
+            if (Dbafs::shouldBeSynchronized($uploadDir->getPath() . '/' . $filename)) {
+                $objModel = FilesModel::findByPath($uploadDir->getPath() . '/' . $filename);
+                if ($objModel === null) {
+                    $objModel = Dbafs::addResource($uploadDir->getPath() . '/' . $filename);
+                }
+                // Update the hash of the target folder
+                Dbafs::updateFolderHashes($uploadDir->getPath());
+            }
         }
     }
 

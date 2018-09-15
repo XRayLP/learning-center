@@ -11,5 +11,6 @@ namespace App\XRayLP\LearningCenterBundle\Event;
 class Events
 {
     const PROJECT_CREATE_SUCCESS_EVENT = 'project.create.success';
+    const FILE_UPLOAD = 'file.upload';
 
 }
