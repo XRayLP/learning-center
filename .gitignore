@@ -17,6 +17,7 @@
 
 ###> contao/core-bundle ###
 /assets/
+/web/
 /files/
 /public/assets
 /public/files/
@@ -28,3 +29,7 @@
 /system/config/tcpdf.php
 /system/modules/*/.skip
 ###< contao/core-bundle ###
+
+###< PhpStorm IDE ###
+/.idea/
+###> PhpStorm IDE ###
