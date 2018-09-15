@@ -61,6 +61,7 @@ class ShareFileType extends ContaoAbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => ShareFileRequest::class,
+            'attr' => ['id' => 'form_share_file']
         ));
         parent::configureOptions($resolver);
     }

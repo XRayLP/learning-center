@@ -81,17 +81,6 @@ class FilesController extends Controller
             ));
             $arrTwig['delete'] = $delete->createView();
 
-            /*try {
-                $share = $this->createForm(ShareFileType::class, $objFile, array(
-                    'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
-                ));
-                $arrTwig['share'] = $share->createView();
-                $arrTwig['isShare'] = true;
-            } catch (\Exception $e) {
-                array_push($errors, $e->getMessage());
-                $arrTwig['isShare'] = false;
-            }*/
-
             $share = $this->createForm(ShareFileType::class, $shareFileRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
             ));
@@ -122,9 +111,6 @@ class FilesController extends Controller
 
     public function uploadAction($fid, Request $request)
     {
-        /*$uploadFileRequest = new UploadFileRequest();
-        $upload = $this->createForm(FileUploadType::class, $uploadFileRequest);
-        $upload->handleRequest($request);*/
 
         $output = array('uploaded' => false);
 
@@ -137,14 +123,9 @@ class FilesController extends Controller
 
         $this->filemanager->uploadFile($file);
 
-        /*if ($upload->isSubmitted() && $upload->isValid())
-        {
-
-        }*/
         $output['uploaded'] = true;
         $output['fileName'] = 'TEST';
         return new JsonResponse($output);
-        //return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
     }
 
     /**

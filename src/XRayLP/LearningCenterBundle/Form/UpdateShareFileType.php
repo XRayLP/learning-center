@@ -51,6 +51,7 @@ class UpdateShareFileType extends ContaoAbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => UpdateShareFileRequest::class,
+            'attr' => ['id' => 'form_update_share_file']
         ));
         parent::configureOptions($resolver);
     }

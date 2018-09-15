@@ -29,6 +29,7 @@ class DeleteFileType extends ContaoAbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => DeleteFileRequest::class,
+            'attr' => ['id' => 'form_delete_file']
         ));
         parent::configureOptions($resolver);
     }
