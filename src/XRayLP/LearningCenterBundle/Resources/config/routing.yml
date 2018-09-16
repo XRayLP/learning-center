@@ -164,6 +164,7 @@ learningcenter_files.download:
         _controller: 'App\XRayLP\LearningCenterBundle\Controller\FilesController::downloadAction'
         _token_check: true
         _scope: frontend
+        fid: null
 
 learningcenter_files.delete:
     path: /learningcenter/filemanager/delete/{fid}

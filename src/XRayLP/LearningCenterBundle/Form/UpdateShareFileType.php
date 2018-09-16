@@ -42,8 +42,29 @@ class UpdateShareFileType extends ContaoAbstractType
         ;
 
         $builder->get('file')->addModelTransformer(new CallbackTransformer(
-            function (File $file = null) {return $file? $file->getId():0;},
-            function ($course = null) {return $this->doctrine->getRepository(File::class)->findOneById($course);}
+            function ($arrToString = null)
+            {
+                $str = '';
+                $index = 0;
+
+                if (isset($arrToString)) {
+                    foreach ($arrToString as $file) {
+                        if ($file instanceof File) {
+                            if ($index == 0) {
+                                $str += $file->getId();
+                            } else {
+                                $str += ',' . $file->getId();
+                            }
+                            $index++;
+                        }
+                    }
+                }
+                return $str;
+            },
+            function ($strToArray) {
+                $files = $this->doctrine->getRepository(File::class)->findBy(['id' => explode(",", $strToArray)]);
+                return $files;
+            }
         ));
     }
 

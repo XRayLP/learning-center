@@ -19,6 +19,7 @@ use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use App\XRayLP\LearningCenterBundle\Member\FrontendUser;
 use App\XRayLP\LearningCenterBundle\Request\UploadFileRequest;
+use ZipArchive;
 
 class Filemanager
 {
@@ -81,6 +82,48 @@ class Filemanager
         $usedSpacePercent = round(($usedSpace/$maxSpace)*100);
 
         return $usedSpacePercent;
+    }
+
+    /**
+     * @param File[] $files
+     * @param $zipname
+     *
+     * Source: https://www.virendrachandak.com/techtalk/how-to-create-a-zip-file-using-php/
+     * @return ZipArchive
+     */
+    public function createZip($files, $zipname): ZipArchive
+    {
+        $startDir = $this->doctrine->getRepository(File::class)->findOneByUuid($files[0]->getPid());
+
+        //create new zip
+        $zip = new \ZipArchive();
+        $zip->open('tmp/'.$zipname.'.zip', ZipArchive::CREATE);
+        foreach ($files as $file)
+        {
+            //add file to zip
+            if ($file->getType() === 'file')
+            {
+                $zip->addFile($file->getPath(), $file->getName());
+            }
+            //add a whole directory to zip
+            else
+            {
+                $handle = opendir($file->getPath());
+                while(false !== ($entry = readdir($handle)))
+                {
+                    if ($entry != "." && $entry != "..")
+                    {
+                        $realPath = $file->getPath().'/'.$entry;
+                        $zipPath = str_replace($startDir->getPath(), "", $realPath);
+
+                        $zip->addFile($realPath, 'Test/test.jpg');
+                    }
+                }
+                closedir($handle);
+            }
+        }
+        $zip->close();
+        return $zip;
     }
 
     private function getUsedSpace()

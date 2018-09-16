@@ -21,6 +21,8 @@
 
     {{ include('@LearningCenter/modules/filemanager/files.form.create_directory.modal.html.twig', {'create_directory': create_directory, 'modal_id': 'files_create_directory_modal'}) }}
 
+    {{ include('@LearningCenter/modules/filemanager/files.form.download.html.twig', {'download': download, 'modal_id': 'files_download_modal'}) }}
+
     {{ include('@LearningCenter/modules/filemanager/files.form.delete.html.twig', {'delete': delete, 'modal_id': 'files_delete_modal'}) }}
 
     {{ include('@LearningCenter/modules/filemanager/files.form.share.modal.html.twig', {'share': share, 'modal_id': 'files_share_modal'}) }}

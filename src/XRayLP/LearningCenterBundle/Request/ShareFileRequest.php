@@ -18,7 +18,7 @@ class ShareFileRequest
     private $memberGroups;
 
     /**
-     * @return File
+     * @return File[]
      */
     public function getFile()
     {
@@ -26,9 +26,9 @@ class ShareFileRequest
     }
 
     /**
-     * @param mixed $file
+     * @param File[] $file
      */
-    public function setFile(File $file)
+    public function setFile($file)
     {
         $this->file = $file;
     }

@@ -8,6 +8,8 @@
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
 
+use App\XRayLP\LearningCenterBundle\Form\DownloadFileType;
+use App\XRayLP\LearningCenterBundle\Request\DownloadFileRequest;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FilesModel;
 use Contao\FrontendUser;
@@ -33,6 +35,7 @@ use App\XRayLP\LearningCenterBundle\Request\DeleteFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\ShareFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\UpdateShareFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\UploadFileRequest;
+use ZipArchive;
 
 class FilesController extends Controller
 {
@@ -61,31 +64,42 @@ class FilesController extends Controller
 
             $uploadFileRequest = new UploadFileRequest();
             $createDirectoryRequest = new CreateDirectoryRequest();
+            $downloadFileRequest = new DownloadFileRequest();
             $deleteFileRequest = new DeleteFileRequest();
             $shareFileRequest = new ShareFileRequest();
             $updateShareFileRequest = new UpdateShareFileRequest();
 
-            //Forms
+            //Upload Files
             $upload = $this->createForm(FileUploadType::class, $uploadFileRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.upload', array('fid' => $fid))
             ));
             $arrTwig['upload'] = $upload->createView();
 
+            //Create Folders
             $folder = $this->createForm(CreateDirectoryType::class, $createDirectoryRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.folder', array('fid' => $fid))
             ));
             $arrTwig['create_directory'] = $folder->createView();
 
+            //Download Files
+            $download = $this->createForm(DownloadFileType::class, $downloadFileRequest, array(
+               'action' => $this->generateUrl('learningcenter_files.download', array('fid' => $fid))
+            ));
+            $arrTwig['download'] = $download->createView();
+
+            //Delete Files
             $delete = $this->createForm(DeleteFileType::class, $deleteFileRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.delete', array('fid' => $fid))
             ));
             $arrTwig['delete'] = $delete->createView();
 
+            //Share Files
             $share = $this->createForm(ShareFileType::class, $shareFileRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.share', array('fid' => $fid))
             ));
             $arrTwig['share'] = $share->createView();
 
+            //Deshare Files
             $editShare = $this->createForm(UpdateShareFileType::class, $updateShareFileRequest, array(
                 'action' => $this->generateUrl('learningcenter_files.share.edit', array('fid' => $fid))
             ));
@@ -158,7 +172,7 @@ class FilesController extends Controller
     }
 
     /**
-     * for the delete form
+     * Removes a file with the delete form of the filemanager
      *
      * @param $fid
      * @param Request $request
@@ -166,18 +180,24 @@ class FilesController extends Controller
      */
     public function deleteAction($fid, Request $request)
     {
+        //handle form request
         $deleteFileRequest = new DeleteFileRequest();
         $delete = $this->createForm(DeleteFileType::class, $deleteFileRequest);
         $delete->handleRequest($request);
 
         if ($delete->isSubmitted() && $delete->isValid())
         {
-            $id = $deleteFileRequest->getId();
+            //get file ids
+            $arrId = explode(",", $deleteFileRequest->getId());
 
-            $file = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
+            //get file entities from database
+            $files = $this->getDoctrine()->getRepository(File::class)->findBy(['id' => $arrId]);
 
-            $this->filemanager->removeFile($file);
-
+            //remove each file
+            foreach($files as $file)
+            {
+                $this->filemanager->removeFile($file);
+            }
         }
         return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
     }
@@ -188,19 +208,43 @@ class FilesController extends Controller
      * @param $fid
      * @return BinaryFileResponse|RedirectResponse
      */
-    public function downloadAction($fid)
+    public function downloadAction($fid, Request $request)
     {
         //Check if the User isn't granted
         if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
-            $objFile = FilesModel::findById($fid);
-            $displayName = $objFile->name;
-            $response = new BinaryFileResponse('../'.$objFile->path);
-            $response->headers->set ( 'Content-Type', 'text/plain' );
-            $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, $displayName );
-            return $response;
+            $downloadFileRequest = new DownloadFileRequest();
+            $download = $this->createForm(DownloadFileType::class, $downloadFileRequest);
+            $download->handleRequest($request);
 
+            if ($download->isSubmitted() && $download->isValid()) {
+                //get file ids
+                $arrId = explode(",", $downloadFileRequest->getId());
 
+                //get file entities from database
+                $files = $this->getDoctrine()->getRepository(File::class)->findBy(['id' => $arrId]);
+
+                //one file
+                if (count($files) === 1 && $files[0]->getType() == 'file')
+                {
+                    $file = $files[0];
+                    $displayName = $file->getName();
+                    $response = new BinaryFileResponse('../'.$file->getPath());
+                    $response->headers->set ( 'Content-Type', 'text/plain' );
+                    $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, $displayName );
+                    return $response;
+                } else {
+                    $zipname = $this->getDoctrine()->getRepository(File::class)->findOneByUuid($files[0]->getPid())->getName();
+                    $id = uniqid($zipname);
+                    $zip = $this->filemanager->createZip($files, $id);
+                    $response = new BinaryFileResponse('tmp/'.$id.'.zip');
+                    $response->headers->set ( 'Content-Type', 'application/zip' );
+                    $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, $zipname.'.zip' );
+                    return $response;
+                }
+            }
+
+            return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
         } else {
             return new RedirectResponse('learningcenter_login');
         }
@@ -220,10 +264,15 @@ class FilesController extends Controller
         $share->handleRequest($request);
         if ($share->isSubmitted() && $share->isValid())
         {
-            $file = $shareFileRequest->getFile();
+            //get file ids
+            $files = $shareFileRequest->getFile();
             $group = $shareFileRequest->getMemberGroups();
 
-            $this->filemanager->shareFile($file, $group);
+            //share each file
+            foreach($files as $file)
+            {
+                $this->filemanager->shareFile($file, $group);
+            }
 
         }
         return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
@@ -236,9 +285,14 @@ class FilesController extends Controller
         $editShare->handleRequest($request);
         if ($editShare->isSubmitted() && $editShare->isValid())
         {
-            $file = $updateShareFileRequest->getFile();
+            //get file ids
+            $files = $updateShareFileRequest->getFile();
 
-            $this->filemanager->updateShareFile($file);
+            //edit each share
+            foreach($files as $file)
+            {
+                $this->filemanager->updateShareFile($file);
+            }
         }
         return $this->redirectToRoute('learningcenter_files', array('fid' => $fid));
     }

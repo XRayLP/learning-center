@@ -28,5 +28,5 @@
 {% endblock %}
 
 {% block main %}
-    {{ include('@LearningCenter/modules/filemanager/filemanager.html.twig', {'files': files, 'breadcrumb': breadcrumb, 'usedSpace': usedSpace, 'upload': upload, 'create_directory': create_directory, 'delete': delete, 'share': share, 'share_edit': share_edit}) }}
+    {{ include('@LearningCenter/modules/filemanager/filemanager.html.twig', {'files': files, 'breadcrumb': breadcrumb, 'usedSpace': usedSpace, 'upload': upload, 'create_directory': create_directory, 'download': download, 'delete': delete, 'share': share, 'share_edit': share_edit}) }}
 {% endblock %}

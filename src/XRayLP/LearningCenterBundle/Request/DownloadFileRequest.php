@@ -8,26 +8,25 @@
 namespace App\XRayLP\LearningCenterBundle\Request;
 
 
-use App\XRayLP\LearningCenterBundle\Entity\File;
-
-class UpdateShareFileRequest
+class DownloadFileRequest
 {
-    private $file;
+    private $id;
 
     /**
-     * @return $file
+     * @return int
      */
-    public function getFile()
+    public function getId()
     {
-        return $this->file;
+        return $this->id;
     }
 
     /**
      * @param mixed $file
      */
-    public function setFile($file)
+    public function setId($file)
     {
-        $this->file = $file;
+        $this->id = $file;
     }
+
 
 }

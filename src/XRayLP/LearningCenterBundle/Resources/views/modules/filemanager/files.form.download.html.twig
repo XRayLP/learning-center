@@ -1,14 +1,14 @@
 {% extends '@LearningCenter/modules/widgets/modal.form.html.twig' %}
 
-{% set form = share %}
+{% set form = download %}
 
 {% block modal_header %}
-    Share File
+    Download File
 {% endblock %}
 
 {% block modal_body %}
-    {{ form_widget(form.file) }}
-    {{ form_widget(form.memberGroups) }}
+    <p>Do you really want to download the file/s?</p>
+    {{ form_widget(form.id) }}
 {% endblock %}
 
 {% block modal_footer %}

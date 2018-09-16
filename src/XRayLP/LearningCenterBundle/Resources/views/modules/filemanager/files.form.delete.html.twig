@@ -3,10 +3,11 @@
 {% set form = delete %}
 
 {% block modal_header %}
-    New Folder
+    Delete File
 {% endblock %}
 
 {% block modal_body %}
+    <p>Do you really want to delete this File?</p>
     {{ form_widget(form.id) }}
 {% endblock %}
 
