@@ -9,8 +9,8 @@
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
-    <link href="{{ asset('app.css') }}" rel="stylesheet" />
-    <script src="{{ asset('app.js') }}"></script>
+    <link href="{{ asset('js/app.css') }}" rel="stylesheet" />
+    <script src="{{ asset('js/app.js') }}"></script>
     {% block javascripts %}
     {% endblock %}
 </head>
@@ -42,7 +42,7 @@
                         <img class="lc-nav-thumbnail img-thumbnail rounded-circle" src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="memberDropdown">
-                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-fw"></i><span> Profile</span></a>
+                        <a class="dropdown-item" href="{{ url('lc_profile') }}"><i class="fas fa-user fa-fw"></i><span> Profile</span></a>
                         <a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i><span> Settings</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('learningcenter_logout') }}"><i class="fas fa-sign-out-alt fa-fw"></i><span> Logout</span></a>

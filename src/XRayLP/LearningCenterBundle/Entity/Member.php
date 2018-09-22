@@ -7,6 +7,10 @@
 
 namespace App\XRayLP\LearningCenterBundle\Entity;
 
+use App\XRayLP\LearningCenterBundle\Request\UpdateMemberRequest;
+use Contao\BackendPassword;
+use Contao\Encryption;
+use Contao\Password;
 use Contao\StringUtil;
 use Contao\System;
 use DateTime;
@@ -42,82 +46,82 @@ class Member
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $firstname = '';
+    protected $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $lastname = '';
+    protected $lastname;
 
     /**
      * @ORM\Column(type="string", length=11, options={"default":""})
      */
-    protected $dateOfBirth = '';
+    protected $dateOfBirth;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $gender= '';
+    protected $gender;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $company= '';
+    protected $company;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $street= '';
+    protected $street;
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    protected $postal= '';
+    protected $postal;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $city= '';
+    protected $city;
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $state= '';
+    protected $state;
 
     /**
      * @ORM\Column(type="string", length=2, options={"default":""})
      */
-    protected $country= '';
+    protected $country;
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $phone= '';
+    protected $phone;
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $mobile= '';
+    protected $mobile;
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $fax= '';
+    protected $fax;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $email= '';
+    protected $email;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $website= '';
+    protected $website;
 
     /**
      * @ORM\Column(type="string", length=5, options={"default":""})
      */
-    protected $language= '';
+    protected $language;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -127,97 +131,97 @@ class Member
     /**
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $login= '';
+    protected $login;
 
     /**
      * @ORM\Column(type="string", length=64, options={"default":""})
      */
-    protected $username= '';
+    protected $username;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $password= '';
+    protected $password;
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $assignDir= '';
+    protected $assignDir;
 
     /**
      * @ORM\Column(type="string", length=16, options={"default":""})
      */
-    protected $homeDir= '';
+    protected $homeDir;
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":""})
      */
-    protected $disable= '';
+    protected $disable;
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    protected $start= '';
+    protected $start;
 
     /**
      * @ORM\Column(type="string", length=10, options={"default":""})
      */
-    protected $stop= '';
+    protected $stop;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $dateAdded= '';
+    protected $dateAdded;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $lastLogin= '';
+    protected $lastLogin;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $currentLogin= '';
+    protected $currentLogin;
 
     /**
      * @ORM\Column(type="smallint", length=5, options={"default":"3"})
      */
-    protected $loginCount= '';
+    protected $loginCount;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $locked= '';
+    protected $locked;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $session= '';
+    protected $session;
 
     /**
      * @ORM\Column(type="integer", length=10, options={"default":"0"})
      */
-    protected $createdOn= '';
+    protected $createdOn;
 
     /**
      * @ORM\Column(type="string", length=32, options={"default":""})
      */
-    protected $activation= '';
+    protected $activation;
 
     /** c
      * @ORM\Column(type="string", length=1, options={"default":"0"})
      */
-    protected $avatar= '';
+    protected $avatar;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $cloudSpace= '';
+    protected $cloudSpace;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
-    protected $memberType= '';
+    protected $memberType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -921,4 +925,44 @@ class Member
 
         return $entityManager->findBy(array('groupId' => StringUtil::deserialize($this->groups)));
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->memberType == 'ROLE_ADMIN';
+    }
+
+    public function isPlanner(): bool
+    {
+        return $this->memberType == 'ROLE_PLANNER';
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->memberType == 'ROLE_TEACHER';
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->memberType == 'ROLE_STUDENT';
+    }
+
+    public function updateRequest(UpdateMemberRequest $memberRequest)
+    {
+        $this->setFirstname($memberRequest->getFirstname());
+        $this->setLastname($memberRequest->getLastname());
+        $this->setDateOfBirth($memberRequest->getDateOfBirth()->getTimestamp());
+        $this->setGender($memberRequest->getGender());
+        $this->setStreet($memberRequest->getStreet());
+        $this->setPostal($memberRequest->getPostal());
+        $this->setCity($memberRequest->getCity());
+        $this->setState($memberRequest->getState());
+        $this->setCountry($memberRequest->getCountry());
+        $this->setPhone($memberRequest->getPhone());
+        $this->setMobile($memberRequest->getMobile());
+        $this->setFax($memberRequest->getFax());
+        $this->setPassword(password_hash($memberRequest->getPassword(), PASSWORD_DEFAULT));
+
+    }
+
+
 }

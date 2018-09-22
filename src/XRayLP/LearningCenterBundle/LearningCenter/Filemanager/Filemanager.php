@@ -337,6 +337,23 @@ class Filemanager
         }
     }
 
+    public function removeShareFile(File $file, MemberGroup $memberGroup)
+    {
+        $file->removeSharedGroup($memberGroup);
+
+        $em = $this->doctrine->getManager();
+        $em->persist($file);
+        $em->flush();
+
+        if ($file->getType() == 'folder')
+        {
+            $childFiles = $this->doctrine->getRepository(File::class)->findBy(['pid' => $file->getUuid()]);
+            foreach ($childFiles as $childFile) {
+                $this->removeShareFile($childFile, $memberGroup);
+            }
+        }
+    }
+
     /**
      * @param File[] $files
      * @return File[] $files

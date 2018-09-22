@@ -44,7 +44,6 @@ class MemberEntityListener
 
         if ($entity instanceof Member)
         {
-            //$entity->setGroups($this->arrayCollectionToBlobString($entity->getGroups()));
 
         }
     }
@@ -121,7 +120,7 @@ class MemberEntityListener
      * returns a color code based on the user's gender
      * @return string
      */
-    public function getGenderColor(string $gender)
+    public function getGenderColor($gender)
     {
         switch ($gender)
         {

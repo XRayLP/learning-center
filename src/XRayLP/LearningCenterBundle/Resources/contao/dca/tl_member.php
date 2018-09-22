@@ -21,11 +21,11 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['cloudSpace'] = array(
         'GB'  => 'Gigabyte'
     ),
     'eval'      => array('rgxp'=>'digit', 'tl_class'=>'w50'),
-    'sql'       => "varchar(255) NOT NULL default ''"
+    'sql'       => "varchar(255) NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['groups1'] = array(
-    'sql'       => "varchar(255) NOT NULL default ''"
+    'sql'       => "varchar(255) NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['permissions'] = array(
@@ -61,5 +61,42 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['memberType'] = array(
 
 //fields
 $GLOBALS['TL_DCA']['tl_member']['fields']['avatar'] = array(
-    'sql'       => "char(1) NOT NULL default '0'"
+    'sql'       => "char(1) NULL default '0'"
 );
+
+//nullable fields
+$GLOBALS['TL_DCA']['tl_member']['fields']['tstamp']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['firstname']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['lastname']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['dateOfBirth']['sql'] = "varchar(11) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['gender']['sql'] = "varchar(32) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['company']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['street']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['postal']['sql'] = "varchar(32) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['city']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['state']['sql'] = "varchar(64) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['country']['sql'] = "varchar(2) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['phone']['sql'] = "varchar(64) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['mobile']['sql'] = "varchar(64) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['fax']['sql'] = "varchar(64) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['email']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['website']['sql'] = "varchar(255) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['language']['sql'] = "varchar(5) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['groups']['sql'] = "blob NULL";
+$GLOBALS['TL_DCA']['tl_member']['fields']['login']['sql'] = "char(1) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['username']['sql'] = 'varchar(64) BINARY NULL';
+$GLOBALS['TL_DCA']['tl_member']['fields']['password']['sql'] = "varchar(255) NOT NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['assignDir']['sql'] = "char(1) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['homeDir']['sql'] = "binary(16) NULL";
+$GLOBALS['TL_DCA']['tl_member']['fields']['disable']['sql'] = "char(1) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['start']['sql'] = "varchar(10) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['stop']['sql'] = "varchar(10) NULL default ''";
+$GLOBALS['TL_DCA']['tl_member']['fields']['dateAdded']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['lastLogin']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['currentLogin']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['loginCount']['sql'] = "smallint(5) unsigned NULL default '3'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['locked']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['session']['sql'] = "blob NULL";
+$GLOBALS['TL_DCA']['tl_member']['fields']['createdOn']['sql'] = "int(10) unsigned NULL default '0'";
+$GLOBALS['TL_DCA']['tl_member']['fields']['createdOn']['sql'] = "varchar(32) NULL default ''";
+

@@ -1,0 +1,16 @@
+{% extends '@LearningCenter/modules/widgets/modal.default.html.twig' %}
+
+{% block modal_header %}
+    Common Shares
+{% endblock %}
+
+{% block modal_body %}
+    <div class="files-shares"></div>
+    <div class="collapse" id="collapseAddShare">
+        <div class="card card-body">
+            {{ form_start(share) }}
+            {{ form_widget(share) }}
+            {{ form_end(share) }}
+        </div>
+    </div>
+{% endblock %}

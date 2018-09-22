@@ -1,3 +1,5 @@
 controllers:
-    resource: ../../src/Controller/
+    resource: ../../src/XRayLP/LearningCenterBundle/Controller/
     type: annotation
+    defaults:
+        _scope: frontend

@@ -8,12 +8,15 @@
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
 
+use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use App\XRayLP\LearningCenterBundle\Form\DownloadFileType;
 use App\XRayLP\LearningCenterBundle\Request\DownloadFileRequest;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FilesModel;
 use Contao\FrontendUser;
+use Doctrine\ORM\EntityManagerInterface;
 use http\Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -35,6 +38,9 @@ use App\XRayLP\LearningCenterBundle\Request\DeleteFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\ShareFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\UpdateShareFileRequest;
 use App\XRayLP\LearningCenterBundle\Request\UploadFileRequest;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use ZipArchive;
 
 class FilesController extends Controller
@@ -43,10 +49,13 @@ class FilesController extends Controller
 
     private $twig;
 
-    public function __construct(Filemanager $filemanager, \Twig_Environment $twig)
+    private $em;
+
+    public function __construct(Filemanager $filemanager, \Twig_Environment $twig, EntityManagerInterface $entityManager)
     {
         $this->filemanager = $filemanager;
         $this->twig = $twig;
+        $this->em = $entityManager->getRepository(File::class);
     }
 
     /**
@@ -322,5 +331,95 @@ class FilesController extends Controller
             'files' => $this->filemanager->loadFiles(),
         ));
         return new Response(json_encode($this->filemanager->loadFiles()));
+    }
+
+    /**
+     * @Route("/learningcenter/shares", methods={"GET", "POST"}, name="lc_shares", options={"expose"=true})
+     */
+    public function getShares(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $shares = [];
+
+            $ids = $request->get('file_ids');
+
+            $files = $this->em->findBy(['id' => $ids]);
+
+            //get common shares of several files
+            for ($i = 0; $i < count($files); $i++) {
+                $file = $files[$i];
+                if ($i === 0) {
+                    $shares = $file->getSharedGroups()->toArray();
+                    dump($shares);
+                } else {
+                    //file hasn't got any shares
+                    if ($file->getSharedGroups()->count() === 0) {
+                        $shares = [];
+                    } else {
+                        foreach ($shares as $key => $share) {
+                            foreach ($file->getSharedGroups()->toArray() as $group) {
+                                if ($group !== $share) {
+                                    unset($shares[$key]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //serialize
+            if ($shares) {
+                $encoders = [
+                    new JsonEncoder(),
+                ];
+                $normalizer = [
+                    (new ObjectNormalizer())
+                        ->setIgnoredAttributes(['members'])
+                    ,
+                ];
+                $serializer = new Serializer($normalizer, $encoders);
+
+                $data = $serializer->serialize($shares, 'json');
+
+                return new JsonResponse($data, 200, [], true);
+            }
+        }
+
+        return new JsonResponse([
+           'type' => 'error',
+           'message' => 'AJAX only'
+        ]);
+    }
+
+    /**
+     * @Route("/learningcenter/shares/remove", methods={"GET", "POST"}, name="lc_shares_remove", options={"expose"=true})
+     */
+    public function removeShare(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $emMemberGroup = $this->getDoctrine()->getRepository(MemberGroup::class);
+
+            $file_ids = $request->get('file_ids');
+            $share_id = $request->get('share_id');
+
+            $files = $this->em->findBy(['id' => $file_ids]);
+            $share = $emMemberGroup->findOneBy(['id' => $share_id]);
+
+            foreach ($files as $file)
+            {
+                $this->filemanager->removeShareFile($file, $share);
+            }
+
+            return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Share was removed!'
+            ]);
+
+        }
+
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
     }
 }

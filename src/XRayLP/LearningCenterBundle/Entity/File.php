@@ -402,6 +402,12 @@ class File
             }
         }
         $this->shared_groups = serialize($arrGroups);
+
+        if (empty($arrGroups))
+        {
+            $this->setShared(false);
+            $this->setSharedTstamp(null);
+        }
     }
 
     public function addSharedGroup(MemberGroup $memberGroup)
@@ -420,6 +426,11 @@ class File
         }
 
         $this->shared_groups = serialize($arrGroups);
+
+        if (count($arrGroups) === 1){
+            $this->setShared(true);
+            $this->setSharedTstamp(time());
+        }
     }
 
     /**
