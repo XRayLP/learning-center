@@ -74,11 +74,6 @@ services:
     ###########
     #Security #
     ###########
-    learningcenter.security.voter.project:
-        class: App\XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectVoter
-        tags:
-            - { name: security.voter }
-
     learningcenter.security.voter.project_member:
         class: App\XRayLP\LearningCenterBundle\Security\Authorization\Voter\ProjectMemberVoter
         tags:
@@ -94,11 +89,12 @@ services:
     ##########
 
 
-
     learningcenter.listener.project_event_listener:
         class: App\XRayLP\LearningCenterBundle\EventListener\ProjectEventListener
         arguments:
           - '@doctrine.orm.default_entity_manager'
+          - '@session.flash_bag'
+          - '@translator'
         tags:
             - { name: kernel.event_listener, event: project.create.success, method: onProjectCreateSuccess }
 

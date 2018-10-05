@@ -105,7 +105,7 @@ class ProjectMemberVoter extends Voter
 
     private function canPromoteToLeader(Project $project, Member $member, Member $memberToPromote)
     {
-        if ($this->isLeader($project, $member)) {
+        if ($this->isLeader($project, $member) && $member !== $memberToPromote) {
             return true;
         } else {
             return false;
@@ -114,10 +114,15 @@ class ProjectMemberVoter extends Voter
 
     private function canRemoveMember(Project $project, Member $member, Member $memberToRemove)
     {
-        if ($this->isLeader($project, $member)) {
-            return true;
-        } elseif ($this->isAdmin($project, $member) && !$this->isAdmin($project, $memberToRemove) && !$this->isLeader($project, $memberToRemove)) {
-            return true;
+        if ($member !== $memberToRemove) {
+            if ($this->isLeader($project, $member)) {
+                return true;
+            } elseif ($this->isAdmin($project, $member) && !$this->isAdmin($project, $memberToRemove) && !$this->isLeader($project, $memberToRemove)) {
+                return true;
+
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

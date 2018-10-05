@@ -1,26 +1,11 @@
 {% extends '@LearningCenter/modules/project/project_base.html.twig' %}
+{% trans_default_domain 'project' %}
 
 {% block project %}
-    {% for error in errors %}
-        <div class="alert alert-warning alert-dismissible">
-            {% for message in error.message %}
-                {% if loop.first == false %}
-                    <hr>
-                {% endif %}
-                {% if message.link is defined %}
-                    <a href="{{ message.link }}">
-                {% endif %}
-                <p class="{% if loop.first == false %}mb-0{% endif %}">{{ message.message }}</p>
-                {% if message.link is defined %}
-                    </a>
-                {% endif %}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            {% endfor %}
+    <div class="card">
+        <div class="card-header">{% trans %}project.description{% endtrans %}</div>
+        <div class="card-body">
+            <div class="card-text">{{ project.description }}</div>
         </div>
-    {% endfor %}
-    <div>
-        {{ project.description }}
     </div>
 {% endblock %}

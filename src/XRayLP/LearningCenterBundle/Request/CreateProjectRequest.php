@@ -7,6 +7,8 @@
 
 namespace App\XRayLP\LearningCenterBundle\Request;
 
+use App\XRayLP\LearningCenterBundle\Entity\Member;
+use App\XRayLP\LearningCenterBundle\Entity\Project;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class CreateProjectRequest
@@ -23,6 +25,8 @@ final class CreateProjectRequest
     private $description;
 
     private $leader;
+
+    private $public;
 
     /**
      * @return mixed
@@ -72,9 +76,21 @@ final class CreateProjectRequest
         $this->leader = $leader;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPublic()
+    {
+        return $this->public;
+    }
 
-
-
+    /**
+     * @param mixed $public
+     */
+    public function setPublic($public): void
+    {
+        $this->public = $public;
+    }
 
 
 }

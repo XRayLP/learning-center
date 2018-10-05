@@ -14,27 +14,50 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CatalogController extends Controller
 {
+
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * Catalog Timeline shows Shared Files for the Member
+     *
+     * TODO: Delete one's own Shares
+     *
+     * @param Catalog $catalog
+     * @param TokenStorageInterface $tokenStorage
+     * @return RedirectResponse|Response
+     */
     public function mainAction(Catalog $catalog, TokenStorageInterface $tokenStorage)
     {
         //Check if the User isn't granted
-        if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
+        if ($this->isGranted('ROLE_MEMBER'))
         {
-
-            //$files = \System::getContainer()->get('learningcenter.files')->createCatalogTimeline($User);
-
             //creates the catalog object
             $catalog->setMember($this->getDoctrine()->getRepository(Member::class)->findOneById($tokenStorage->getToken()->getUser()->id));
             $files = $catalog->loadFiles();
-            $errors = $catalog->getErrors();
 
-
+            //no shared files exist
+            if (count($files) === 0){
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    array(
+                        'alert' => 'danger',
+                        'title' => '',
+                        'message' => $this->translator->trans('catalog.no.files')
+                    )
+                );
+            }
 
             $rendered = $this->renderView('@LearningCenter/modules/catalog_timeline.html.twig', array(
                 'files' => $files,
-                'errors' => $errors
             ));
             return new Response($rendered);
 

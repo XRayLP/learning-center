@@ -60,7 +60,7 @@ class MenuBuilder
 
         $menu->addChild('projects', array(
             'label' => 'Projects',
-            'route' => 'learningcenter_projects',
+            'route' => 'lc_projects_list',
         ))->setAttribute('icon', 'fas fa-project-diagram');
 
         $menu->addChild('lists', array(
@@ -84,25 +84,25 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes(array('class' => 'nav nav-tabs'));
 
-        $routeParameters = array('alias' => \System::getContainer()->get('request_stack')->getCurrentRequest()->get('alias'));
+        $routeParameters = array('alias' => $this->requestStack->getCurrentRequest()->get('id'));
 
         //adding all menu items
         $menu->addChild('projects_home', array(
             'label' => 'Home',
-            'route' => 'learningcenter_projects.details',
-            'routeParameters' => $routeParameters,
+            'route' => 'lc_projects_detail',
+            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
         ))->setAttribute('icon', 'fas fa-home');
 
         $menu->addChild('projects_members', array(
             'label' => 'Members',
-            'route' => 'learningcenter_projects.details.members',
-            'routeParameters' => $routeParameters,
+            'route' => 'lc_projects_members',
+            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
         ))->setAttribute('icon', 'fas fa-book');
 
         $menu->addChild('projects_events', array(
             'label' => 'Events',
-            'route' => 'learningcenter_projects.details.events',
-            'routeParameters' => $routeParameters,
+            'route' => 'lc_projects_events',
+            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
         ))->setAttribute('icon', 'fas fa-hdd');
 
         $menu->addChild('projects_chat', array(

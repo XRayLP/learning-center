@@ -10,6 +10,7 @@ namespace App\XRayLP\LearningCenterBundle\Security\Authorization\Voter;
 
 use Contao\FrontendUser;
 use Contao\StringUtil;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
@@ -17,14 +18,27 @@ use App\XRayLP\LearningCenterBundle\Entity\Project;
 
 class ProjectVoter extends Voter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
-    const CREATE = 'create';
-    const LEAD = 'lead';
-    const CONFIRM = 'confirm';
-    const ISADMIN = 'isAdmin';
-    const ISLEADER = 'isLeader';
-    const ISMEMBER = 'isMember';
+    private $memberRepository;
+
+    public function __construct(RegistryInterface $doctrine)
+    {
+        $this->memberRepository = $doctrine->getRepository(Member::class);
+    }
+
+    //don't need an Project Object
+    const USE = 'project';
+    const CREATE = 'project.create';
+    const LEAD = 'project.lead';
+    const LIST_ALL = 'project.list.all';
+
+    //need Project Object
+    const VIEW = 'project.view';
+    const EDIT = 'project.edit';
+    const CONFIRM = 'project.confirm';
+
+    //project events
+    const EVENT_ADD = 'project.event.add';
+    const EVENT_REMOVE = 'project.event.remove';
 
 
 
@@ -38,13 +52,14 @@ class ProjectVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::CREATE, self::LEAD, self::CONFIRM))){
+        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::CREATE, self::LEAD, self::CONFIRM, self::EVENT_ADD, self::EVENT_REMOVE))){
             return false;
         }
 
-        if (!$subject instanceof Project){
+        if (!$subject instanceof Project && !in_array($attribute, [self::USE, self::CREATE, self::LEAD, self::LIST_ALL])){
             return false;
         }
+
         return true;
     }
 
@@ -64,29 +79,51 @@ class ProjectVoter extends Voter
         if (!$user instanceof FrontendUser) {
             return false;
         }
-        $member = \System::getContainer()->get('doctrine')->getRepository(Member::class)->findOneById($user->id);
+        $member = $this->memberRepository->findOneById($user->id);
 
         $project = $subject;
 
         switch ($attribute){
+            case self::USE:
+                return $this->canUse($member);
+            case self::CREATE:
+                return $this->canCreate($member);
+            case self::LEAD:
+                return $this->canLead($member);
+            case self::LIST_ALL:
+                return $this->canListAll($member);
             case self::VIEW:
                 return $this->canView($project, $member);
             case self::EDIT:
                 return $this->canEdit($project, $member);
-            case self::CREATE:
-                return $this->canCreate($project, $member);
-            case self::LEAD:
-                return $this->canLead($project, $member);
             case self::CONFIRM:
                 return $this->canConfirm($project, $member);
-            case self::ISADMIN:
-                return $this->isAdmin($project, $member);
-            case self::ISLEADER:
-                return $this->isLeader($project, $member);
-            case self::ISMEMBER:
-                return $this->isMember($project, $member);
+            case self::EVENT_ADD:
+                return $this->canAddEvent($project, $member);
+            case self::EVENT_REMOVE:
+                return $this->canRemoveEvent($project, $member);
         }
         throw new \LogicException('This code should not be reached!');
+    }
+
+    private function canUse(Member $member)
+    {
+        return $member instanceof Member;
+    }
+
+    private function canCreate(Member $member)
+    {
+        return true;
+    }
+
+    private function canLead(Member $member)
+    {
+        return $member->isTeacher() || $member->isPlanner() || $member->isAdmin();
+    }
+
+    private function canListAll(Member $member)
+    {
+        return $member->isAdmin();
     }
 
     private function canView(Project $project, Member $member)
@@ -99,20 +136,23 @@ class ProjectVoter extends Voter
         return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
     }
 
-    private function canLead(Project $project, Member $member)
-    {
-        return $member->getMemberType() == 'ROLE_TEACHER';
-    }
-
-    private function canCreate(Project $project, Member $member)
-    {
-        return $member->getMemberType() == ('ROLE_TEACHER' || 'ROLE_STUDENT');
-    }
-
     private function canConfirm(Project $project, Member $member)
     {
         return $this->isLeader($project, $member);
     }
+
+    private function canAddEvent(Project $project, Member $member)
+    {
+        return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
+    }
+
+    private function canRemoveEvent(Project $project, Member $member)
+    {
+        return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
+    }
+
+
+    //Helper Functions
 
     private function isLeader(Project $project, Member $member)
     {

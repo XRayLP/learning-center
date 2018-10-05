@@ -1,0 +1,44 @@
+{% extends '@LearningCenter/modules/project/project_base.html.twig' %}
+{% trans_default_domain 'project' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#user_search').on("keyup", function () {
+                var value = $(this).val();
+                var url = '{{ (path('learningcenter_members.ajax.search')) }}';
+                var group = '{{ project.groupId.id }}';
+                //members.searchUsers(value, url, group);
+                members.getUsers(value, {{ project.id }})
+            });
+
+        });
+
+
+    </script>
+
+{% endblock %}
+
+{% block project %}
+
+    <h3 class="text-center">{% trans %}project.members.add.heading{% endtrans %}</h3>
+    <form>
+        <input id="user_search" type="text" class="form-control" size="30">
+        <table class="table table-striped mt-4">
+            <thead>
+            <th>#</th>
+            <th>{% trans %}project.members.firstname{% endtrans %}</th>
+            <th>{% trans %}project.members.lastname{% endtrans %}</th>
+            <th>{% trans %}project.members.add{% endtrans %}</th>
+            </thead>
+            <tbody id="usertable_body">
+
+            </tbody>
+        </table>
+    </form>
+
+    <a class="btn btn-outline-secondary" href="{{ url('lc_projects_members', {'id': project.id}) }}">{% trans %}project.back{% endtrans %}</a>
+
+{% endblock %}
+

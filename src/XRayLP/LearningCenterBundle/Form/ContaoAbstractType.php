@@ -10,10 +10,13 @@ namespace App\XRayLP\LearningCenterBundle\Form;
 
 use Contao\System;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContaoAbstractType extends AbstractType
 {
+
     //configures the standard Request Token for Contao
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -29,5 +32,4 @@ class ContaoAbstractType extends AbstractType
     {
         return null;
     }
-
 }

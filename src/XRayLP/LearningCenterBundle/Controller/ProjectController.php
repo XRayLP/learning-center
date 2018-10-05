@@ -8,23 +8,22 @@
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
 
+use App\XRayLP\LearningCenterBundle\Event\ProjectEventEvent;
+use App\XRayLP\LearningCenterBundle\Event\ProjectMemberEvent;
 use Contao\FrontendUser;
-use Contao\RequestToken;
-use Contao\System;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Translation\TranslatorInterfaceInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 use App\XRayLP\LearningCenterBundle\Entity\Calendar;
 use App\XRayLP\LearningCenterBundle\Entity\Event;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
@@ -32,73 +31,67 @@ use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use App\XRayLP\LearningCenterBundle\Entity\Project;
 use App\XRayLP\LearningCenterBundle\Event\Events;
 use App\XRayLP\LearningCenterBundle\Event\ProjectEvent;
-use App\XRayLP\LearningCenterBundle\Form\ChooseUserType;
-use App\XRayLP\LearningCenterBundle\Form\ConfirmProjectType;
 use App\XRayLP\LearningCenterBundle\Form\CreateEventType;
 use App\XRayLP\LearningCenterBundle\Form\CreateProjectType;
 use App\XRayLP\LearningCenterBundle\Form\UpdateProjectType;
-use App\XRayLP\LearningCenterBundle\LearningCenter\Member\MemberGroupManagement;
-use App\XRayLP\LearningCenterBundle\LearningCenter\Member\MemberManagement;
 use App\XRayLP\LearningCenterBundle\LearningCenter\Project\ProjectMember;
-use App\XRayLP\LearningCenterBundle\LearningCenter\Project\ProjectMemberManagement;
 use App\XRayLP\LearningCenterBundle\Request\CreateEventRequest;
 use App\XRayLP\LearningCenterBundle\Request\CreateProjectRequest;
 use App\XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
-use App\XRayLP\LearningCenterBundle\Request\UpdateUserGroupRequest;
+use Symfony\Component\Validator\Constraints\Time;
 
 class ProjectController extends AbstractController
 {
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
-    protected $translator;
+    private $translator;
 
-    protected $csrfTokenManager;
+    private $entityManager;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, EntityManagerInterface $entityManager)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
-        $this->csrfTokenManager = $csrfTokenManager;
+        $this->entityManager = $entityManager;
     }
 
 
     /**
-     * A Project List
+     * List all Projects of the current User.
+     *
+     * @Route("/learningcenter/projects", name="lc_projects_list")
      *
      * @return RedirectResponse|Response
      */
-    public function mainAction()
+    public function listProjects()
     {
         //Check if the User isn't granted
-        if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
+        if ($this->isGranted('ROLE_MEMBER'))
         {
-            $errors = array();
             $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => FrontendUser::getInstance()->id));
-            $objProjects = $member->getProjects();
-            $projects = array();
+            $projects = $member->getProjects();
 
-            if ($objProjects !== null) {
-                foreach ($objProjects as $objProject) {
-                    $url = System::getContainer()->get('router')->generate('learningcenter_projects.details', array('alias' => $objProject->getId()));
-
-                    $projects[] = array(
-                        'id' => $objProject->getId(),
-                        'name' => $objProject->getName(),
-                        'description' => $objProject->getDescription(),
-                        'url' => $url,
-                        'confirmed' => $objProject->getConfirmed()
-                    );
-                }
+            //no projects
+            if (empty($projects)) {
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    array(
+                        'alert' => 'info',
+                        'title' => '',
+                        'message' => $this->translator->trans('project.no.projects')
+                    )
+                );
+                $showProjects = false;
             } else {
-                array_push($errors, "You haven't got any projects!");
+                $showProjects = true;
             }
 
-            //Twig
 
+            //Twig
             $rendered = $this->renderView('@LearningCenter/modules/project_list.html.twig',
                 [
                     'projects'  => $projects,
-                    'errors'    => $errors
+                    'showProjects' => $showProjects
                 ]
             );
             return new Response($rendered);
@@ -110,246 +103,441 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * Project Details
+     * Form for creating an Project.
      *
-     * @param $alias
+     * @Route("/learningcenter/projects/create", name="lc_projects_create")
+     *
+     * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function detailAction($alias)
+    public function createProject(Request $request)
     {
+        //check whether user is granted
+        if ($this->isGranted('ROLE_MEMBER')) {
+            //check users permission to create projects
+            if ($this->isGranted('project.create')) {
 
-        $errors = array();
-        $objProject = $this->getDoctrine()->getRepository(Project::class)->findOneBy(array('id' => $alias));
-        $this->denyAccessUnlessGranted('view', $objProject);
+                $project = new Project();
+                $createProjectRequest = new CreateProjectRequest();
 
-        //all project variables
-        $project = array(
-            'creation' => $objProject->getTstamp(),
-            'name' => $objProject->getName(),
-            'description' => $objProject->getDescription(),
-        );
+                //Form Creation
+                $form = $this->createForm(CreateProjectType::class, $createProjectRequest);
+                if ($this->isGranted('lead', $project)){
+                    $form->remove('leader');
+                }
+                $form->handleRequest($request);
 
-        //confirm warning
-        if (!$objProject->getConfirmed())
-        {
-            $errors['error_confirm']['message']['message1']['message'] = $this->translator->trans('project.need.confirm');
-            if ($this->isGranted('confirm', $objProject)) {
-                $errors['error_confirm']['message']['message2'] = array(
-                    'message' => $this->translator->trans('project.confirm.now'),
-                    'link' => $this->generateUrl('learningcenter_projects.confirm', ['alias' => $objProject->getId()]),
+                //Form Handle after Submit
+                if($form->isSubmitted() && $form->isValid()){
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $currentUser = $this->getDoctrine()->getRepository(Member::class)->findOneById($this->getUser()->id);
+
+                    //Project Entity
+                    $project = new Project();
+                    $project->setName($createProjectRequest->getName());
+                    $project->setDescription($createProjectRequest->getDescription());
+                    $project->setPublic($createProjectRequest->getPublic());
+                    //user is leader when he can lead or the chosen teacher will be leader
+                    if ($this->isGranted('project.lead')){
+                        $project->setLeader($currentUser);
+                        $project->setConfirmed(1);
+                    } else {
+                        $project->setLeader($createProjectRequest->getLeader());
+                        $project->addAdmin($currentUser);
+                        $project->setConfirmed(0);
+                    }
+
+                    //creates new group for the project
+                    $group = new MemberGroup();
+                    $group->setTstamp(time());
+                    $group->setName($project->getName());
+                    $group->setGroupType(4);
+                    $entityManager->persist($group);
+                    $entityManager->flush();
+
+                    //save group in db
+                    $group->addMember($currentUser);
+                    if (!$this->isGranted('project.lead', $project)) {
+                        $group->addMember($createProjectRequest->getLeader());
+                    }
+
+                    //save project with group
+                    $project->setGroupId($group);
+                    $entityManager->persist($project);
+                    $entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_CREATE_SUCCESS_EVENT, new ProjectEvent($project));
+
+                    return $this->redirectToRoute('lc_projects_detail', ['id' => $project->getId()]);
+                }
+
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_create.html.twig',
+                    [
+                        'form'  => $form->createView(),
+                    ]
                 );
+
+                return new Response($rendered);
+
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
             }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * Project Details
+     *
+     * @Route("/learningcenter/projects/{id}", name="lc_projects_detail", requirements={"id"="\d+"})
+     *
+     * @param Project $project
+     * @return RedirectResponse|Response
+     */
+    public function projectDetails(Project $project)
+    {
+        if ($this->isGranted('ROLE_MEMBER'))
+        {
+            if ($this->isGranted('project.view', $project)) {
+
+                $errors = array();
+
+                //confirm warning
+                if (!$project->getConfirmed())
+                {
+                    $message = ($this->isGranted('project.confirm', $project) ? $this->translator->trans('project.confirm.now') : $this->translator->trans('project.need.confirm'));
+                    $this->get('session')->getFlashBag()->add(
+                        'notice',
+                        array(
+                            'alert' => 'info',
+                            'title' => '',
+                            'message' => $this->translator->trans('project.need.confirm')
+                        )
+                    );
+                }
+
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_details.html.twig',
+                    [
+                        'project' => $project,
+                    ]
+                );
+
+                return new Response($rendered);
+
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
 
-
-        $rendered = $this->renderView('@LearningCenter/modules/project/project_details.html.twig',
-            [
-                'project' => $project,
-                'errors' => $errors,
-            ]
-        );
-
-        return new Response($rendered);
     }
 
     /**
      * Project Members
      *
-     * @param $alias
+     * @Route("/learningcenter/projects/{id}/members", name="lc_projects_members", requirements={"id"="\d+"})
+     *
+     * @param Project $project
      * @return RedirectResponse|Response
      */
-    public function membersAction($alias)
+    public function projectMembers(Project $project)
     {
+        if ($this->isGranted('ROLE_MEMBER')){
+            if ($this->isGranted('project.view', $project))
+            {
+                $members = $project->getGroupId()->getMembers();
+                $projectMembers = array();
 
-        $objProject = $this->getDoctrine()->getRepository(Project::class)->findOneBy(array('id' => $alias));
-        $this->denyAccessUnlessGranted('view', $objProject);
+                //create project Member Object for twig view
+                foreach ($members as $member)
+                {
+                    $projectMembers[] = new ProjectMember($project, $member);
+                }
 
-        $projectMemberManagement = new ProjectMemberManagement($objProject);
-        $objMembers = $objProject->getGroupId()->getMembers();
+                $this->sortMembersByNameAndRank($projectMembers);
 
-        //member table
-        foreach ($objMembers as $objMember) {
-            if ($objMember instanceof Member) {
-                $memberManagement = new MemberManagement($objMember);
-                $options = array();
-
-                $projectMember = new ProjectMember($objProject, $objMember);
-
-                $options['goto'] = array(
-                    'url'   =>  $this->generateUrl('learningcenter_user.details', ['username' => $objMember->getUsername()]),
-                    'label' =>  $this->translator->trans('project.members.options.goto'),
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_members.html.twig',
+                    [
+                        'project'           => $project,
+                        'projectMembers'    => $projectMembers,
+                    ]
                 );
 
-                if ($this->isGranted('project.promoteToLeader', $projectMember)) {
-                    $options['promoteLeader'] = array(
-                        'url'   =>  $this->generateUrl('learningcenter_projects.members.promote.leader', ['project' => $objProject->getId(), 'member' => $objMember->getId()]),
-                        'label' =>  $this->translator->trans('project.members.options.promote.leader'),
-                    );
-                }
-                if ($this->isGranted('project.promoteToAdmin', $projectMember)) {
-                    $options['promoteAdmin'] = array(
-                        'url'   =>  $this->generateUrl('learningcenter_projects.members.promote.admin', ['project' => $objProject->getId(), 'member' => $objMember->getId()]),
-                        'label' =>  $this->translator->trans('project.members.options.promote.admin'),
-                    );
-                }
-                if ($this->isGranted('project.degradeToMember', $projectMember)) {
-                    $options['degradeMember'] = array(
-                        'url'   =>  $this->generateUrl('learningcenter_projects.members.degrade.member', ['project' => $objProject->getId(), 'member' => $objMember->getId()]),
-                        'label' =>  $this->translator->trans('project.members.options.degrade.member'),
-                    );
-                }
-                if ($this->isGranted('project.removeMember', $projectMember)) {
-                    $options['remove'] = array(
-                        'url'   =>  $this->generateUrl('learningcenter_projects.members.remove', ['project' => $objProject->getId(), 'member' => $objMember->getId()]),
-                        'label' =>  $this->translator->trans('project.members.options.remove'),
-                    );
-                }
+                return new Response($rendered);
 
-                $members[] = array(
-                    'firstname' => $objMember->getFirstname(),
-                    'lastname' => $objMember->getLastname(),
-                    'url' => '',
-                    'avatar' => $memberManagement->getAvatar(),
-                    'id' => $objMember->getId(),
-                    'isLeader' => $projectMemberManagement->isLeader($objMember),
-                    'isAdmin' => $projectMemberManagement->isAdmin($objMember),
-                    'options' => $options,
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * Add new Members to a Project
+     *
+     * @Route("/learningcenter/projects/{id}/members/add", name="lc_projects_members_add", requirements={"id"="\d+"})
+     *
+     * @param Project $project
+     * @return RedirectResponse|Response
+     */
+    public function projectMembersAddInterface(Project $project)
+    {
+        if ($this->isGranted('ROLE_MEMBER')){
+            if ($this->isGranted('project.view', $project))
+            {
+
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_members_add.html.twig',
+                    [
+                        'project'           => $project,
+                    ]
                 );
+
+                return new Response($rendered);
+
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
             }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * Searches for Members and returns them as an ajax request.
+     *
+     * @Route("/learningcenter/projects/{id}/members/get", methods={"POST", "GET"}, name="lc_projects_members_get", options={"expose"=true})
+     * @param Project $project
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMembers(Project $project, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getRepository(Member::class);
+            $projectMembers = [];
+
+            $phrase = $request->get('phrase');
+
+            //the keyword '#' returns all users
+            if ($phrase == '#') {
+                $members = $em->findAll();
+            } else {
+                $members = $em->findAllLike($phrase);
+            }
+
+            foreach ($members as $member)
+            {
+                $projectMembers[] = new ProjectMember($project, $member);
+            }
+
+            if (!empty($projectMembers)) {
+                $encoders = [
+                    new JsonEncoder(),
+                ];
+                $normalizer = [
+                    (new ObjectNormalizer())
+                        ->setIgnoredAttributes([
+                            'homeDir', 'groups', 'password', 'activation', 'permissions', 'projects', 'session', 'start', 'stop'
+                        ])
+
+                ];
+                $serializer = new Serializer($normalizer, $encoders);
+
+                $data = $serializer->serialize($projectMembers, 'json');
+
+                return new JsonResponse($data, 200, [], true);
+            }
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'TEST',
+            ]);
         }
 
-        //sort
-        $aIndex = 1;
-        $lIndex = 0;
-        //sort by type (admin/leader/member)
-        for ($i=0; $i < count($members); $i++) {
-            if ($members[$i]['isLeader'] == true) {
-                $tmp = $members[$lIndex];
-                $members[$lIndex] = $members[$i];
-                $members[$i] = $tmp;
-            } elseif ($members[$i]['isAdmin'] == true) {
-                if ($aIndex == $i) {
-                    $tmp = $members[$aIndex];
-                    $members[$aIndex] = $members[$i];
-                    $members[$i] = $tmp;
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only',
+        ]);
+    }
+
+
+    /**
+     * @Route("/learningcenter/projects/{id}/members/remove/{member_id}", name="lc_projects_members_remove")
+     * @Entity("member", expr="repository.find(member_id)")
+     *
+     * @param Project $project
+     * @param Member $member
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function projectMembersRemove(Project $project, Member $member, Request $request)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                $projectMember = new ProjectMember($project, $member);
+                dump($projectMember);
+                if ($this->isGranted('project.removeMember', $projectMember))
+                {
+                    //removing member is admin, then delete him too
+                    if ($projectMember->isAdmin())
+                    {
+                        $project->removeAdmin($member);
+                    }
+                    $project->getGroupId()->removeMember($member);
+
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_MEMBERS_REMOVE_SUCCESS_EVENT, (new ProjectMemberEvent($project, $member)));
                 }
-                $aIndex++;
+                return $this->redirectToRoute('lc_projects_members', ['id' => $project->getId()]);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
             }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
+    }
 
-        //sort the admins
-        for ($i=$lIndex+1; $i < $aIndex; $i++) {
-            $min = $i;
-            for($a=$i; $a < count($members); $a++) {
-                if ($members[$a]['lastname'] < $members[$min]['lastname']) {
-                    $min = $a;
+
+    /**
+     * @Route("/learningcenter/projects/{id}/members/promoteAdmin/{member_id}", name="lc_projects_members_promote_admin")
+     * @Entity("member", expr="repository.find(member_id)")
+     *
+     * @param Project $project
+     * @param Member $member
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function projectMembersPromoteToAdmin(Project $project, Member $member, Request $request)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                $projectMember = new ProjectMember($project, $member);
+                dump($projectMember);
+                if ($this->isGranted('project.promoteToAdmin', $projectMember))
+                {
+                    $project->addAdmin($member);
+
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_MEMBERS_PROMOTE_ADMIN_SUCCESS_EVENT, (new ProjectMemberEvent($project, $member)));
                 }
+                return $this->redirectToRoute('lc_projects_members', ['id' => $project->getId()]);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
             }
-            $tmp = $members[$i];
-            $members[$i] = $members[$min];
-            $members[$min] = $tmp;
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
+    }
 
-        //sort the members
-        for ($i=$aIndex; $i < count($members); $i++) {
-            $min = $i;
-            for($a=$i; $a < count($members); $a++) {
-                if ($members[$a]['lastname'] < $members[$min]['lastname']) {
-                    $min = $a;
+    /**
+     * @Route("/learningcenter/projects/{id}/members/promoteLeader/{member_id}", name="lc_projects_members_promote_leader")
+     * @Entity("member", expr="repository.find(member_id)")
+     *
+     * @param Project $project
+     * @param Member $member
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function projectMembersPromoteToLeader(Project $project, Member $member, Request $request)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                $projectMember = new ProjectMember($project, $member);
+                dump($projectMember);
+                if ($this->isGranted('project.promoteToLeader', $projectMember))
+                {
+                    $leader = $project->getLeader();
+                    $project->setLeader($member);
+                    $project->addAdmin($leader);
+
+                    //removing member is admin, then delete him too
+                    if ($projectMember->isAdmin())
+                    {
+                        $project->removeAdmin($member);
+                    }
+
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_MEMBERS_PROMOTE_LEADER_SUCCESS_EVENT, (new ProjectMemberEvent($project, $member)));
                 }
+                return $this->redirectToRoute('lc_projects_members', ['id' => $project->getId()]);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
             }
-            $tmp = $members[$i];
-            $members[$i] = $members[$min];
-            $members[$min] = $tmp;
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
-
-        //all project variables
-        $project = array(
-            'id' => $objProject->getId(),
-            'group' => $objProject->getGroupId(),
-            'name' => $objProject->getName(),
-            'members' => $members
-        );
-
-        $canEdit = $this->isGranted('edit', $objProject);
-
-
-        $rendered = $this->renderView('@LearningCenter/modules/project/project_members.html.twig',
-            [
-                'project' => $project,
-                'canEdit' => $canEdit,
-            ]
-        );
-
-        return new Response($rendered);
     }
 
-    public function removeMemberAction($project, $member, Request $request)
+    /**
+     * @Route("/learningcenter/projects/{id}/members/degrade/{member_id}", name="lc_projects_members_degrade")
+     * @Entity("member", expr="repository.find(member_id)")
+     *
+     * @param Project $project
+     * @param Member $member
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function projectMembersDegrade(Project $project, Member $member, Request $request)
     {
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($project);
-        $member = $this->getDoctrine()->getRepository(Member::class)->findOneById($member);
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                $projectMember = new ProjectMember($project, $member);
+                if ($this->isGranted('project.degradeToMember', $projectMember))
+                {
 
-        if ($this->isGranted('isAdmin', $project))
-        {
-            $project->removeAdmin($member);
+                    $project->removeAdmin($member);
+
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_MEMBERS_DEGRADE_SUCCESS_EVENT, (new ProjectMemberEvent($project, $member)));
+                }
+                return $this->redirectToRoute('lc_projects_members', ['id' => $project->getId()]);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
-        $project->getGroupId()->removeMember($member);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirect($request->headers->get('referer'));
     }
 
-    public function promoteToAdminAction($project, $member, Request $request)
+    /**
+     * @Route("/learningcenter/projects/{id}/members/add/{member_id}", name="lc_projects_member_add", options={"expose"=true})
+     * @Entity("member", expr="repository.find(member_id)")
+     *
+     * @param Project $project
+     * @param Member $member
+     * @return RedirectResponse
+     */
+    public function projectMembersAdd(Project $project, Member $member)
     {
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($project);
-        $member = $this->getDoctrine()->getRepository(Member::class)->findOneById($member);
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                if (true)
+                {
+                    $member->addGroup($project->getGroupId());
 
-        $project->addAdmin($member);
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirect($request->headers->get('referer'));
-    }
-
-    public function promoteToLeaderAction($project, $member, Request $request)
-    {
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($project);
-        $member = $this->getDoctrine()->getRepository(Member::class)->findOneById($member);
-
-        $leader = $project->getLeader();
-        $project->setLeader($member);
-        $project->addAdmin($leader);
-        if ($this->isGranted('isAdmin', $project))
-        {
-            $project->removeAdmin($member);
+                    $this->eventDispatcher->dispatch(Events::PROJECT_MEMBERS_ADD_SUCCESS_EVENT, (new ProjectMemberEvent($project, $member)));
+                }
+                return $this->redirectToRoute('lc_projects_members', ['id' => $project->getId()]);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirect($request->headers->get('referer'));
     }
-
-    public function degradeToMemberAction($project, $member, Request $request)
-    {
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($project);
-        $member = $this->getDoctrine()->getRepository(Member::class)->findOneById($member);
-
-        $project->removeAdmin($member);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirect($request->headers->get('referer'));
-    }
-
 
     public function updateAction(int $alias, Request $request)
     {
@@ -382,75 +570,89 @@ class ProjectController extends AbstractController
     }
 
 
+    /**
+     * Form for creating an Project.
+     *
+     * @Route("/learningcenter/projects/create", name="lc_projects_create")
+     *
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
     public function createAction(Request $request)
     {
+        //check whether user is granted
+        if ($this->isGranted('ROLE_MEMBER')) {
+            //check users permission to create projects
+            if ($this->isGranted('project.create')) {
 
-        $project = new Project();
-        $this->denyAccessUnlessGranted('create', $project);
+                $project = new Project();
+                $createProjectRequest = new CreateProjectRequest();
 
+                //Form Creation
+                $form = $this->createForm(CreateProjectType::class, $createProjectRequest);
+                if ($this->isGranted('lead', $project)){
+                    $form->remove('leader');
+                }
+                $form->handleRequest($request);
 
-        $createProjectRequest = new CreateProjectRequest();
+                //Form Handle after Submit
+                if($form->isSubmitted() && $form->isValid()){
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $currentUser = $this->getDoctrine()->getRepository(Member::class)->findOneById($this->getUser()->id);
 
-        //Form Creation
-        $form = $this->createForm(CreateProjectType::class, $createProjectRequest);
-        if ($this->isGranted('lead', $project)){
-            $form->remove('leader');
-        }
-        $form->handleRequest($request);
+                    //Project Entity
+                    $project = new Project();
+                    $project->setName($createProjectRequest->getName());
+                    $project->setDescription($createProjectRequest->getDescription());
+                    $project->setPublic($createProjectRequest->getPublic());
+                    //user is leader when he can lead or the chosen teacher will be leader
+                    if ($this->isGranted('project.lead')){
+                        $project->setLeader($currentUser);
+                        $project->setConfirmed(1);
+                    } else {
+                        $project->setLeader($createProjectRequest->getLeader());
+                        $project->addAdmin($currentUser);
+                        $project->setConfirmed(0);
+                    }
 
-        //Form Handle after Submit
-        if($form->isSubmitted() && $form->isValid()){
-            $entityManager = $this->getDoctrine()->getManager();
-            $currentUser = $this->getDoctrine()->getRepository(Member::class)->findOneById($this->getUser()->id);
+                    //creates new group for the project
+                    $group = new MemberGroup();
+                    $group->setTstamp(time());
+                    $group->setName($project->getName());
+                    $group->setGroupType(4);
+                    $entityManager->persist($group);
+                    $entityManager->flush();
 
-            //Project Entity
-            $project = new Project();
-            $project->setName($createProjectRequest->getName());
-            $project->setDescription($createProjectRequest->getDescription());
-            //user is leader when he can lead or the chosen teacher will be leader
-            if ($this->isGranted('lead', $project)){
-                $project->setLeader($currentUser);
-                $project->setConfirmed(1);
+                    //save group in db
+                    $group->addMember($currentUser);
+                    if (!$this->isGranted('project.lead', $project)) {
+                        $group->addMember($createProjectRequest->getLeader());
+                    }
+
+                    //save project with group
+                    $project->setGroupId($group);
+                    $entityManager->persist($project);
+                    $entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_CREATE_SUCCESS_EVENT, new ProjectEvent($project));
+
+                    return $this->redirectToRoute('lc_projects_detail', ['id' => $project->getId()]);
+                }
+
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_create.html.twig',
+                    [
+                        'form'  => $form->createView(),
+                    ]
+                );
+
+                return new Response($rendered);
+
             } else {
-                $project->setLeader($createProjectRequest->getLeader());
-                $project->addAdmin($currentUser);
-                $project->setConfirmed(0);
+                return $this->redirectToRoute('lc_projects_list');
             }
-
-            //creates new group for the project
-            $group = new MemberGroup();
-            $group->setTstamp(time());
-            $group->setName($project->getName());
-            $group->setGroupType(4);
-            $entityManager->persist($group);
-            $entityManager->flush();
-
-            //save group in db
-            $group->addMember($currentUser);
-            if (!$this->isGranted('lead', $project)) {
-                $group->addMember($createProjectRequest->getLeader());
-            }
-
-            //save project with group
-            $project->setGroupId($group);
-            $entityManager->persist($project);
-            $entityManager->flush();
-
-            $this->eventDispatcher->dispatch(Events::PROJECT_CREATE_SUCCESS_EVENT, new ProjectEvent($project));
-
-            return $this->redirectToRoute('learningcenter_projects.details', ['alias' => $project->getId()]);
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
-
-        $container = \System::getContainer();
-
-        $rendered = $this->renderView('@LearningCenter/modules/project_create.html.twig',
-            [
-                'form'  => $form->createView(),
-                'token' => $container->get('contao.csrf.token_manager')->getToken($container->getParameter('contao.csrf_token_name'))->getValue(),
-            ]
-        );
-
-        return new Response($rendered);
     }
 
     public function confirmAction(Request $request, int $alias)
@@ -493,41 +695,180 @@ class ProjectController extends AbstractController
         return new Response($rendered);
     }
 
-    public function createEventAction(Request $request, int $alias)
+    /**
+     * @Route("/learningcenter/projects/{id}/events", name="lc_projects_events")
+     *
+     * @param Project $project
+     * @return RedirectResponse|Response
+     */
+    public function listEvents(Project $project)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+
+                $events = $project->getEvents();
+
+                //generate dates
+                foreach ($events as $event)
+                {
+                    $event->setStartDate(date('d.m.Y H:i', $event->getStartDate()));
+                    $event->setStartTime(date('d.m.Y H:i', $event->getStartTime()));
+                    $event->setEndDate(date('d.m.Y H:i', $event->getEndDate()));
+                    $event->setEndTime(date('d.m.Y H:i', $event->getEndTime()));
+                }
+
+                $rendered = $this->renderView('@LearningCenter/modules/project/project_events.html.twig', array(
+                    'events'  => $events,
+                    'project' => $project
+                ));
+                return new Response($rendered);
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * @Route("/learningcenter/projects/{id}/events/add", name="lc_projects_events_add")
+     *
+     * @param Project $project
+     * @param Request $request
+     * @return Response
+     */
+    public function createEvent(Project $project, Request $request)
     {
 
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($alias);
-        $createEventRequest = new CreateEventRequest();
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                if ($this->isGranted('project.event.add', $project))
+                {
+                    $createEventRequest = new CreateEventRequest();
 
-        $form = $this->createForm(CreateEventType::class, $createEventRequest);
+                    $form = $this->createForm(CreateEventType::class, $createEventRequest);
 
-        $form->handleRequest($request);
+                    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            //creates event from the request
-            $event = new Event();
-            $event->setTitle($createEventRequest->getName());
-            $event->setTstamp(time());
-            $event->setStartDate($createEventRequest->getStartDate()->getTimestamp());
-            $event->setEndDate($createEventRequest->getEndDate()->getTimestamp());
-            $event->setStartTime($createEventRequest->getStartTime()->getTimestamp() + time());
-            $event->setEndTime($createEventRequest->getEndTime()->getTimestamp() + time());
-            $event->setAddress($createEventRequest->getAddress());
-            $event->setPid($this->getDoctrine()->getRepository(Calendar::class)->findOneByGroup($project->getGroupId()));
+                    if ($form->isSubmitted() && $form->isValid())
+                    {
+                        //creates event from the request
+                        $event = new Event();
+                        $event->setTitle($createEventRequest->getName());
+                        $event->setTstamp(time());
+                        $event->setStartDate($createEventRequest->getStartDate()->getTimestamp());
+                        $event->setEndDate($createEventRequest->getEndDate()->getTimestamp());
+                        $event->setStartTime($createEventRequest->getStartTime()->getTimestamp() + $event->getStartDate());
+                        $event->setEndTime($createEventRequest->getEndTime()->getTimestamp() + $event->getEndDate());
+                        $event->setAddress($createEventRequest->getAddress());
+                        $event->setPid($project->getCalendar());
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($event);
+                        $entityManager->flush();
+
+                        $this->eventDispatcher->dispatch(Events::PROJECT_EVENTS_ADD_SUCCESS_EVENT, (new ProjectEventEvent($project, $event)));
+                        return $this->redirectToRoute('lc_projects_events', ['id' => $project->getId()]);
+                    }
+
+                    $rendered = $this->renderView('@LearningCenter/modules/project/project_create_event.html.twig', array(
+                        'form' => $form->createView(),
+                        'project' => $project
+                    ));
+
+                    return new Response($rendered);
+                } else {
+                    return $this->redirectToRoute('lc_projects_events', ['id' => $project->getId()]);
+                }
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * @Route("/learningcenter/projects/{id}/events/{event_id}/remove", name="lc_projects_events_remove")
+     * @Entity("event", expr="repository.find(event_id)")
+     *
+     * @param Project $project
+     * @param Event $event
+     * @return RedirectResponse
+     */
+    public function removeEvent(Project $project, Event $event)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                if ($this->isGranted('project.event.remove', $project))
+                {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($event);
+                    $entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_EVENTS_REMOVE_SUCCESS_EVENT, (new ProjectEventEvent($project, $event)));
+                    return $this->redirectToRoute('lc_projects_events', ['id' => $project->getId()]);
+
+                } else {
+                    return $this->redirectToRoute('lc_projects_events', ['id' => $project->getId()]);
+                }
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
+
+    /**
+     * @param ProjectMember[] $projectMember
+     */
+    private function sortMembersByNameAndRank($projectMember)
+    {
+        //sort
+        $aIndex = 1;
+        $lIndex = 0;
+        //sort by type (admin/leader/member)
+        for ($i=0; $i < count($projectMember); $i++) {
+            if ($projectMember[$i]->isLeader() === true) {
+                $tmp = $projectMember[$lIndex];
+                $projectMember[$lIndex] = $projectMember[$i];
+                $projectMember[$i] = $tmp;
+            } elseif ($projectMember[$i]->isAdmin() === true) {
+                if ($aIndex == $i) {
+                    $tmp = $projectMember[$aIndex];
+                    $projectMember[$aIndex] = $projectMember[$i];
+                    $projectMember[$i] = $tmp;
+                }
+                $aIndex++;
+            }
         }
 
+        //sort the admins
+        for ($i=$lIndex+1; $i < $aIndex; $i++) {
+            $min = $i;
+            for($a=$i; $a < count($projectMember); $a++) {
+                if ($projectMember[$a]->getMember()->getLastname() < $projectMember[$min]->getMember()->getLastname()) {
+                    $min = $a;
+                }
+            }
+            $tmp = $projectMember[$i];
+            $projectMember[$i] = $projectMember[$min];
+            $projectMember[$min] = $tmp;
+        }
 
-        $rendered = $this->renderView('@LearningCenter/modules/project/project_create_event.html.twig', array(
-            'form' => $form->createView(),
-            'project' => $project
-        ));
-
-        return new Response($rendered);
+        //sort the members
+        for ($i=$aIndex; $i < count($projectMember); $i++) {
+            $min = $i;
+            for($a=$i; $a < count($projectMember); $a++) {
+                if ($projectMember[$a]->getMember()->getLastname() < $projectMember[$min]->getMember()->getLastname()) {
+                    $min = $a;
+                }
+            }
+            $tmp = $projectMember[$i];
+            $projectMember[$i] = $projectMember[$min];
+            $projectMember[$min] = $tmp;
+        }
     }
 
 }

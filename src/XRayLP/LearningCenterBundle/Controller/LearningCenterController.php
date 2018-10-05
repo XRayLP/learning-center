@@ -19,14 +19,16 @@ class LearningCenterController extends Controller
 {
 
     /**
-     * SOON: Dashboard
+     * Main Root Controller, where User is redirected to after login.
+     *
+     * TODO: Dashboard
      *
      * @return RedirectResponse|Response
      */
     public function mainAction()
     {
         //Check if the User isn't granted
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
+        if ($this->isGranted('ROLE_MEMBER'))
         {
 
             $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => $this->getUser()->id));

@@ -24,9 +24,15 @@ class MemberVoter extends Voter
         $this->memberRepository = $doctrine->getRepository(Member::class);
     }
 
+    //Member specific
     const CREATE = 'member.create';
     const EDIT = 'member.edit';
     const REMOVE = 'member.remove';
+
+    //Project specific
+    const PROJECT_CREATE = 'member.project.create';
+    const PROJECT_LIST = 'member.project.list';
+    const PROJECT_LIST_ALL = 'member.project.list.all';
 
     /**
      * Determines if the attribute and subject are supported by this voter.
@@ -38,7 +44,7 @@ class MemberVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::EDIT, self::CREATE, self::REMOVE))){
+        if (!in_array($attribute, array(self::EDIT, self::CREATE, self::REMOVE, self::PROJECT_CREATE, self::PROJECT_LIST, self::PROJECT_LIST_ALL))){
             return false;
         }
 

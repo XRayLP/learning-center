@@ -10,7 +10,7 @@ namespace App\XRayLP\LearningCenterBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Bundle Learning Center.
+ * Bundle for Symfony Framework named Learning Center.
  *
  * @author Niklas Loos <https://github.com/XRayLP>
  */

@@ -152,7 +152,7 @@ class MemberController extends AbstractController
                 $members = $em->findAllLike($phrase);
             }
             $members = $em->findOneById(1);
-            dump($members);
+
             if ($members) {
                 $encoders = [
                     new JsonEncoder(),

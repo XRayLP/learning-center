@@ -1,18 +1,17 @@
 {% extends '@LearningCenter/base.html.twig' %}
+{% trans_default_domain 'project' %}
 
 {% block main %}
-    {% if errors %}
-        {% for error in errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
+    {% if is_granted('project.create') %}
+    <a class="btn btn-outline-primary" href="{{ url('lc_projects_create') }}">{% trans %}project.create{% endtrans %}</a>
     {% endif %}
-    <a class="btn btn-outline-primary" href="{{ url('learningcenter_projects.create') }}">New Project</a>
+    {% if showProjects %}
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">State</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
+                <th scope="col">{% trans %}project.state{% endtrans %}</th>
+                <th scope="col">{% trans %}project.name{% endtrans %}</th>
+                <th scope="col">{% trans %}project.description{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +24,15 @@
                             <i class="fas fa-clock mr-1 text-danger" data-toggle="tooltip" data-placement="top" title="Project is confirmed by a teacher!"></i>
                         {% endif %}
                     </td>
-                    <td><a href="{{ project.url }}">{{ project.name }}</a></td>
+                    <td><a href="{{ url('lc_projects_detail', {'id': project.id })}}">{{ project.name }}</a></td>
                     <td>{{ project.description }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 
+    {% if is_granted('project.list.all') %}
+        <a class="btn btn-outline-secondary" href="">{% trans %}project.list.all{% endtrans %}</a>
+    {% endif %}
 {% endblock %}

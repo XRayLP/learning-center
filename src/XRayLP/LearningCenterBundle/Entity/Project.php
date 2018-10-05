@@ -9,6 +9,7 @@ namespace App\XRayLP\LearningCenterBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use StringUtil;
 
 /**
@@ -43,7 +44,7 @@ class Project
     protected $leader;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default":""})
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $admins;
 
@@ -61,6 +62,11 @@ class Project
      * @ORM\Column(type="boolean", options={"default":"0"})
      */
     protected $confirmed;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $public;
 
 
     /**
@@ -210,5 +216,38 @@ class Project
     public function setAdmins($admins)
     {
         $this->admins = $admins;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPublic(): bool
+    {
+        return $this->public;
+    }
+
+    /**
+     * @param bool $public
+     */
+    public function setPublic(bool $public): void
+    {
+        $this->public = $public;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function getEvents()
+    {
+        $events = \System::getContainer()->get('doctrine')->getRepository(Event::class)->findBy(['pid' => $this->getCalendar()->getId()]);
+        return $events;
+    }
+
+    /**
+     * @return Calendar|Member
+     */
+    public function getCalendar()
+    {
+        return \System::getContainer()->get('doctrine')->getRepository(Calendar::class)->findOneByGroup($this->getGroupId());
     }
 }

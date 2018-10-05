@@ -22,40 +22,34 @@ class CreateEventType extends ContaoAbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => 'Name',
-                'translation_domain' => 'project'
+                'label' => 'project.events.add.name',
             ))
             ->add('startDate', DateType::class, array(
-                'label' => 'startDate',
+                'label' => 'project.events.add.startDate',
                 'widget' => 'choice',
                 'input' => 'datetime',
-                'translation_domain' => 'project'
             ))
             ->add('endDate', DateType::class, array(
-                'label' => 'endDate',
+                'label' => 'project.events.add.endDate',
                 'widget' => 'choice',
                 'input' => 'datetime',
-                'translation_domain' => 'project'
             ))
             ->add('startTime', TimeType::class, array(
-                'label' => 'startTime',
+                'label' => 'project.events.add.startTime',
                 'widget' => 'choice',
                 'input' => 'datetime',
-                'translation_domain' => 'project'
+
             ))
             ->add('endTime', TimeType::class, array(
-                'label' => 'endTime',
+                'label' => 'project.events.add.endTime',
                 'widget' => 'choice',
                 'input' => 'datetime',
-                'translation_domain' => 'project'
             ))
             ->add('address', TextType::class, array(
-                'label' => 'address',
-                'translation_domain' => 'project'
+                'label' => 'project.events.add.address',
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Continue',
-                'translation_domain' => 'project'
+                'label' => 'project.events.add.create',
             ))
         ;
     }
@@ -63,7 +57,8 @@ class CreateEventType extends ContaoAbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'        => CreateEventRequest::class,
+            'data_class'         => CreateEventRequest::class,
+            'translation_domain' => 'project'
         ));
         parent::configureOptions($resolver);
     }

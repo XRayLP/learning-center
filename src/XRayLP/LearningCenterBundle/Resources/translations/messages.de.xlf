@@ -40,6 +40,14 @@
                 <source>This account has been locked! You can log in again in %d minutes.</source>
                 <target>Das Konto wurde gesperrt! Sie können sich in %d Minuten erneut anmelden.</target>
             </trans-unit>
+            <trans-unit id="catalog.no.files">
+                <source>catalog.no.files</source>
+                <target>Es sind keine geteilten Dateien für dich vorhanden.</target>
+            </trans-unit>
+            <trans-unit id="project.no.projects">
+                <source>project.no.projects</source>
+                <target>Du bist an keinen Projekten beteiligt.</target>
+            </trans-unit>
             <trans-unit id="project.need.confirm">
                 <source>project.need.confirm</source>
                 <target>Das Projekt muss noch vom Gruppenleiter bestätigt werden um die vollen Funktionen freizuschalten.</target>

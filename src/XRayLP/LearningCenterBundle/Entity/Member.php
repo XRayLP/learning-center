@@ -7,6 +7,7 @@
 
 namespace App\XRayLP\LearningCenterBundle\Entity;
 
+use App\XRayLP\LearningCenterBundle\LearningCenter\Member\MemberManagement;
 use App\XRayLP\LearningCenterBundle\Request\UpdateMemberRequest;
 use Contao\BackendPassword;
 use Contao\Encryption;

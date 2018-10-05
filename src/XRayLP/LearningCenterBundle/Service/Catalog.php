@@ -38,6 +38,8 @@ class Catalog
     }
 
     /**
+     * Sets the Member for creating the Object
+     *
      * @param Member $objMember
      */
     public function setMember(Member $objMember)
@@ -45,6 +47,9 @@ class Catalog
         $this->member = $objMember;
     }
 
+    /**
+     * @return Member
+     */
     public function getMember(): Member
     {
         return $this->member;
@@ -66,10 +71,18 @@ class Catalog
         return $this->files;
     }
 
+    /**
+     * Returns an Array with information about the shared files (sorted)
+     *
+     * TODO: Use File Objects instead of a normal Array
+     *
+     * @return array
+     */
     public function loadFiles(){
         $files = array();
 
         $this->objFiles = FilesModel::findBy('shared', 1);
+
         if ($this->objFiles === null) {
             try {
                 throw new \Exception('No Shared Files');
@@ -119,6 +132,11 @@ class Catalog
         return $files;
     }
 
+    /**
+     * Sort Files Array by their Timestamp
+     *
+     * @param $files
+     */
     protected function sortByTimestamp($files) {
         //sorts the files by tstamp
         for ($i=0; $i<count($files); $i++)

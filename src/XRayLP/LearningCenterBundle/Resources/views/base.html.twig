@@ -59,6 +59,9 @@
             </nav>
         </aside>
         <main id="lc_main" class="col-12 col-lg-9 col-xl-10">
+            {# FLASH MESSAGES #}
+            {% include '@LearningCenter/modules/widgets/flash.messages.html.twig' %}
+
             {% block main %}
             {% endblock %}
         </main>

@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
     <file original="file.ext" source-language="en" datatype="plaintext">
         <body>
+            <trans-unit id="project.create">
+                <source>project.create</source>
+                <target>Erstelle Projekt</target>
+            </trans-unit>
+            <trans-unit id="project.back">
+                <source>project.back</source>
+                <target>Zurück</target>
+            </trans-unit>
+            <trans-unit id="project.create.success">
+                <source>project.create.success</source>
+                <target>Das Projekt wurde erfolgreich erstellt.</target>
+            </trans-unit>
+            <trans-unit id="project.create.no.leaders.found">
+                <source>project.create.no.leaders.found</source>
+                <target>Es wurden keine geeigneten Gruppenleiter gefunden!</target>
+            </trans-unit>
+            <trans-unit id="project.list.all">
+                <source>project.list.all</source>
+                <target>Sehen Sie alle Projekte ein!</target>
+            </trans-unit>
             <trans-unit id="project.name">
                 <source>project.name</source>
                 <target>Name</target>
@@ -10,17 +30,29 @@
                 <source>project.description</source>
                 <target>Beschreibung</target>
             </trans-unit>
+            <trans-unit id="project.state">
+                <source>project.state</source>
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="project.state.confirmed">
+                <source>project.state.confirmed</source>
+                <target>bestätigt</target>
+            </trans-unit>
+            <trans-unit id="project.state.wait">
+                <source>project.state.wait</source>
+                <target>wartet noch</target>
+            </trans-unit>
             <trans-unit id="project.leader">
                 <source>project.leader</source>
                 <target>Gruppenleiter</target>
             </trans-unit>
+            <trans-unit id="project.public">
+                <source>project.public</source>
+                <target>Öffentlich</target>
+            </trans-unit>
             <trans-unit id="project.members">
                 <source>project.members</source>
                 <target>Mitglieder</target>
-            </trans-unit>
-            <trans-unit id="project.create">
-                <source>project.create</source>
-                <target>Erstelle Projekt</target>
             </trans-unit>
             <trans-unit id="project.continue">
                 <source>project.continue</source>
@@ -29,6 +61,86 @@
             <trans-unit id="project.confirmed">
                 <source>project.confirmed</source>
                 <target>Das Projekt %name% wurde vom Gruppenleiter bestätigt und besitzt nun die vollen Funktionen.</target>
+            </trans-unit>
+            <trans-unit id="project.members.add">
+                <source>project.members.add</source>
+                <target>Einladen</target>
+            </trans-unit>
+            <trans-unit id="project.members.add.heading">
+                <source>project.members.add.heading</source>
+                <target>Lade neue Mitglieder ein</target>
+            </trans-unit>
+            <trans-unit id="project.members.add.success">
+                <source>project.members.add.success</source>
+                <target>Das Projektmitglied {member_name} wurde erfolgreich zum Projekt {project_name} hinzugefügt.</target>
+            </trans-unit>
+            <trans-unit id="project.members.firstname">
+                <source>project.members.firstname</source>
+                <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="project.members.lastname">
+                <source>project.members.lastname</source>
+                <target>Nachname</target>
+            </trans-unit>
+            <trans-unit id="project.members.remove.success.message">
+                <source>project.members.remove.success.message</source>
+                <target>Das Projektmitglied {member_name} wurde erfolgreich aus dem Projekt {project_name} entfernt.</target>
+            </trans-unit>
+            <trans-unit id="project.members.promote.leader.success.message">
+                <source>project.members.promote.leader.success.message</source>
+                <target>Das Projektmitglied {member_name} wurde erfolgreich zum Gruppenleiter befördert.</target>
+            </trans-unit>
+            <trans-unit id="project.members.promote.admin.success.message">
+                <source>project.members.promote.admin.success.message</source>
+                <target>Das Projektmitglied {member_name} wurde erfolgreich zum Projektadministrator befördert.</target>
+            </trans-unit>
+            <trans-unit id="project.members.degrade.success.message">
+                <source>project.members.degrade.success.message</source>
+                <target>Das Projektmitglied {member_name} wurde erfolgreich zum Mitglied heruntergestuft.</target>
+            </trans-unit>
+            <trans-unit id="project.events.add">
+                <source>project.events.add</source>
+                <target>Neuer Projekttermin</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.name">
+                <source>project.events.add.name</source>
+                <target>Terminname</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.startDate">
+                <source>project.events.add.startDate</source>
+                <target>Startdatum</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.endDate">
+                <source>project.events.add.endDate</source>
+                <target>Enddatum</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.startTime">
+                <source>project.events.add.startTime</source>
+                <target>Startzeit</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.endTime">
+                <source>project.events.add.endTime</source>
+                <target>Endzeit</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.address">
+                <source>project.events.add.address</source>
+                <target>Addresse</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.create">
+                <source>project.events.add.create</source>
+                <target>Termin Erstellen</target>
+            </trans-unit>
+            <trans-unit id="project.events.add.success">
+                <source>project.events.add.success</source>
+                <target>Der Termin {event_name} wurde erfolgreich für das Projekt {project_name} erstellt.</target>
+            </trans-unit>
+            <trans-unit id="project.events.remove">
+                <source>project.events.remove</source>
+                <target>Lösche Termin</target>
+            </trans-unit>
+            <trans-unit id="project.events.remove.success">
+                <source>project.events.remove.success</source>
+                <target>Der Termin {event_name} des Projektes {project_name} wurde erfolgreich gelöscht.</target>
             </trans-unit>
         </body>
     </file>

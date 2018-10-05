@@ -1,0 +1,13 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+    {% if form.leader is defined %}
+        {{ form_row(form.leader) }}
+    {% endif %}
+        {{ form_row(form.public) }}
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+{% endblock %}

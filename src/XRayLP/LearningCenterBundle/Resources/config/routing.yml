@@ -17,31 +17,6 @@ learningcenter_:
 ####################
 #Project Management#
 ####################
-learningcenter_projects:
-    path: /learningcenter/projects
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::mainAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects
-
-learningcenter_projects.create:
-    path: /learningcenter/projects/create
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::createAction'
-        _token_check: true
-        _scope: frontend
-    requirements:
-        - "@event_dispatcher"
-
-learningcenter_projects.details:
-    path: /learningcenter/projects/{alias}
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects_home|projects
-
 learningcenter_projects.details.members:
     path: /learningcenter/projects/{alias}/members
     defaults:

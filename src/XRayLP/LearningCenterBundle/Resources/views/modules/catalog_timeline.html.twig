@@ -1,11 +1,6 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
-    {% if errors %}
-        {% for error in errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    {% endif %}
 
     <div class="catalog-timeline">
     {% for file in files %}
