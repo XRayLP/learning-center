@@ -29,3 +29,19 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    lc.user_to_username_transformer:
+        class: App\XRayLP\LearningCenterBundle\Form\DataTransformer\UserToUsernameTransformer
+        arguments:
+            - '@doctrine'
+    fos_user.user_to_username_transformer:
+        alias: lc.user_to_username_transformer
+
+    FOS\MessageBundle\Provider\ProviderInterface: '@fos_message.provider'
+    FOS\MessageBundle\Composer\ComposerInterface: '@fos_message.composer'
+    FOS\MessageBundle\Sender\SenderInterface: '@fos_message.sender'
+    FOS\MessageBundle\ModelManager\ThreadManagerInterface: '@fos_message.thread_manager'
+
+    #override participant provider
+    App\XRayLP\LearningCenterBundle\Security\ParticipantProvider:
+        decorates: 'fos_message.participant_provider.default'

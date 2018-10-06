@@ -107,8 +107,8 @@ class MenuBuilder
 
         $menu->addChild('projects_chat', array(
             'label' => 'Chat',
-            'route' => 'learningcenter_projects.details.chat',
-            'routeParameters' => $routeParameters,
+            'route' => 'lc_projects_chat',
+            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
         ))->setAttribute('icon', 'fas fa-project-diagram');
 
         //set matching items current

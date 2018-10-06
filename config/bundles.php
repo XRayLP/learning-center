@@ -26,4 +26,5 @@ return [
     Contao\InstallationBundle\ContaoInstallationBundle::class => ['all' => true],
     App\XRayLP\LearningCenterBundle\LearningCenterBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
+    FOS\MessageBundle\FOSMessageBundle::class => ['all' => true],
 ];

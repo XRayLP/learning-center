@@ -8,10 +8,14 @@
 namespace App\XRayLP\LearningCenterBundle\EventListener;
 
 
+use App\XRayLP\LearningCenterBundle\Entity\Thread;
+use App\XRayLP\LearningCenterBundle\Repository\ThreadRepository;
 use Doctrine\ORM\EntityManager;
 use App\XRayLP\LearningCenterBundle\Entity\Calendar;
 use App\XRayLP\LearningCenterBundle\Entity\Notification;
 use App\XRayLP\LearningCenterBundle\Event\ProjectEvent;
+use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -27,11 +31,17 @@ class ProjectEventListener
 
     private $translator;
 
-    public function __construct(EntityManager $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator)
+    private $threadManager;
+
+    private $doctrine;
+
+    public function __construct(EntityManager $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator, ThreadManagerInterface $threadManager, RegistryInterface $doctrine)
     {
         $this->entityManager = $entityManager;
         $this->flashMessage = $flashBag;
         $this->translator = $translator;
+        $this->threadManager = $threadManager;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -42,6 +52,14 @@ class ProjectEventListener
     public function onProjectCreateSuccess(ProjectEvent $event)
     {
         $entityManager = $this->entityManager;
+
+        $project = $event->getProject();
+
+        //create new chat thread for project
+        $thread = $this->threadManager->createThread();
+        $thread->setSubject($project->getName().' Chat');
+        $thread->setCreatedBy($project->getLeader());
+        $thread->setCreatedAt(new \DateTime());
 
         //every member of the project get a notification
         foreach ($event->getProject()->getGroupId()->getMembers() as $member) {
@@ -66,7 +84,17 @@ class ProjectEventListener
 
             $entityManager->persist($notification);
             $entityManager->flush();
+
+            //add members to thread
+            $thread->addParticipant($member);
         }
+
+        //save thread
+        $this->threadManager->saveThread($thread);
+        $project->setThread($this->doctrine->getRepository(Thread::class)->findOneBy(['id' => $thread->getId()]));
+        $entityManager->persist($project);
+        $entityManager->flush();
+
 
         $calendar = new Calendar();
         $calendar->addGroup($event->getProject()->getGroupId());

@@ -15,12 +15,10 @@ use Contao\Password;
 use Contao\StringUtil;
 use Contao\System;
 use DateTime;
+use FOS\MessageBundle\Model\ParticipantInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\User as BaseUser;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Member Entity
@@ -29,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="tl_member")
  * @package App\XRayLP\LearningCenterBundle\Entity
  */
-class Member
+class Member implements ParticipantInterface
 {
     /**
      * @ORM\Id

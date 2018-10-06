@@ -1,0 +1,4 @@
+fos_message:
+  db_driver: orm
+  thread_class: App\XRayLP\LearningCenterBundle\Entity\Thread
+  message_class: App\XRayLP\LearningCenterBundle\Entity\Message

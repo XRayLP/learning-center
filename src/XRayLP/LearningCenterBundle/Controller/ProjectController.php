@@ -12,6 +12,7 @@ use App\XRayLP\LearningCenterBundle\Event\ProjectEventEvent;
 use App\XRayLP\LearningCenterBundle\Event\ProjectMemberEvent;
 use Contao\FrontendUser;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\MessageBundle\Provider\ProviderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -340,7 +341,7 @@ class ProjectController extends AbstractController
                 $normalizer = [
                     (new ObjectNormalizer())
                         ->setIgnoredAttributes([
-                            'homeDir', 'groups', 'password', 'activation', 'permissions', 'projects', 'session', 'start', 'stop'
+                            'homeDir', 'groups', 'password', 'activation', 'permissions', 'projects', 'session', 'start', 'stop', 'thread'
                         ])
 
                 ];

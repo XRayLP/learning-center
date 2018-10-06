@@ -68,6 +68,11 @@ class Project
      */
     protected $public;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\XRayLP\LearningCenterBundle\Entity\Thread")
+     */
+    protected $thread;
+
 
     /**
      * @return mixed
@@ -233,6 +238,24 @@ class Project
     {
         $this->public = $public;
     }
+
+    /**
+     * @return Thread
+     */
+    public function getThread(): Thread
+    {
+        return $this->thread;
+    }
+
+    /**
+     * @param Thread $thread
+     */
+    public function setThread(Thread $thread): void
+    {
+        $this->thread = $thread;
+    }
+
+
 
     /**
      * @return Event[]

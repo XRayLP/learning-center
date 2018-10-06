@@ -10,3 +10,7 @@ ContaoInstallationBundle:
 
 ContaoCoreBundle:
     resource: "@ContaoCoreBundle/Resources/config/routing.yml"
+
+fos_message:
+    resource: "@FOSMessageBundle/Resources/config/routing.xml"
+    prefix: /learningcenter/message

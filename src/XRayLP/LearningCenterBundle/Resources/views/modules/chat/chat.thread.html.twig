@@ -1,0 +1,26 @@
+{% trans_default_domain 'message' %}
+{% block fos_message_content %}
+
+    <h2>{{ thread.subject }}</h2>
+
+    {% for message in thread.messages %}
+        <div class="messenger_thread_message">
+            <div class="messenger_thread_message_info">
+                {% trans with {'%sender%': message.sender.username, '%date%': message.createdAt|date} %}message_info{% endtrans %}
+            </div>
+
+            <div class="messenger_thread_message_body" id="message_{{ message.id }}">
+                {{ message.body }}
+            </div>
+        </div>
+    {% endfor %}
+
+    <h3>{{ 'reply'|trans }}</h3>
+
+    <form action="{{ url('lc_projects_chat_send', {'id': project.id}) }}" method="post">
+        {{ form_widget(form) }}
+
+        <input class="btn btn-primary" type="submit" />
+    </form>
+
+{% endblock %}

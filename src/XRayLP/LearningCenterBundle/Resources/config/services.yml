@@ -95,6 +95,8 @@ services:
           - '@doctrine.orm.default_entity_manager'
           - '@session.flash_bag'
           - '@translator'
+          - '@fos_message.thread_manager'
+          - '@doctrine'
         tags:
             - { name: kernel.event_listener, event: project.create.success, method: onProjectCreateSuccess }
 

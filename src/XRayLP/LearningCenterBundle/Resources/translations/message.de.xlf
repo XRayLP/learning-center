@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+  ~ @link https://github.com/XRayLP/learning-center-bundle
+  ~ @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+  ~ @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+  -->
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="messenger">
+                <source>messenger</source>
+                <target>Messenger</target>
+            </trans-unit>
+            <trans-unit id="inbox">
+                <source>inbox</source>
+                <target>Posteingang</target>
+            </trans-unit>
+            <trans-unit id="sent">
+                <source>sent</source>
+                <target>Postausgang</target>
+            </trans-unit>
+            <trans-unit id="deleted">
+                <source>deleted</source>
+                <target>Gelöscht</target>
+            </trans-unit>
+            <trans-unit id="send_new">
+                <source>send_new</source>
+                <target>Neue Nachricht senden</target>
+            </trans-unit>
+            <trans-unit id="search">
+                <source>search</source>
+                <target>Suche</target>
+            </trans-unit>
+            <trans-unit id="threads_found">
+                <source>threads_found</source>
+                <target>"%num% Konversation gefunden mit | %num% Konversationen gefunden mit"</target>
+            </trans-unit>
+            <trans-unit id="message_info">
+                <source>message_info</source>
+                <target>"Von %sender%, am %date%"</target>
+            </trans-unit>
+            <trans-unit id="reply">
+                <source>reply</source>
+                <target>Antworten</target>
+            </trans-unit>
+            <trans-unit id="subject">
+                <source>subject</source>
+                <target>Betreff</target>
+            </trans-unit>
+            <trans-unit id="starter">
+                <source>starter</source>
+                <target>Beginner</target>
+            </trans-unit>
+            <trans-unit id="startdate">
+                <source>startdate</source>
+                <target>Angefangen am</target>
+            </trans-unit>
+            <trans-unit id="messages">
+                <source>messages</source>
+                <target>Nachrichten</target>
+            </trans-unit>
+            <trans-unit id="last_message">
+                <source>last_message</source>
+                <target>Letzte Nachricht</target>
+            </trans-unit>
+            <trans-unit id="actions">
+                <source>actions</source>
+                <target>Aktionen</target>
+            </trans-unit>
+            <trans-unit id="new">
+                <source>new</source>
+                <target>Neu</target>
+            </trans-unit>
+            <trans-unit id="goto_last">
+                <source>goto_last</source>
+                <target>Gehe zur letzten Nachricht</target>
+            </trans-unit>
+            <trans-unit id="on">
+                <source>on</source>
+                <target>"Am %date%"</target>
+            </trans-unit>
+            <trans-unit id="by">
+                <source>by</source>
+                <target>"Von %sender%"</target>
+            </trans-unit>
+            <trans-unit id="no_thread">
+                <source>no_thread</source>
+                <target>Es gibt keine Konversation zum Anzeigen</target>
+            </trans-unit>
+            <trans-unit id="delete">
+                <source>delete</source>
+                <target>löschen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

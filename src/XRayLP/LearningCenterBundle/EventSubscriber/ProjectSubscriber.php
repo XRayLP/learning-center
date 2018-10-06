@@ -12,6 +12,7 @@ use App\XRayLP\LearningCenterBundle\Event\Events;
 use App\XRayLP\LearningCenterBundle\Event\ProjectEventEvent;
 use App\XRayLP\LearningCenterBundle\Event\ProjectMemberEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -25,11 +26,14 @@ class ProjectSubscriber implements EventSubscriberInterface
 
     private $translator;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator)
+    private $threadManager;
+
+    public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator, ThreadManagerInterface $threadManager)
     {
         $this->entityManager = $entityManager;
         $this->flashMessage = $flashBag;
         $this->translator = $translator;
+        $this->threadManager = $threadManager;
     }
 
     /**
@@ -93,6 +97,11 @@ class ProjectSubscriber implements EventSubscriberInterface
     {
         $member = $event->getMember();
         $project = $event->getProject();
+
+        //add member to chat thread
+        $thread = $project->getThread();
+        $thread->addParticipant($member);
+        $this->threadManager->saveThread($thread);
 
         $message = $this->flashMessage->add('notice', array(
             'alert'     => 'success',
