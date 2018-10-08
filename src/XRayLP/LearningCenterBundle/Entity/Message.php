@@ -14,7 +14,7 @@ use FOS\MessageBundle\Entity\Message as BaseMessage;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tl_message")
+ * @ORM\Table(name="tl_message", options={"engine":"InnoDB"})
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md
  */

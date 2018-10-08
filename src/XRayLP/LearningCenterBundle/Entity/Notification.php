@@ -13,7 +13,7 @@ use \Doctrine\ORM\Mapping as ORM;
  * Class Notification
  *
  * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\MemberRepository")
- * @ORM\Table(name="tl_notifications")
+ * @ORM\Table(name="tl_notifications", options={"engine":"InnoDB"})
  * @package App\XRayLP\LearningCenterBundle\Entity
  */
 class Notification

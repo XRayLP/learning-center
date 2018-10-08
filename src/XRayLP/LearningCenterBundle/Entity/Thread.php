@@ -13,7 +13,7 @@ use FOS\MessageBundle\Entity\Thread as BaseThread;
 
 /**
  * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\ThreadRepository")
- * @ORM\Table(name="tl_thread")
+ * @ORM\Table(name="tl_thread", options={"engine":"InnoDB"})
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md
  */

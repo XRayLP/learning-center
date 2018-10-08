@@ -19,7 +19,7 @@ use FOS\MessageBundle\Entity\MessageMetadata as BaseMessageMetadata;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tl_message_metadata")
+ * @ORM\Table(name="tl_message_metadata", options={"engine":"InnoDB"})
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md
  */

@@ -16,7 +16,7 @@ use StringUtil;
  * Project Entity
  *
  * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\ProjectRepository")
- * @ORM\Table(name="tl_projects")
+ * @ORM\Table(name="tl_projects", options={"engine":"InnoDB"})
  * @package App\XRayLP\LearningCenterBundle\Entity
  */
 class Project
