@@ -347,6 +347,9 @@ class MemberGroup
         $doctrine->flush();
     }
 
+    /**
+     * @return ArrayCollection|Member[]
+     */
     public function getMembers(): ArrayCollection
     {
         //check if each user is member of this group

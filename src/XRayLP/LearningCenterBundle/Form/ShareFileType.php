@@ -8,7 +8,9 @@
 namespace App\XRayLP\LearningCenterBundle\Form;
 
 
+use App\XRayLP\LearningCenterBundle\Entity\Member;
 use Contao\MemberGroupModel;
+use function PHPSTORM_META\type;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\AbstractType;
@@ -21,15 +23,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use App\XRayLP\LearningCenterBundle\Request\ShareFileRequest;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class ShareFileType extends ContaoAbstractType
 {
 
     private $doctrine;
 
-    public function __construct(RegistryInterface $doctrine)
+    private $tokenStorage;
+
+    public function __construct(RegistryInterface $doctrine, TokenStorageInterface $tokenStorage)
     {
         $this->doctrine = $doctrine;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -91,7 +97,7 @@ class ShareFileType extends ContaoAbstractType
      * @return array|MemberGroup[]
      */
     private function getMemberGroups() {
-        $groups = $this->doctrine->getRepository(MemberGroup::class)->findByType(3);
+        $groups = $this->doctrine->getRepository(MemberGroup::class)->findBy(['type' => [3, 4]]);
         return $groups;
     }
 }

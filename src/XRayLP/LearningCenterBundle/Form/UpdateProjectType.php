@@ -32,19 +32,6 @@ class UpdateProjectType extends ContaoAbstractType
                 'label' => 'Description',
                 'translation_domain' => 'project'
             ))
-            ->add('leader', EntityType::class, array(
-                'label' => 'Leading Member',
-                'translation_domain' => 'project',
-                'class' => Member::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->where("u.memberType = 'ROLE_TEACHER'");
-                },
-                'choice_label' => 'lastname',
-                'choice_value' => 'id'
-
-            ))
-
             ->add('save', SubmitType::class, array(
                 'label' => 'Continue',
                 'translation_domain' => 'project'

@@ -11,8 +11,13 @@ namespace App\XRayLP\LearningCenterBundle\Event;
 class Events
 {
     //Project Events
+    const PROJECT_PRE_LOAD = 'project.pre.load';
     const PROJECT_CREATE_SUCCESS_EVENT = 'project.create.success';
     const PROJECT_CREATE_FAILURE_EVENT = 'project.create.failure';
+    const PROJECT_UPDATE_SUCCESS_EVENT = 'project.update.success';
+    const PROJECT_UPDATE_FAILURE_EVENT = 'project.update.failure';
+    const PROJECT_PRE_DELETE_EVENT = 'project.delete.pre';
+    const PROJECT_POST_DELETE_SUCCESS_EVENT = 'project.delete.post.success';
     const PROJECT_MEMBERS_ADD_SUCCESS_EVENT = 'project.members.add.success';
     const PROJECT_MEMBERS_ADD_FAILURE_EVENT = 'project.members.add.failure';
     const PROJECT_MEMBERS_PROMOTE_LEADER_SUCCESS_EVENT = 'project.members.promote.leader.success';

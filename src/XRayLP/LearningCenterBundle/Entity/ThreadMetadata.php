@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\MessageBundle\Entity\ThreadMetadata as BaseThreadMetadata;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\StandardRepository")
  * @ORM\Table(name="tl_thread_metadata", options={"engine":"InnoDB"})
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md

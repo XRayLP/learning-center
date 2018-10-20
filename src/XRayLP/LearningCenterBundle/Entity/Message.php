@@ -13,8 +13,9 @@ use Doctrine\Common\Collections\Collection;
 use FOS\MessageBundle\Entity\Message as BaseMessage;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\StandardRepository")
  * @ORM\Table(name="tl_message", options={"engine":"InnoDB"})
+ *
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md
  */

@@ -33,7 +33,11 @@ class CalendarRepository extends EntityRepository
         return parent::findOneBy(array('id' => $id));
     }
 
-    public function findOneByGroup(MemberGroup $memberGroup): Calendar
+    /**
+     * @param MemberGroup $memberGroup
+     * @return Calendar
+     */
+    public function findOneByGroup(MemberGroup $memberGroup)
     {
         $calendars = $this->findAll();
 

@@ -111,6 +111,12 @@ class MenuBuilder
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
         ))->setAttribute('icon', 'fas fa-project-diagram');
 
+        $menu->addChild('projects_settings', array(
+            'label' => 'Settings',
+            'route' => 'lc_projects_settings',
+            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
+        ))->setAttribute('icon', 'fas fa-cog');
+
         //set matching items current
         foreach ($menu as $key => $item) {
             if($this->routeKeyVoter->matchItem($item)){

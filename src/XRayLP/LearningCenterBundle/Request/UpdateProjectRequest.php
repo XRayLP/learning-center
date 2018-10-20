@@ -30,7 +30,6 @@ class UpdateProjectRequest
         $projectRequest = new self();
         $projectRequest->setName($project->getName());
         $projectRequest->setDescription($project->getDescription());
-        $projectRequest->setLeader($project->getLeader());
 
         return $projectRequest;
     }

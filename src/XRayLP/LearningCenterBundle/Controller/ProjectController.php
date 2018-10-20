@@ -202,21 +202,7 @@ class ProjectController extends AbstractController
         {
             if ($this->isGranted('project.view', $project)) {
 
-                $errors = array();
-
-                //confirm warning
-                if (!$project->getConfirmed())
-                {
-                    $message = ($this->isGranted('project.confirm', $project) ? $this->translator->trans('project.confirm.now') : $this->translator->trans('project.need.confirm'));
-                    $this->get('session')->getFlashBag()->add(
-                        'notice',
-                        array(
-                            'alert' => 'info',
-                            'title' => '',
-                            'message' => $this->translator->trans('project.need.confirm')
-                        )
-                    );
-                }
+                $this->eventDispatcher->dispatch(Events::PROJECT_PRE_LOAD, (new ProjectEvent($project)));
 
                 $rendered = $this->renderView('@LearningCenter/modules/project/project_details.html.twig',
                     [
@@ -540,36 +526,94 @@ class ProjectController extends AbstractController
         }
     }
 
-    public function updateAction(int $alias, Request $request)
+    /**
+     * @Route("/learningcenter/projects/{id}/settings", name="lc_projects_settings")
+     *
+     * @param Project $project
+     * @param Request $request
+     * @return Response
+     */
+    public function settings(Project $project, Request $request)
     {
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneBy(array('id' => $alias));
-        $updateProjectRequest = UpdateProjectRequest::fromProject($project);
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                if ($this->isGranted('project.edit', $project))
+                {
+                    //get Request
+                    $updateProjectRequest = UpdateProjectRequest::fromProject($project);
 
+                    $form = $this->createForm(UpdateProjectType::class, $updateProjectRequest);
 
-        $form = $this->createForm(UpdateProjectType::class, $updateProjectRequest);
-        $form->handleRequest($request);
+                    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+                    if ($form->isSubmitted() && $form->isValid())
+                    {
+                        $project->setDescription($updateProjectRequest->getDescription());
+                        $project->setName($updateProjectRequest->getName());
 
-            $project->setName($updateProjectRequest->getName());
-            $project->setDescription($updateProjectRequest->getDescription());
-            $project->setLeader($updateProjectRequest->getLeader()->getId());
+                        $this->entityManager->persist($project);
+                        $this->entityManager->flush();
+                        $this->eventDispatcher->dispatch(Events::PROJECT_UPDATE_SUCCESS_EVENT, (new ProjectEvent($project)));
+                    }
 
-            $entityManager->persist($project);
-            $entityManager->flush();
+                    //delete the project
+                    if ($this->isGranted('project.remove', $project))
+                    {
 
-            return $this->redirect('learningcenter_projects.details', array('alias' => $alias));
+                    }
+
+                    $rendered = $this->render('@LearningCenter/modules/project/project_settings.html.twig', [
+                        'form' => $form->createView(),
+                        'project' => $project,
+                    ]);
+
+                    return new Response($rendered);
+
+                } else {
+                    return $this->redirectToRoute('lc_projects_detail');
+                }
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
         }
-
-        $rendered = $this->renderView('@LearningCenter/modules/project_create.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
-        return new Response($rendered);
     }
 
+    /**
+     * @Route("/learningcenter/projects/{id}/delete", name="lc_projects_delete")
+     *
+     * @param Project $project
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteProject(Project $project, Request $request)
+    {
+        if ($this->isGranted('ROLE_MEMBER')) {
+            if ($this->isGranted('project.view', $project)) {
+                //delete the project
+                if ($this->isGranted('project.remove', $project))
+                {
+                    $this->eventDispatcher->dispatch(Events::PROJECT_PRE_DELETE_EVENT, (new ProjectEvent($project)));
+
+                    $this->entityManager->remove($project);
+                    $this->entityManager->persist($project);
+                    $this->entityManager->flush();
+
+                    $this->eventDispatcher->dispatch(Events::PROJECT_POST_DELETE_SUCCESS_EVENT, (new ProjectEvent($project)));
+
+                    return $this->redirectToRoute('lc_projects_list');
+
+                } else {
+                    return $this->redirectToRoute('lc_projects_detail');
+                }
+            } else {
+                return $this->redirectToRoute('lc_projects_list');
+            }
+        } else {
+            return $this->redirectToRoute('learningcenter_login');
+        }
+    }
 
     /**
      * Form for creating an Project.
@@ -656,14 +700,21 @@ class ProjectController extends AbstractController
         }
     }
 
-    public function confirmAction(Request $request, int $alias)
+    /**
+     * Form for creating an Project.
+     *
+     * @Route("/learningcenter/projects/{id}/confirm", name="lc_projects_confirm")
+     *
+     * @param Project $project
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function confirmAction(Project $project, Request $request)
     {
         $render = array();
         $data = array();
         $translator = $this->translator;
         $entityManager = $this->getDoctrine()->getManager();
-
-        $project = $this->getDoctrine()->getRepository(Project::class)->findOneById($alias);
         $render['project'] = $project;
 
         if ($request->get('confirm') === "1") {

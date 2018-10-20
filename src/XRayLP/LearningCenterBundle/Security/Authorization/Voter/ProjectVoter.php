@@ -34,6 +34,7 @@ class ProjectVoter extends Voter
     //need Project Object
     const VIEW = 'project.view';
     const EDIT = 'project.edit';
+    const REMOVE = 'project.remove';
     const CONFIRM = 'project.confirm';
 
     //project events
@@ -52,7 +53,7 @@ class ProjectVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::CREATE, self::LEAD, self::CONFIRM, self::EVENT_ADD, self::EVENT_REMOVE))){
+        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::REMOVE, self::CREATE, self::LEAD, self::CONFIRM, self::EVENT_ADD, self::EVENT_REMOVE))){
             return false;
         }
 
@@ -96,6 +97,8 @@ class ProjectVoter extends Voter
                 return $this->canView($project, $member);
             case self::EDIT:
                 return $this->canEdit($project, $member);
+            case self::REMOVE:
+                return$this->canRemove($project, $member);
             case self::CONFIRM:
                 return $this->canConfirm($project, $member);
             case self::EVENT_ADD:
@@ -134,6 +137,11 @@ class ProjectVoter extends Voter
     private function canEdit(Project $project, Member $member)
     {
         return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
+    }
+
+    private function canRemove(Project $project, Member $member)
+    {
+        return $this->isLeader($project, $member);
     }
 
     private function canConfirm(Project $project, Member $member)

@@ -5,20 +5,13 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 
-/**
- * Created by PhpStorm.
- * User: nikla
- * Date: 05.10.2018
- * Time: 12:28
- */
-
 namespace App\XRayLP\LearningCenterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\MessageBundle\Entity\MessageMetadata as BaseMessageMetadata;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\StandardRepository")
  * @ORM\Table(name="tl_message_metadata", options={"engine":"InnoDB"})
  *
  * src: https://github.com/FriendsOfSymfony/FOSMessageBundle/blob/master/Resources/doc/01a-orm-models.md

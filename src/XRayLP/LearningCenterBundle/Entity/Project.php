@@ -242,7 +242,7 @@ class Project
     /**
      * @return Thread
      */
-    public function getThread(): Thread
+    public function getThread()
     {
         return $this->thread;
     }

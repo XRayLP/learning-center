@@ -14,6 +14,42 @@
                 <source>project.create.success</source>
                 <target>Das Projekt wurde erfolgreich erstellt.</target>
             </trans-unit>
+            <trans-unit id="project.update.success">
+                <source>project.update.success</source>
+                <target>Das Projekt {name} wurde erfolgreich bearbeitet.</target>
+            </trans-unit>
+            <trans-unit id="project.delete">
+                <source>project.delete</source>
+                <target>Projekt löschen</target>
+            </trans-unit>
+            <trans-unit id="project.delete.button">
+                <source>project.delete.button</source>
+                <target>Löschen</target>
+            </trans-unit>
+            <trans-unit id="project.delete.text">
+                <source>project.delete.text</source>
+                <target>Durch das Löschen des Projektes wird das Projekt und alle in diesem erstellten Chatverläufe, Termine, usw. gelöscht. Sein Sie sich daher sicher, ob dieses Projekt wirklich gelöscht werden soll.</target>
+            </trans-unit>
+            <trans-unit id="project.delete.confirm">
+                <source>project.delete.confirm</source>
+                <target>Bestätigung</target>
+            </trans-unit>
+            <trans-unit id="project.delete.confirm.button">
+                <source>project.delete.confirm.button</source>
+                <target>Bestätigen</target>
+            </trans-unit>
+            <trans-unit id="project.delete.cancel">
+                <source>project.delete.cancel</source>
+                <target>Abbrechen</target>
+            </trans-unit>
+            <trans-unit id="project.delete.confirm.text">
+                <source>project.delete.confirm.text</source>
+                <target>Soll das Projekt {name} wirklich gelöscht werden?</target>
+            </trans-unit>
+            <trans-unit id="project.delete.success">
+                <source>project.delete.success</source>
+                <target>Das Projekt {name} wurde erfolgreich mit allen Abhängigkeiten gelöscht.</target>
+            </trans-unit>
             <trans-unit id="project.create.no.leaders.found">
                 <source>project.create.no.leaders.found</source>
                 <target>Es wurden keine geeigneten Gruppenleiter gefunden!</target>
