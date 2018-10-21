@@ -15,6 +15,8 @@ class ShareFileRequest
 {
     private $file;
 
+    private $groupType;
+
     private $memberGroups;
 
     /**
@@ -48,6 +50,25 @@ class ShareFileRequest
     {
         $this->memberGroups = $memberGroup;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupType()
+    {
+        return $this->groupType;
+    }
+
+    /**
+     * @param mixed $groupType
+     */
+    public function setGroupType($groupType): void
+    {
+        $this->groupType = $groupType;
+    }
+
+
+
 
 
 }

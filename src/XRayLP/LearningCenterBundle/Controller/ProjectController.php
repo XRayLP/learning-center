@@ -724,7 +724,7 @@ class ProjectController extends AbstractController
         } elseif ($request->get('confirm') === "0") {
             $entityManager->persist($project);
             $entityManager->flush();
-            return $this->redirectToRoute('learningcenter_projects');
+            return $this->redirectToRoute('lc_projects_delete', ['id' => $project->getId()]);
         }
 
         if ($project->getConfirmed()) {
@@ -733,7 +733,7 @@ class ProjectController extends AbstractController
         } else {
             $message = $translator->trans('project.need.confirm', array('%name%' => $project->getName()));
             $render['confirmed'] = false;
-            if ($this->isGranted('confirm', $project)) {
+            if ($this->isGranted('project.confirm', $project)) {
                 $form = $this->createFormBuilder($data)->getForm();
                 $form->handleRequest($request);
                 $render['form'] = $form->createView();

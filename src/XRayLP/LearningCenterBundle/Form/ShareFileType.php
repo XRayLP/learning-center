@@ -11,6 +11,7 @@ namespace App\XRayLP\LearningCenterBundle\Form;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use Contao\MemberGroupModel;
 use function PHPSTORM_META\type;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\AbstractType;
@@ -19,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
@@ -41,6 +45,8 @@ class ShareFileType extends ContaoAbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     *
+     * @Source(https://symfony.com/doc/current/form/dynamic_form_modification.html#form-events-submitted-data)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -48,15 +54,54 @@ class ShareFileType extends ContaoAbstractType
             ->add('file', HiddenType::class, array(
                 'data_class' => null,
             ))
-            ->add('memberGroups', ChoiceType::class, array(
-                'data_class' => MemberGroup::class,
-                'choices' => $this->getMemberGroups(),
-                'choice_value' => 'id',
-                'choice_label' => 'courseName',
+            ->add('groupType', ChoiceType::class, array(
+                'placeholder' => 'Gruppen Typ',
+                'choices' => [
+                    'Kurse' => 3,
+                    'Projekte' => 4
+                ],
             ))
             ->add('submit', SubmitType::class)
         ;
 
+        $formModifier = function (FormInterface $form, $groupType) {
+            $groups = $this->doctrine->getRepository(MemberGroup::class)->findBy(['groupType' => $groupType]);
+            //$groups = $this->doctrine->getRepository(MemberGroup::class)->findAll();
+
+            $form->add('memberGroups', ChoiceType::class, array(
+                'data_class' => MemberGroup::class,
+                'placeholder' => 'Gruppen',
+                'choices' => $groups,
+                'choice_value' => 'id',
+                'choice_label' => 'name',
+            ));
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $data = $event->getData();
+
+                $formModifier($event->getForm(), 3);
+            }
+        );
+
+        $builder->get('groupType')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                // It's important here to fetch $event->getForm()->getData(), as
+                // $event->getData() will get you the client data (that is, the ID)
+                $data = $event->getForm()->getData();
+
+                dump($data);
+
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formModifier($event->getForm()->getParent(), $data);
+            }
+        );
+
+        //transforms file object to an integer and reverse
         $builder->get('file')->addModelTransformer(new CallbackTransformer(
             function ($arrToString = null)
             {
@@ -97,7 +142,7 @@ class ShareFileType extends ContaoAbstractType
      * @return array|MemberGroup[]
      */
     private function getMemberGroups() {
-        $groups = $this->doctrine->getRepository(MemberGroup::class)->findBy(['type' => [3, 4]]);
+        $groups = $this->doctrine->getRepository(MemberGroup::class)->findBy(['groupType' => [3, 4]]);
         return $groups;
     }
 }

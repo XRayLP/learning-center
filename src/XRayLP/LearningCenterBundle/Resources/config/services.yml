@@ -47,20 +47,6 @@ services:
         arguments:
           - '@learningcenter.filemanager'
           - '@twig'
-
-    #######
-    #Forms#
-    #######
-    learningcenter.form.share_file:
-        class: App\XRayLP\LearningCenterBundle\Form\ShareFileType
-        arguments:
-          - '@doctrine'
-        tags: [form.type]
-    learningcenter.form.edit_share_file:
-        class: App\XRayLP\LearningCenterBundle\Form\UpdateShareFileType
-        arguments:
-          - '@doctrine'
-        tags: [form.type]
     ##############
     #Menu Builder#
     ##############

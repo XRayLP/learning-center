@@ -2,15 +2,19 @@
 
 {% set form = share %}
 
+{% block java %}
+
 {% block modal_header %}
     Share File
 {% endblock %}
 
 {% block modal_body %}
     {{ form_widget(form.file) }}
+    {{ form_widget(form.groupType) }}
     {{ form_widget(form.memberGroups) }}
 {% endblock %}
 
 {% block modal_footer %}
     {{ form_widget(form.submit) }}
 {% endblock %}
+

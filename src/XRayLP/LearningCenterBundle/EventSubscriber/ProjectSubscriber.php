@@ -24,6 +24,7 @@ use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -43,7 +44,9 @@ class ProjectSubscriber implements EventSubscriberInterface
 
     private $authorizationChecker;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator, ThreadManagerInterface $threadManager, RegistryInterface $doctrine, AuthorizationCheckerInterface $authorizationChecker)
+    private $router;
+
+    public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBag, TranslatorInterface $translator, ThreadManagerInterface $threadManager, RegistryInterface $doctrine, AuthorizationCheckerInterface $authorizationChecker, RouterInterface $router)
     {
         $this->entityManager = $entityManager;
         $this->flashMessage = $flashBag;
@@ -51,6 +54,7 @@ class ProjectSubscriber implements EventSubscriberInterface
         $this->threadManager = $threadManager;
         $this->doctrine = $doctrine;
         $this->authorizationChecker = $authorizationChecker;
+        $this->router = $router;
     }
 
     /**
@@ -95,13 +99,14 @@ class ProjectSubscriber implements EventSubscriberInterface
         //confirm warning
         if (!$project->getConfirmed())
         {
-            $message = ($this->authorizationChecker->isGranted('project.confirm', $project) ? $this->translator->trans('project.confirm.now') : $this->translator->trans('project.need.confirm'));
+            $message = ($this->authorizationChecker->isGranted('project.confirm', $project) ? $this->translator->trans('project.confirm.now')  : $this->translator->trans('project.need.confirm'));
             $this->flashMessage->add(
                 'notice',
                 array(
                     'alert' => 'info',
                     'title' => '',
-                    'message' => $this->translator->trans('project.need.confirm')
+                    'message' => $message,
+                    'href' => $this->router->generate('lc_projects_confirm', ['id' => $project->getId()])
                 )
             );
         }
