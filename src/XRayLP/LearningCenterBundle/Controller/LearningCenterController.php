@@ -7,13 +7,16 @@
 
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
+use App\XRayLP\LearningCenterBundle\Entity\File;
+use Contao\Config;
+use Contao\FilesModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
-use App\XRayLP\LearningCenterBundle\Member\FrontendMember;
+use Symfony\Component\Routing\Annotation\Route;
 
 class LearningCenterController extends Controller
 {
@@ -21,11 +24,11 @@ class LearningCenterController extends Controller
     /**
      * Main Root Controller, where User is redirected to after login.
      *
-     * TODO: Dashboard
+     * @Route("/learningcenter", name="lc_dashboard")
      *
      * @return RedirectResponse|Response
      */
-    public function mainAction()
+    public function dashboard()
     {
         //Check if the User isn't granted
         if ($this->isGranted('ROLE_MEMBER'))
@@ -33,10 +36,10 @@ class LearningCenterController extends Controller
 
             $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => $this->getUser()->id));
 
-
             $rendered = $this->renderView('@LearningCenter/modules/dashboard.html.twig', array(
                 'name' => $member->getFirstname().' '.$member->getLastname(),
-                'schoolname' => 'Stephaneum',
+                'schoolname' => Config::get('name'),
+                'logo'  => FilesModel::findByUuid(Config::get('logo')),
             ));
             return new Response($rendered);
 

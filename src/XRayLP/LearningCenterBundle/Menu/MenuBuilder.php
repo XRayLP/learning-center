@@ -45,7 +45,7 @@ class MenuBuilder
         //adding all menu items
         $menu->addChild('home', array(
             'label' => 'Home',
-            'route' => 'learningcenter',
+            'route' => 'lc_dashboard',
         ))->setAttribute('icon', 'fas fa-home');
 
         $menu->addChild('catalog', array(

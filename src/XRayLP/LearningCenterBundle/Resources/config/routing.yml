@@ -1,15 +1,7 @@
-learningcenter:
-    path: /learningcenter
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\LearningCenterController::mainAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: home
-
 learningcenter_:
     path: /learningcenter/
     defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\LearningCenterController::mainAction'
+        _controller: 'App\XRayLP\LearningCenterBundle\Controller\LearningCenterController::dashboard'
         _token_check: true
         _scope: frontend
         _menu_key: home
@@ -17,38 +9,6 @@ learningcenter_:
 ####################
 #Project Management#
 ####################
-learningcenter_projects.details.members:
-    path: /learningcenter/projects/{alias}/members
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::membersAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects_members|projects
-
-learningcenter_projects.details.events:
-    path: /learningcenter/projects/{alias}/events
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::createEventAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects_events
-
-learningcenter_projects.details.chat:
-    path: /learningcenter/projects/{alias}/chat
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::detailAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects_chat
-
-learningcenter_projects.edit:
-    path: /learningcenter/projects/{alias}/edit
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::updateAction'
-        _token_check: true
-        _scope: frontend
-        _menu_key: projects
-
 learningcenter_projects.confirm:
     path: /learningcenter/projects/{alias}/confirm
     defaults:
@@ -56,34 +16,6 @@ learningcenter_projects.confirm:
         _token_check: true
         _scope: frontend
         _menu_key: projects
-
-learningcenter_projects.members.remove:
-    path: /learningcenter/projects/{project}/members/remove/{member}
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::removeMemberAction'
-        _token_check: true
-        _scope: frontend
-
-learningcenter_projects.members.promote.admin:
-    path: /learningcenter/projects/{project}/members/promoteAdmin/{member}
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::promoteToAdminAction'
-        _token_check: true
-        _scope: frontend
-
-learningcenter_projects.members.promote.leader:
-    path: /learningcenter/projects/{project}/members/promoteLeader/{member}
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::promoteToLeaderAction'
-        _token_check: true
-        _scope: frontend
-
-learningcenter_projects.members.degrade.member:
-    path: /learningcenter/projects/{project}/members/degradeMember/{member}
-    defaults:
-        _controller: 'App\XRayLP\LearningCenterBundle\Controller\ProjectController::degradeToMemberAction'
-        _token_check: true
-        _scope: frontend
 
 #################
 #User Management#

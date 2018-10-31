@@ -12,3 +12,5 @@ $GLOBALS['TL_LANG']['MOD']['timetable'][0] = 'Stundenplan';
 $GLOBALS['TL_LANG']['MOD']['timetable'][1] = 'Stundenplan erstellen';
 $GLOBALS['TL_LANG']['MOD']['configuration'][0] = 'Konfiguration';
 $GLOBALS['TL_LANG']['MOD']['configuration'][1] = 'Konfigurieren des Lernzentrums';
+$GLOBALS['TL_LANG']['MOD']['subjects'][0] = 'Schulfächer';
+$GLOBALS['TL_LANG']['MOD']['subjects'][1] = 'Erstellen & Konfigurieren aller Schulfächer';

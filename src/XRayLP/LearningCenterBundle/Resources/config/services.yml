@@ -40,6 +40,12 @@ services:
         class: App\XRayLP\LearningCenterBundle\EventListener\PostGenerateSchemaTable
         tags:
             - {name: doctrine.event_listener, event: postGenerateSchemaTable }
+
+    learningcenter.utils.member:
+        class: App\XRayLP\LearningCenterBundle\Util\MemberUtil
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'
     #############
     #Controllers#
     #############

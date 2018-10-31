@@ -9,9 +9,7 @@ $GLOBALS['TL_DCA']['tl_projects'] = array(
 
     //Config
     'config' => array(
-        'dataContainer' => \App\XRayLP\LearningCenterBundle\Entity\Project::class,
-        'switchToEdit' => true,
-        'enableVersioning' => true
+        'dataContainer' => App\XRayLP\LearningCenterBundle\Entity\Project::class,
     ),
 
     //List
