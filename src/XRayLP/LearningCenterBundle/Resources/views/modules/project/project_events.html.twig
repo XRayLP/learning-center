@@ -1,10 +1,17 @@
-{% extends '@LearningCenter/modules/project/project_base.html.twig' %}
+{% extends '@LearningCenter/modules/project/base.html.twig' %}
 {% trans_default_domain 'project' %}
 
 {% block project %}
+
+
     {% if is_granted('project.event.add', project) %}
         <a class="btn btn-outline-secondary" href="{{ url('lc_projects_events_add', {'id': project.id}) }}">{% trans %}project.events.add{% endtrans %}</a>
     {% endif %}
+
+    <div id="calendar" data-id="{{ calendar.id }}"></div>
+{% endblock %}
+
+{% block unimportant %}
 
     {% for event in events %}
         <div class="card">
@@ -13,23 +20,23 @@
             </div>
             <div class="card-body">
                 <p>
-                {% if event.startTime is defined %}
-                    {{ event.startTime }}
-                {% else %}
-                    {{ event.startDate }}
-                {% endif %}
+                    {% if event.startTime is defined %}
+                        {{ event.startTime }}
+                    {% else %}
+                        {{ event.startDate }}
+                    {% endif %}
                     Uhr
-                {% if event.endTime is defined %}
-                    - {{ event.endTime }} Uhr
-                {% elseif event.endDate is defined %}
-                    - {{ event.endDate }} Uhr
-                {% endif %}
+                    {% if event.endTime is defined %}
+                        - {{ event.endTime }} Uhr
+                    {% elseif event.endDate is defined %}
+                        - {{ event.endDate }} Uhr
+                    {% endif %}
                 </p>
             </div>
             {% if is_granted('project.event.remove', project) %}
-            <div class="card-footer">
+                <div class="card-footer">
                     <a class="text-danger" href="{{ url('lc_projects_events_remove', {'id': project.id, 'event_id': event.id}) }}"><i class="fas fa-trash"></i> {% trans %}project.events.remove{% endtrans %}</a>
-            </div>
+                </div>
             {% endif %}
         </div>
     {% endfor %}

@@ -9,6 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/beberlei/assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/clue/stream-filter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/contao-community-alliance/composer-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/contao-components/compass" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/contao-components/installer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/contao/calendar-bundle" />
@@ -40,10 +41,12 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/easycorp/easy-log-handler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/facebook/webdriver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fig/link-util" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/http-cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/http-cache-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/message-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
@@ -66,6 +69,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-schemes" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/matthiasmullie/minify" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/matthiasmullie/path-converter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/menatwork/contao-multicolumnwizard" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/michelf/php-markdown" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mistic100/randomcolor" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
@@ -94,6 +98,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/link" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/scheb/two-factor-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sensio/framework-extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sensiolabs/ansi-to-html" />
@@ -132,6 +137,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/orm-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/panther" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/phpunit-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-icu" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />

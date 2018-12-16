@@ -33,7 +33,7 @@ class MemberEntityListener
         if ($entity instanceof Member)
         {
             //$entity->setGroups($this->blobStringToArrayCollection($entity->getGroups()));
-            $this->checkAvatar($entity);
+            $entity->getAvatar();
         }
 
     }

@@ -7,6 +7,7 @@
 
 namespace App\XRayLP\LearningCenterBundle\Entity;
 
+use App\XRayLP\LearningCenterBundle\LearningCenter\Member\Avatar;
 use App\XRayLP\LearningCenterBundle\LearningCenter\Member\MemberManagement;
 use App\XRayLP\LearningCenterBundle\Request\UpdateMemberRequest;
 use Contao\BackendPassword;
@@ -226,6 +227,12 @@ class Member implements ParticipantInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $permissions= '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\XRayLP\LearningCenterBundle\Entity\Grade")
+     * @ORM\JoinColumn(name="grade", referencedColumnName="id")
+     */
+    protected $grade;
 
     private $doctrine;
 
@@ -558,9 +565,9 @@ class Member implements ParticipantInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection $collection
      */
-    public function getGroups()
+    public function getGroups(): ArrayCollection
     {
         $arrGroups = StringUtil::deserialize($this->groups);
         $groups = \System::getContainer()->get('doctrine')->getRepository(MemberGroup::class)->findBy(['id' => $arrGroups]);
@@ -837,11 +844,11 @@ class Member implements ParticipantInterface
     }
 
     /**
-     * @return mixed
+     * @return Avatar
      */
-    /*public function getAvatar()
+    public function getAvatar()
     {
-        return $this->avatar;
+        return (new Avatar($this));
     }
 
     /**

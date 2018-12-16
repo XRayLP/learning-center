@@ -64,6 +64,9 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['avatar'] = array(
     'sql'       => "char(1) NULL default '0'"
 );
 
+$GLOBALS['TL_DCA']['tl_member']['fields']['grade'] = array(
+    'sql'       => "int(10) NULL"
+);
 //nullable fields
 $GLOBALS['TL_DCA']['tl_member']['fields']['tstamp']['sql'] = "int(10) unsigned NULL default '0'";
 $GLOBALS['TL_DCA']['tl_member']['fields']['firstname']['sql'] = "varchar(255) NULL default ''";

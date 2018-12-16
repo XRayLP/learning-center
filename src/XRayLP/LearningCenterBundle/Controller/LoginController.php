@@ -7,6 +7,8 @@
 
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
+use Contao\Config;
+use Contao\FilesModel;
 use Contao\RequestToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +24,9 @@ class LoginController extends Controller
         //Check if the User isn't granted
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
         {
+            $logo['path'] = '/bundles/learningcenter/img/logo.png';
+
+
             //Exception Variables
             $exception = $this->get('security.authentication_utils')->getLastAuthenticationError();
             $hasError = false;
@@ -42,7 +47,8 @@ class LoginController extends Controller
             $rendered = $this->renderView('@LearningCenter/security/login.html.twig', array(
                 'token'     => $this->get('contao.csrf.token_manager')->getToken($this->getParameter('contao.csrf_token_name'))->getValue(),
                 'hasError'  => $hasError,
-                'message'   => $message
+                'message'   => $message,
+                'logo'      => $logo
             ));
             return new Response($rendered);
 

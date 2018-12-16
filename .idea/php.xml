@@ -165,6 +165,12 @@
       <path value="$PROJECT_DIR$/vendor/contao/faq-bundle" />
       <path value="$PROJECT_DIR$/vendor/contao/calendar-bundle" />
       <path value="$PROJECT_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
+      <path value="$PROJECT_DIR$/vendor/facebook/webdriver" />
+      <path value="$PROJECT_DIR$/vendor/symfony/panther" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/message-bundle" />
+      <path value="$PROJECT_DIR$/vendor/menatwork/contao-multicolumnwizard" />
+      <path value="$PROJECT_DIR$/vendor/contao-community-alliance/composer-plugin" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

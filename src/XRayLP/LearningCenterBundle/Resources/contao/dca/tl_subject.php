@@ -81,5 +81,6 @@ $GLOBALS['TL_DCA']['tl_subject'] = array(
             'options_callback' => array('learningcenter.utils.member', 'getAllGroups'),
             'eval'      => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
         ),
+
     ),
 );

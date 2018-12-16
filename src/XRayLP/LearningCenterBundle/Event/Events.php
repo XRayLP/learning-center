@@ -33,6 +33,9 @@ class Events
     const PROJECT_EVENTS_REMOVE_SUCCESS_EVENT = 'project.events.remove.success';
     const PROJECT_EVENTS_REMOVE_FAILURE_EVENT = 'project.events.remove.failure';
 
+    //Group Events
+    const GROUP_CREATE_SUCCESS_EVENT = 'project.create.success';
+
     //Filemanager Events
     const FILE_UPLOAD = 'file.upload';
 

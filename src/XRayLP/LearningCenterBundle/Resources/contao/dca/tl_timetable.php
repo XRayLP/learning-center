@@ -10,13 +10,9 @@ $GLOBALS['TL_DCA']['tl_timetable'] = array(
     //Config
     'config' => array(
         'dataContainer'     => 'Table',
+        'ctable' => array('tl_period'),
         'switchToEdit'      => true,
         'enableVersioning'  => true,
-        'sql' => array(
-            'keys' => array(
-                'id' => 'primary'
-            )
-        )
     ),
 
     //List
@@ -36,9 +32,15 @@ $GLOBALS['TL_DCA']['tl_timetable'] = array(
         (
             'edit' => array
             (
-                'label'               => &$GLOBALS['TL_LANG']['tl_timetable']['edit'],
-                'href'                => 'act=edit',
+                'label'               => &$GLOBALS['TL_LANG']['tl_grade_level']['edit'],
+                'href'                => 'table=tl_period',
                 'icon'                => 'edit.svg'
+            ),
+            'editheader' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_grade_level']['editheader'],
+                'href'                => 'act=edit',
+                'icon'                => 'header.svg',
             ),
             'copy' => array
             (
@@ -63,84 +65,31 @@ $GLOBALS['TL_DCA']['tl_timetable'] = array(
 
     ),
 
-    // Palettes
     'palettes' => array(
-        'default' => '{main_legend},day,lesson,course'
+        'default'   => '{main_legend},name,schoolDays,lessons'
     ),
-
     //Fields
     'fields' => array(
-        'id' => array(
-            'sql'   => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'tstamp'    => array(
-            'sql'   => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'day'   => array(
-            'label' => &$GLOBALS['TL_LANG']['tl_timetable']['day'],
+        'name' => array(
+            'label'     => &$GLOBALS['TL_LANG']['tl_timetable']['name'],
             'search'    => true,
-            'inputType' => 'select',
-            'options'    => array(
-                '1' => &$GLOBALS['TL_LANG']['tl_timetable']['day']['options']['monday'],
-                '2' => &$GLOBALS['TL_LANG']['tl_timetable']['day']['options']['tuesday'],
-                '3' => &$GLOBALS['TL_LANG']['tl_timetable']['day']['options']['wednesday'],
-                '4' => &$GLOBALS['TL_LANG']['tl_timetable']['day']['options']['thursday'],
-                '5' => &$GLOBALS['TL_LANG']['tl_timetable']['day']['options']['friday']
-            ),
-            'eval'      => array('mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'       => "int(10) Not NULL default '0'"
-
+            'inputType' => 'text',
+            'eval'      => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w100'),
         ),
-        'lesson'   => array(
-            'label' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson'],
+
+        'schoolDays' => array(
+            'label'     => &$GLOBALS['TL_LANG']['tl_timetable']['schoolDays'],
             'search'    => true,
-            'inputType' => 'select',
-            'options'    => array(
-                '1' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['1'],
-                '2' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['2'],
-                '3' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['3'],
-                '4' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['4'],
-                '5' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['5'],
-                '6' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['6'],
-                '7' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['7'],
-                '8' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['8'],
-                '9' => &$GLOBALS['TL_LANG']['tl_timetable']['lesson']['options']['9']
-            ),
-            'eval'      => array('mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'       => "int(10) Not NULL default '0'"
-
+            'inputType' => 'checkbox',
+            'options' => array('0' => 'mon', '1' => 'tue', '2' => 'wed', '3' => 'thu', '4' => 'fri', '5' => 'sat', '6' => 'sun'),
+            'eval'      => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w100', 'multiple'=>true),
         ),
-        'course' => array(
-            'label'                   => &$GLOBALS['TL_LANG']['tl_timetable']['course'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'select',
-            'options_callback'        => array('tl_timetable', 'getAllCourses'),
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "blob NULL"
-        )
-    )
+        'lessons' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_timetable']['lessons'],
+            'inputType' => 'periodWizard',
+            'exclude' => true,
+        ),
+
+    ),
 );
-
-class tl_timetable extends Backend
-{
-    /**
-     * Get all course groups.
-     *
-     * @return array
-     */
-    public function getAllCourses()
-    {
-        $classKeyWord = "Kurs";
-        $courses = array();
-        $groups = \Contao\MemberGroupModel::findAll();
-
-        //Find the group which has the Keyword 'Klasse'
-        foreach ($groups as &$group) {
-            if (strpos($group->name, $classKeyWord) !== false ) {
-                $courses[$group->id] = $group->name;
-            }
-        }
-        return $courses;
-    }
-}

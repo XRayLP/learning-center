@@ -43,6 +43,20 @@ class MemberUtil
         return $arrMembers;
     }
 
+    public function getAllTeachers()
+    {
+        $members = $this->memberRepository->findBy(array('memberType' => 'ROLE_TEACHER'));
+
+        $arrMembers = array();
+
+        foreach ($members as $member)
+        {
+            $arrMembers[$member->getId()] = $member->getFirstname().' '.$member->getLastname();
+        }
+
+        return $arrMembers;
+    }
+
     /**
      * Gets all registered Groups and returns them in an Array[$id] = 'name'
      *

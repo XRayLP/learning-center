@@ -13,6 +13,15 @@
     'tables' => array('tl_timetable')
 );*/
 $GLOBALS['BE_MOD']['learningcenter'] = array(
+    'grade_levels'  => array(
+        'tables' => array('tl_grade_level', 'tl_grade')
+    ),
+    'timetable' => array(
+        'tables' => array('tl_timetable', 'tl_period')
+    ),
+    'courses'       => array(
+        'tables' => array('tl_course')
+    ),
     'subjects'      => array(
         'tables' => array('tl_subject')
     ),
@@ -20,3 +29,5 @@ $GLOBALS['BE_MOD']['learningcenter'] = array(
         'tables' => array('tl_lc_configuration')
     ),
 );
+
+$GLOBALS['BE_FFL']['periodWizard'] = \App\XRayLP\LearningCenterBundle\Contao\Widget\PeriodWidget::class;

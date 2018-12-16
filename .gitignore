@@ -30,6 +30,6 @@
 /system/modules/*/.skip
 ###< contao/core-bundle ###
 
-###< PhpStorm IDE ###
-/.idea/
-###> PhpStorm IDE ###
+###> idea ###
+/.idea
+###< idea ###

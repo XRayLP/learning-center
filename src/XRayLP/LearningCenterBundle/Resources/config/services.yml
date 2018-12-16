@@ -46,6 +46,11 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
+    learningcenter.utils.grade:
+        class: App\XRayLP\LearningCenterBundle\Util\GradeUtil
+        public: true
+        arguments:
+        - '@doctrine.orm.entity_manager'
     #############
     #Controllers#
     #############
@@ -62,6 +67,7 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: createProjectDetailsMenu, alias: project }
+            - { name: knp_menu.menu_builder, method: createGradeMenu, alias: grade }
 
     ###########
     #Security #

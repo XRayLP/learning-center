@@ -23,21 +23,22 @@ class UpdateMemberType extends ContaoAbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('dateOfBirth', DateType::class, ['years' => range(date('1970'), date('Y'))])
-            ->add('gender', ChoiceType::class, ['choices' => ['male' => 'male', 'female' => 'female']])
-            ->add('street', TextType::class)
-            ->add('postal', TextType::class)
-            ->add('city', TextType::class)
-            ->add('state', TextType::class)
-            ->add('country', ChoiceType::class, ['choices' => array_flip(System::getCountries())])
-            ->add('phone', TextType::class)
-            ->add('mobile', TextType::class)
-            ->add('fax', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('submit', SubmitType::class)
+            ->add('firstname', TextType::class, ['label' => 'firstname'])
+            ->add('lastname', TextType::class, ['label' => 'lastname'])
+            ->add('dateOfBirth', DateType::class, ['label' => 'date.of.birth', 'years' => range(date('1970'), date('Y'))])
+            ->add('gender', ChoiceType::class, ['label' => 'gender', 'choices' => ['gender.male' => 'male', 'gender.female' => 'female']])
+            ->add('street', TextType::class, ['label' => 'street'])
+            ->add('postal', TextType::class, ['label' => 'postal'])
+            ->add('city', TextType::class, ['label' => 'city'])
+            ->add('state', TextType::class, ['label' => 'state'])
+            ->add('country', ChoiceType::class, ['label' => 'country', 'choices' => array_flip(System::getCountries())])
+            ->add('phone', TextType::class, ['label' => 'phone'])
+            ->add('mobile', TextType::class, ['label' => 'mobile'])
+            ->add('fax', TextType::class, ['label' => 'fax'])
+            ->add('password', PasswordType::class, ['label' => 'password'])
+            ->add('submit', SubmitType::class, ['label' => 'submit'])
         ;
+        dump($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -45,7 +46,8 @@ class UpdateMemberType extends ContaoAbstractType
         $resolver->setDefaults(array(
             'data_class'    => UpdateMemberRequest::class,
             'required'      => false,
-            'empty_data'    => ''
+            'empty_data'    => '',
+            'translation_domain' => 'member',
         ));
         parent::configureOptions($resolver);
     }

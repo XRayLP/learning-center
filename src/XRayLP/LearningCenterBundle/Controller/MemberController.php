@@ -64,9 +64,11 @@ class MemberController extends AbstractController
 
             $form = $this->createForm(UpdateMemberType::class, $memberRequest);
             $form->handleRequest($request);
+            dump($memberRequest->getPassword());
 
             if ($form->isSubmitted() && $form->isValid())
             {
+                dump($memberRequest->getPassword());
                 //update member entity
                 $member->updateRequest($memberRequest);
 
@@ -75,7 +77,7 @@ class MemberController extends AbstractController
             }
 
 
-            $rendered = $this->renderView('@LearningCenter/modules/member/member_edit.html.twig',
+            $rendered = $this->renderView('@LearningCenter/modules/member/edit_profile.html.twig',
                 [
                     'form' => $form->createView(),
                 ]

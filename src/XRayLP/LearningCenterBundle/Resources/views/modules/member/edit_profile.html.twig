@@ -1,0 +1,11 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block form_group_class -%}
+    col-6
+{%- endblock form_group_class %}
+
+{% block main %}
+    {{ form(form) }}
+        {{ form_widget(form, {'attr': {'class': 'col-6'}}) }}
+    {{ form_end(form) }}
+{% endblock %}

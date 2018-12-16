@@ -759,6 +759,7 @@ class ProjectController extends AbstractController
             if ($this->isGranted('project.view', $project)) {
 
                 $events = $project->getEvents();
+                $calendar = $project->getCalendar();
 
                 //generate dates
                 foreach ($events as $event)
@@ -771,6 +772,7 @@ class ProjectController extends AbstractController
 
                 $rendered = $this->renderView('@LearningCenter/modules/project/project_events.html.twig', array(
                     'events'  => $events,
+                    'calendar' => $calendar,
                     'project' => $project
                 ));
                 return new Response($rendered);

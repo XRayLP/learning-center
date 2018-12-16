@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Subject
  * @package App\XRayLP\LearningCenterBundle\Entity
  *
+ * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\StandardRepository")
  * @ORM\Entity()
  * @ORM\Table(name="tl_subject", options={"engine":"InnoDB"})
  */

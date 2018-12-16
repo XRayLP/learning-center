@@ -1,0 +1,33 @@
+{% extends '@LearningCenter/modules/grade/base.html.twig' %}
+
+{% block grade %}
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">Teacher</div>
+                <div class="card-body">
+                    <img src="/{{ teacherAvatar.file.pathname }}" class="rounded-circle">
+                    <h4>{{ teacher.firstname }} {{ teacher.lastname }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">Students</div>
+                <div class="card-body">
+                    <table class="table mt-4">
+                        <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td><img src="/{{ student.avatar.file.pathname }}" width="36" height="36" style="border-radius: 100%" /></td>
+                                <td>{{ student.firstname }}</td>
+                                <td>{{ student.lastname }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+  ~ @link https://github.com/XRayLP/learning-center-bundle
+  ~ @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+  ~ @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+  -->
+
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="firstname">
+                <source>firstname</source>
+                <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="lastname">
+                <source>lastname</source>
+                <target>Nachname</target>
+            </trans-unit>
+            <trans-unit id="date.of.birth">
+                <source>date.of.birth</source>
+                <target>Geburtsdatum</target>
+            </trans-unit>
+            <trans-unit id="gender">
+                <source>gender</source>
+                <target>Geschlecht</target>
+            </trans-unit>
+            <trans-unit id="gender.male">
+                <source>gender.male</source>
+                <target>männlich</target>
+            </trans-unit>
+            <trans-unit id="gender.female">
+                <source>gender.female</source>
+                <target>weiblich</target>
+            </trans-unit>
+            <trans-unit id="street">
+                <source>street</source>
+                <target>Straße</target>
+            </trans-unit>
+            <trans-unit id="postal">
+                <source>postal</source>
+                <target>Postleitzahl</target>
+            </trans-unit>
+            <trans-unit id="city">
+                <source>city</source>
+                <target>Stadt</target>
+            </trans-unit>
+            <trans-unit id="state">
+                <source>state</source>
+                <target>Bundesland</target>
+            </trans-unit>
+            <trans-unit id="country">
+                <source>country</source>
+                <target>Staat</target>
+            </trans-unit>
+            <trans-unit id="phone">
+                <source>phone</source>
+                <target>Festnetz</target>
+            </trans-unit>
+            <trans-unit id="mobile">
+                <source>mobile</source>
+                <target>Mobiltelefon</target>
+            </trans-unit>
+            <trans-unit id="fax">
+                <source>fax</source>
+                <target>Fax</target>
+            </trans-unit>
+            <trans-unit id="password">
+                <source>password</source>
+                <target>Neues Passwort</target>
+            </trans-unit>
+            <trans-unit id="password.repeat">
+                <source>password.repeat</source>
+                <target>Wiederhole Passwort</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>submit</source>
+                <target>Bestätigen</target>
+            </trans-unit>
+            <trans-unit id="error.password.match">
+                <source>error.password.match</source>
+                <target>Die beiden Passwörter müssen übereinstimmen!</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

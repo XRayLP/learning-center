@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" >
+    <file original="file.ext" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="create">
+                <source>create</source>
+                <target>Erstelle Klasse</target>
+            </trans-unit>
+            <trans-unit id="grade">
+                <source>grade</source>
+                <target>Klasse</target>
+            </trans-unit>
+            <trans-unit id="error.no.grade">
+                <source>error.no.grade</source>
+                <target>Sie sind in keiner Klasse angemeldet!</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

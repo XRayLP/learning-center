@@ -63,6 +63,11 @@ class MenuBuilder
             'route' => 'lc_projects_list',
         ))->setAttribute('icon', 'fas fa-project-diagram');
 
+        $menu->addChild('grade', array(
+            'label' => 'Grade',
+            'route' => 'lc_grade'
+        ))->setAttribute('icon', 'fas fa-chalkboard-teacher');
+
         $menu->addChild('lists', array(
             'label' => 'Lists',
             'route' => 'learningcenter_user',
@@ -109,7 +114,7 @@ class MenuBuilder
             'label' => 'Chat',
             'route' => 'lc_projects_chat',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-project-diagram');
+        ))->setAttribute('icon', 'fas fa-comments');
 
         $menu->addChild('projects_settings', array(
             'label' => 'Settings',
@@ -123,6 +128,30 @@ class MenuBuilder
                 $item->setCurrent(true);
             }
         }
+        return $menu;
+    }
+
+    public function createGradeMenu(array $options)
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttributes(array('class' => 'nav nav-tabs'));
+
+        //adding all menu items
+        $menu->addChild('grade_home', array(
+            'label' => 'Home',
+            'route' => 'lc_grade',
+        ))->setAttribute('icon', 'fas fa-home');
+
+        $menu->addChild('grade_files', array(
+            'label' => 'Files',
+            'route' => 'lc_grade',
+        ))->setAttribute('icon', 'fas fa-file');
+
+        $menu->addChild('grade_chat', array(
+            'label' => 'Chat',
+            'route' => 'lc_grade',
+        ))->setAttribute('icon', 'fas fa-comments');
+
         return $menu;
     }
 }

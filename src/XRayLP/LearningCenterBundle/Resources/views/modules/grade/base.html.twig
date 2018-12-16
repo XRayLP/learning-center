@@ -1,0 +1,10 @@
+{% extends '@LearningCenter/base.html.twig' %}
+
+{% block main %}
+    <h2>{{ gradeName }}</h2>
+    {{ knp_menu_render('grade',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
+
+    {% block grade %}
+
+    {% endblock %}
+{% endblock %}

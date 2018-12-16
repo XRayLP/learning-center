@@ -22,11 +22,15 @@
             </trans-unit>
             <trans-unit id="files">
                 <source>Filemanager</source>
-                <target>Speicher</target>
+                <target>Mein Speicher</target>
+            </trans-unit>
+            <trans-unit id="grade">
+                <source>Grade</source>
+                <target>Meine Klasse</target>
             </trans-unit>
             <trans-unit id="projects">
                 <source>Projects</source>
-                <target>Projekte</target>
+                <target>Meine Projekte</target>
             </trans-unit>
             <trans-unit id="lists">
                 <source>Lists</source>

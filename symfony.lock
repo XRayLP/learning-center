@@ -293,6 +293,9 @@
     "matthiasmullie/path-converter": {
         "version": "1.1.1"
     },
+    "menatwork/contao-multicolumnwizard": {
+        "version": "3.3.16"
+    },
     "michelf/php-markdown": {
         "version": "1.8.0"
     },
@@ -379,6 +382,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "2.0.5"
     },
     "scheb/two-factor-bundle": {
         "version": "v3.12.1"
