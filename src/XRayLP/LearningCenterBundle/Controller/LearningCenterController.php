@@ -8,8 +8,10 @@
 namespace App\XRayLP\LearningCenterBundle\Controller;
 
 use App\XRayLP\LearningCenterBundle\Entity\File;
+use App\XRayLP\LearningCenterBundle\LearningCenter\Filemanager\Filemanager;
 use Contao\Config;
 use Contao\FilesModel;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LearningCenterController extends Controller
 {
+
+    private $filemanager;
+
+    private $twig;
+
+    private $em;
+
+    public function __construct(Filemanager $filemanager, \Twig_Environment $twig, EntityManagerInterface $entityManager)
+    {
+        $this->filemanager = $filemanager;
+        $this->twig = $twig;
+        $this->em = $entityManager->getRepository(File::class);
+    }
 
     /**
      * Main Root Controller, where User is redirected to after login.
@@ -34,12 +49,17 @@ class LearningCenterController extends Controller
         if ($this->isGranted('ROLE_MEMBER'))
         {
 
+            //gets member object from db
             $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => $this->getUser()->id));
+
+            //percent of max storage used int
+            $storage = $this->filemanager->getUsedSpacePercent();
 
             $rendered = $this->renderView('@LearningCenter/modules/dashboard.html.twig', array(
                 'name' => $member->getFirstname().' '.$member->getLastname(),
                 'schoolname' => Config::get('name'),
                 'logo'  => FilesModel::findByUuid(Config::get('logo')),
+                'storage' => $storage,
             ));
             return new Response($rendered);
 

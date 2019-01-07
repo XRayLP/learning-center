@@ -112,7 +112,7 @@ class GradeController extends Controller
                 'title' => '',
                 'message' => $this->translator->trans('error.no.grade', [], 'grade')
             ));
-            $this->redirectToRoute('lc_dashboard');
+            return $this->redirectToRoute('lc_dashboard');
         }
     }
 
