@@ -11,6 +11,9 @@
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
+    "contao-community-alliance/composer-plugin": {
+        "version": "3.0.9"
+    },
     "contao-components/ace": {
         "version": "1.3.3"
     },
