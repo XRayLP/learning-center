@@ -54,6 +54,11 @@ class Grade
     private $group;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\XRayLP\LearningCenterBundle\Entity\Thread")
+     */
+    private $thread;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -128,8 +133,24 @@ class Grade
     /**
      * @param MemberGroup $group
      */
-    public function setGroup($group): void
+    public function setGroup($group)
     {
         $this->group = $group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * @param mixed $thread
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
     }
 }

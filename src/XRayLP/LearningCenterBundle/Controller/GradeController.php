@@ -49,22 +49,7 @@ class GradeController extends Controller
      */
     public function dashboard()
     {
-        //members
-        $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => FrontendUser::getInstance()->id));
-
-        $groups = $member->getGroups();
-
-        if ($groups instanceof ArrayCollection)
-        {
-            $groups = $groups->toArray();
-        }
-        foreach ($groups as $group){
-            dump($group);
-            if ($group instanceof MemberGroup && $group->getGroupType() == 2)
-            {
-                $grade = $this->gradeRepository->findOneBy(['group' => $group->getId()]);
-            }
-        }
+        $grade = $this->getGrade();
 
         if (isset($grade) && $grade instanceof Grade) {
             $this->gradeManager->setGrade($grade);
@@ -124,12 +109,26 @@ class GradeController extends Controller
 
     }
 
-    /**
-     * @Route("/learningcenter/mygrade/chat", name="lc_grade_chat")
-     * @param Grade $grade
-     */
-    public function chat(Grade $grade){
+    private function getGrade()
+    {
+        //members
+        $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => FrontendUser::getInstance()->id));
 
+        $groups = $member->getGroups();
+
+        if ($groups instanceof ArrayCollection)
+        {
+            $groups = $groups->toArray();
+        }
+        foreach ($groups as $group){
+            dump($group);
+            if ($group instanceof MemberGroup && $group->getGroupType() == 2)
+            {
+                $grade = $this->gradeRepository->findOneBy(['group' => $group->getId()]);
+            }
+        }
+
+        return $grade;
     }
 
 }

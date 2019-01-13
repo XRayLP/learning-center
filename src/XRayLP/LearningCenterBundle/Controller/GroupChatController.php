@@ -33,6 +33,7 @@ class GroupChatController extends AbstractController
     private $composer;
     private $sender;
     private $threadManager;
+
     public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, RegistryInterface $doctrine, ProviderInterface $provider, ComposerInterface $composer, SenderInterface $sender, ThreadManagerInterface $threadManager)
     {
         $this->eventDispatcher = $eventDispatcher;

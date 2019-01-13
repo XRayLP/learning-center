@@ -15,7 +15,6 @@
 ###< symfony/web-server-bundle ###
 
 ###> contao/core-bundle ###
-/assets/
 /web/
 /files/
 /public/assets

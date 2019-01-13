@@ -49,8 +49,8 @@ services:
     learningcenter.utils.grade:
         class: App\XRayLP\LearningCenterBundle\Util\GradeUtil
         public: true
-        arguments:
-        - '@doctrine.orm.entity_manager'
+        autowire: true
+
     #############
     #Controllers#
     #############

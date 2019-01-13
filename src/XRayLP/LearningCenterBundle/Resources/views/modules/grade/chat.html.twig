@@ -1,12 +1,13 @@
-{% extends '@LearningCenter/modules/project/base.html.twig' %}
+{% extends '@LearningCenter/modules/grade/base.html.twig' %}
 
-{% block project %}
+{% block grade %}
     <p>TEST</p>
     {{ include('@LearningCenter/modules/chat/chat.thread.html.twig') }}
 
-    <form action="{{ url('lc_projects_chat_send', {'id': project.id}) }}" method="post">
+    <form action="{{ url('lc_grade_chat_send') }}" method="post">
         {{ form_widget(form) }}
 
         <input class="btn btn-primary" type="submit" />
     </form>
+
 {% endblock %}

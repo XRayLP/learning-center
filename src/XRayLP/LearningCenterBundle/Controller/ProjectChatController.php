@@ -5,6 +5,7 @@
  * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
  */
 namespace App\XRayLP\LearningCenterBundle\Controller;
+
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\Project;
 use App\XRayLP\LearningCenterBundle\Form\ReplyMessageFormType;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
+
 class ProjectChatController extends AbstractController
 {
     private $eventDispatcher;
@@ -29,6 +31,7 @@ class ProjectChatController extends AbstractController
     private $composer;
     private $sender;
     private $threadManager;
+
     public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, RegistryInterface $doctrine, ProviderInterface $provider, ComposerInterface $composer, SenderInterface $sender, ThreadManagerInterface $threadManager)
     {
         $this->eventDispatcher = $eventDispatcher;

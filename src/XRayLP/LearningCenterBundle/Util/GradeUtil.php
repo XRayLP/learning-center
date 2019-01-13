@@ -11,17 +11,28 @@ namespace App\XRayLP\LearningCenterBundle\Util;
 use App\XRayLP\LearningCenterBundle\Entity\Grade;
 use App\XRayLP\LearningCenterBundle\Entity\GradeLevel;
 use App\XRayLP\LearningCenterBundle\Entity\Subject;
+use App\XRayLP\LearningCenterBundle\Event\Events;
+use App\XRayLP\LearningCenterBundle\Event\GradeEvent;
+use App\XRayLP\LearningCenterBundle\LearningCenter\Member\GradeManager;
+use Contao\DC_Table;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GradeUtil
 {
     private $gradeLevelRepository;
+    private $gradeRepository;
     private $subjectRepository;
+    private $eventDispatcher;
+    private $gradeManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher, GradeManager $gradeManager)
     {
         $this->gradeLevelRepository = $entityManager->getRepository(GradeLevel::class);
         $this->subjectRepository = $entityManager->getRepository(Subject::class);
+        $this->gradeRepository = $entityManager->getRepository(Grade::class);
+        $this->eventDispatcher = $eventDispatcher;
+        $this->gradeManager = $gradeManager;
     }
 
     /**
@@ -70,10 +81,11 @@ class GradeUtil
      */
     public function getGradeLabel($row, $label){
 
-        $gradeLevel = $this->gradeLevelRepository->findOneById($row["pid"]);
+        $grade = $this->gradeRepository->findOneById($row["id"]);
 
-        $newLabel = $gradeLevel->getGradeNumber().$row["suffix"];
-        return $newLabel;
+        $this->gradeManager->setGrade($grade);
+
+        return $this->gradeManager->getGradename();
     }
 
     /**
@@ -89,5 +101,33 @@ class GradeUtil
 
         $newLabel = 'Kurs '.$subject->getName().' '.$gradeLevel->getGradeNumber().$row["suffix"];
         return $newLabel;
+    }
+
+    /**
+     * function for callback
+     * @param DC_Table $callback
+     */
+    public function createSuccessEventDispatcher(DC_Table $callback)
+    {
+        $id = $callback->id;
+
+        /** @var Grade $grade */
+        $grade = $this->gradeRepository->findOneById($id);
+
+        $this->eventDispatcher->dispatch(Events::GRADE_CREATE_SUCCESS_EVENT, new GradeEvent($grade));
+    }
+
+    /**
+     * function for contao callback
+     * @param DC_Table $callback
+     */
+    public function preDeleteEventDispatcher(DC_Table $callback)
+    {
+        $id = $callback->id;
+
+        /** @var Grade $grade */
+        $grade = $this->gradeRepository->findOneById($id);
+
+        $this->eventDispatcher->dispatch(Events::GRADE_PRE_DELETE_EVENT, new GradeEvent($grade));
     }
 }

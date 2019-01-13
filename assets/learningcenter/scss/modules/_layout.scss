@@ -1,0 +1,40 @@
+/*!
+ * @link https://github.com/XRayLP/learning-center-bundle
+ * @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+ * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+ */
+
+.intern {
+	
+	#main {
+		padding: 1em;
+	}
+}
+
+.dashboard {
+	> div.card {
+		margin: 2em 1em;
+	}
+}
+
+.clickable-row {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.btn-fa {
+	background: none;
+	padding: 0px;
+	border: none;
+	cursor: pointer;
+}
+
+.hover-success:hover {
+	color: $success;
+}
+.hover-danger:hover {
+	color: $danger;
+}

@@ -1,0 +1,102 @@
+/*!
+ * @link https://github.com/XRayLP/learning-center-bundle
+ * @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+ * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+ */
+
+#nav-intern {
+	background-color: $primary !important;
+	a, p, span {
+		color: $white; 
+	}
+	.navbar-toggler {
+		border: transparent;
+		color: $white;
+	}
+	#nav-header {
+		a[title=Abmelden]::before{
+				margin-right: 0.5em;
+			    display: inline-block;
+			    font-style: normal;
+			    font-variant: normal;
+			    text-rendering: auto;
+			    -webkit-font-smoothing: antialiased;
+				font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f2f6";
+		}
+		span {
+			@include media-breakpoint-down(md) {
+				display: none;
+			}	
+		}
+		@include media-breakpoint-up(lg) {
+			position: absolute;
+			right: 0.2em;
+			top: 0.3em;
+		}
+	}
+}
+
+#lc_header {
+	.lc-nav-thumbnail {
+		height: $navbar-brand-height*1.2;
+		padding: 0;
+	}
+	.dropdown a:after {
+		display: none;
+	}
+}
+
+
+
+#lc_sidebar {
+	padding-top: 1em;
+	background-color: $dark;
+	min-height: 100vm;
+	a, p, span {
+		color: $white; 
+	}
+	.lc_navigation {
+		a, strong {
+			&::before {
+				margin-right: 0.5em;
+			    display: inline-block;
+			    font-style: normal;
+			    font-variant: normal;
+			    text-rendering: auto;
+			    -webkit-font-smoothing: antialiased;
+				display: inline-block;
+				width: 1.25em;
+				text-align: center;
+		    }
+		}
+		[title=Startseite]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f015";
+		}
+		[title=Lernkatalog]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f02d";
+		}
+		[title=Speicher]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f0a0";
+		}
+		[title=Projekte]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f328";
+		}
+		[title=Listen]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f03a";
+		}
+		[title=Profil]::before {
+			font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f007";
+		}
+		@include media-breakpoint-down(md) {
+			li {
+				border-bottom: 1px solid $gray-700;
+				&.last {
+					border-bottom: transparent;
+				}
+				a, strong {
+					font-size: 1.3em;
+				}
+			}
+		}
+	}
+}

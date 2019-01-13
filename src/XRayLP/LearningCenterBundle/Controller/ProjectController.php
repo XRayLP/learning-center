@@ -327,11 +327,13 @@ class ProjectController extends AbstractController
                 $normalizer = [
                     (new ObjectNormalizer())
                         ->setIgnoredAttributes([
-                            'homeDir', 'groups', 'password', 'activation', 'permissions', 'projects', 'session', 'start', 'stop', 'thread'
+                            'avatar', 'homeDir', 'groups', 'password', 'activation', 'permissions', 'projects', 'session', 'start', 'stop', 'thread'
                         ])
 
                 ];
                 $serializer = new Serializer($normalizer, $encoders);
+
+                dump($projectMembers);
 
                 $data = $serializer->serialize($projectMembers, 'json');
 

@@ -149,7 +149,7 @@ class MenuBuilder
 
         $menu->addChild('grade_chat', array(
             'label' => 'Chat',
-            'route' => 'lc_grade',
+            'route' => 'lc_grade_chat',
         ))->setAttribute('icon', 'fas fa-comments');
 
         return $menu;

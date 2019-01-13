@@ -9,6 +9,7 @@ namespace App\XRayLP\LearningCenterBundle\Controller;
 
 use App\XRayLP\LearningCenterBundle\Entity\File;
 use App\XRayLP\LearningCenterBundle\LearningCenter\Filemanager\Filemanager;
+use App\XRayLP\LearningCenterBundle\Util\ByteConverter;
 use Contao\Config;
 use Contao\FilesModel;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +54,16 @@ class LearningCenterController extends Controller
             $member = $this->getDoctrine()->getRepository(Member::class)->findOneBy(array('id' => $this->getUser()->id));
 
             //percent of max storage used int
-            $storage = $this->filemanager->getUsedSpacePercent();
+            $storage[0] = $this->filemanager->getUsedSpacePercent();
+
+            $sizes = $this->filemanager->getUsedSpace();
+
+            //converts the current space and max space
+            foreach ($sizes as $size)
+            {
+                $size = ByteConverter::byteAutoConvert($size);
+                $storage[] = $size['size'].' '.strtoupper($size['unit']);
+            }
 
             $rendered = $this->renderView('@LearningCenter/modules/dashboard.html.twig', array(
                 'name' => $member->getFirstname().' '.$member->getLastname(),

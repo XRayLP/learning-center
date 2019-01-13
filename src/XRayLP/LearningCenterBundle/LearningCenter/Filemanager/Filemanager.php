@@ -29,6 +29,9 @@ class Filemanager
 
     private $twig;
 
+    /**
+     * @var Member
+     */
     private $user;
 
     private $files;
@@ -45,7 +48,9 @@ class Filemanager
         $this->doctrine = $doctrine;
         $this->token = $tokenStorage;
         $this->twig = $twig;
-        $this->user =$this->doctrine->getRepository(Member::class)->findOneById($tokenStorage->getToken()->getUser()->id);;
+        if ($tokenStorage->getToken()->getUser() !== "anon.") {
+            $this->user = $this->doctrine->getRepository(Member::class)->findOneById($tokenStorage->getToken()->getUser()->id);
+        }
     }
 
     public function setCurDir(File $currentDirectory)
@@ -75,13 +80,27 @@ class Filemanager
      */
     public function getUsedSpacePercent()
     {
-        $usedSpace = $this->getUsedSpace();
-        $maxSpace = $this->user->getCloudSpace();
+        $usedSpace = $this->getUsedSpace()[0];
+        $maxSpace = $this->getUsedSpace()[1];
 
         $usedSpaceDegree = round(($usedSpace/$maxSpace)*360);
         $usedSpacePercent = round(($usedSpace/$maxSpace)*100);
 
         return $usedSpacePercent;
+    }
+
+    /**
+     * Returns sed space of an Users cloud in bytes
+     *
+     * @return array(float $usedSpace, float $maxSpace)
+     */
+    public function getUsedSpace()
+    {
+        $this->usedSpace = 0;
+
+        $this->getDirSpace($this->user->getHomeDir());
+
+        return array($this->usedSpace, $this->user->getCloudSpace());
     }
 
     /**
@@ -124,15 +143,6 @@ class Filemanager
         }
         $zip->close();
         return $zip;
-    }
-
-    private function getUsedSpace()
-    {
-        $this->usedSpace = 0;
-
-        $this->getDirSpace($this->user->getHomeDir());
-
-        return $this->usedSpace;
     }
 
     private function getDirSpace(File $dir)
@@ -234,12 +244,18 @@ class Filemanager
         return $toolbar;
     }
 
-    public function uploadFile(UploadedFile $uploadedFile)
+    /**
+     * @param UploadedFile$uploadedFile
+     * @throws \Exception
+     */
+    public function uploadFile($uploadedFile)
     {
+        dump($uploadedFile);
+
         $filesize = $uploadedFile->getSize();
         $cloudSpace = $this->user->getCloudSpace();
 
-        if ($cloudSpace > $this->getUsedSpace() + $filesize || true) {
+        if ($cloudSpace > $this->getUsedSpace()[0] + $filesize || true) {
 
 
             if (isset($this->curDir)) {

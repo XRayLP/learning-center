@@ -34,10 +34,14 @@ class Events
     const PROJECT_EVENTS_REMOVE_FAILURE_EVENT = 'project.events.remove.failure';
 
     //Group Events
-    const GROUP_CREATE_SUCCESS_EVENT = 'project.create.success';
+    const GROUP_CREATE_SUCCESS_EVENT = 'group.create.success';
 
     //Filemanager Events
     const FILE_UPLOAD = 'file.upload';
+
+    //Grade Events
+    const GRADE_CREATE_SUCCESS_EVENT = 'grade.create.success';
+    const GRADE_PRE_DELETE_EVENT = 'grade.pre.delete';
 
 
 }

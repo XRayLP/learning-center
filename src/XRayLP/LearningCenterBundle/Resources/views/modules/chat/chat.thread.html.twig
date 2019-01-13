@@ -17,10 +17,6 @@
 
     <h3>{{ 'reply'|trans }}</h3>
 
-    <form action="{{ url('lc_projects_chat_send', {'id': project.id}) }}" method="post">
-        {{ form_widget(form) }}
 
-        <input class="btn btn-primary" type="submit" />
-    </form>
 
 {% endblock %}

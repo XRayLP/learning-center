@@ -45,3 +45,4 @@ services:
     #override participant provider
     App\XRayLP\LearningCenterBundle\Security\ParticipantProvider:
         decorates: 'fos_message.participant_provider.default'
+

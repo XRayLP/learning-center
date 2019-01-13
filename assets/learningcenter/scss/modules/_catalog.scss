@@ -1,0 +1,30 @@
+/*!
+ * @link https://github.com/XRayLP/learning-center-bundle
+ * @copyright Copyright (c) 2018 Niklas Loos <https://github.com/XRayLP>
+ * @license GPL-3.0 <https://github.com/XRayLP/learning-center-bundle/blob/master/LICENSE>
+ */
+
+.mod_catalog {
+    .catalog-courses {
+        > div {
+            padding: 15px;
+            h4 {
+                float: left;
+                margin-bottom: 0;
+            }
+            a {
+                float: right;
+                i {
+                    font-size: 2em;
+                    color: $gray-700;
+                }
+            }
+        }
+    }
+}
+
+.catalog-timeline {
+    .card {
+        margin: 2em 1em;
+    }
+}

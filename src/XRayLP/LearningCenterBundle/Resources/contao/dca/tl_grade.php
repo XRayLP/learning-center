@@ -12,16 +12,16 @@ $GLOBALS['TL_DCA']['tl_grade'] = array(
         'dataContainer' => 'Table',
         'ptable' => 'tl_grade_level',
         'switchToEdit' => true,
-        'enableVersioning' => true
+        'enableVersioning' => true,
+        'onsubmit_callback' => array(array('learningcenter.utils.grade', 'createSuccessEventDispatcher')),
+        'ondelete_callback' => array(array('learningcenter.utils.grade', 'preDeleteEventDispatcher'))
     ),
 
     //List
     'list' => array(
 
         'sorting' => array(
-            'mode'          => 1,
-            'fields'        => array('suffix'),
-            'flag'          => 1,
+            'mode'          => 0,
             'panelLayout'   => 'filter;search,limit'
         ),
         'label' => array(
