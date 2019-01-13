@@ -18,8 +18,9 @@
     "copy-webpack-plugin": "^4.6.0",
     "dropzone": "^5.5.1",
     "fine-uploader": "^5.16.2",
-    "fullcalendar": "^3.9.0",
+    "fullcalendar": "^3.10.0",
     "jsdom": "^11.6.2",
+    "moment": "^2.23.0",
     "tui-calendar": "^1.8.1"
   }
 }

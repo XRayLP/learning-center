@@ -844,11 +844,16 @@ class Member implements ParticipantInterface
     }
 
     /**
-     * @return string
+     * @return Avatar
      */
     public function getAvatar()
     {
-        return ((new Avatar($this))->getFile(true));
+        return ((new Avatar($this)));
+    }
+
+    public function getAvatarLink()
+    {
+        return $this->getAvatar()->getFile()->getPathname();
     }
 
     /**

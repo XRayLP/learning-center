@@ -5,7 +5,7 @@
  */
 
 let Routing = require('../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router');
-let Routes = require('../../../js/js_routes.json');
+let Routes = require('../js_routes.json');
 let loading = "<tr id='loadingDiv'><td></td><td></td><td><i class='fas fa-spinner fa-3x fa-spin'></i></td><td></td></tr>";
 Routing.setRoutingData(Routes);
 

@@ -43,7 +43,7 @@ members = {
                     }
                     let e = $('<tr><td id="avatar"></td><td id = "firstname"></td><td id = "lastname"></td>' + add + '</tr>');
 
-                    $('#avatar', e).html('<img src="' + projectMember['memberManagement']['avatar'] +'" style="border-radius: 100%" width="36" height="36">');
+                    $('#avatar', e).html('<img src="/' + projectMember['member']['avatarLink'] +'" style="border-radius: 100%" width="36" height="36">');
                     $('#firstname', e).html(projectMember['member']['firstname']);
                     $('#lastname', e).html(projectMember['member']['lastname']);
                     usertable.append(e);
