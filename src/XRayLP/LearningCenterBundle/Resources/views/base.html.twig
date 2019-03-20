@@ -2,21 +2,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>{% block title %}Learning Center{% endblock %}</title>
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-    <link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />
+    <!--Import jQuery-->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <!--<link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />-->
     <script src="{{ asset('bundles/learningcenter/js/app.js') }}"></script>
+    <script src="{{ asset('bundles/learningcenter/js/design.js') }}"></script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     {% block javascripts %}
     {% endblock %}
+    
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="{{ asset('bundles/learningcenter/js/design.css') }}" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Encoding Declaration for Strings -->
+    <meta charset="utf-8"/>
 </head>
 <body>
     <header id="lc_header">
-        <nav class="navbar navbar-expand navbar-dark bg-primary">
+        <!--<nav class="navbar navbar-expand navbar-dark bg-primary">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Learning Center</a>
             </div>
@@ -49,9 +59,43 @@
                     </div>
                 </li>
             </ul>
-        </nav>
+        </nav>-->
+        
+        <!--Navbar-->
+        <div class="navbar-fixed">
+            <nav class="green darken-3">
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo hide-on-small-only">Learning Center</a>
+
+                    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+
+                    <ul id="top-nav" class="right">
+                        <li><a><span class="btn dropdown-trigger new badge red" data-target='dropdown_news'>{{ notificationsCount() }}</span></a></li>
+                        <li><a class="btn-floating sidenav-trigger show-on-large btn-large waves-effect waves-light red"
+                               data-target='accouint-slide-out' id="accountslide"><img class="responsive-img" src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png"></a></li>
+                    </ul>   
+                </div>
+            </nav>
+        </div>
+        
+        <!--Dropdown News-->
+        <ul id='dropdown_news' class='dropdown-content' style="width: 300px !important">
+            {% for notification in notifications() %}
+                <li><a href="#" data-id="{{ notification.id }}"><i class="fas fa-{{ notification.icon }} fa-fw"></i><span> {{ notification.message }}</span></a></li>
+            {% endfor %}
+            <li><a href="#!">first news</a></li>
+        </ul>
     </header>
-    <div id="container" class="container-fluid">
+    <!--Sidenav-->
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li class="active"><a href="#!"><i class="material-icons">home</i>Startseite</a></li>
+    {{ knp_menu_render('main',{'template': '@LearningCenter/menu/primaryNav.html.twig'}) }}
+</ul>
+
+<!---------------------------------------------------------------------------------------------------------------------->
+    
+    <!--<div id="container" class="container-fluid">
         <div class="row">
         <aside id="lc_sidebar" class="col-12 col-lg-3 col-xl-2 d-none d-lg-block">
             <nav class="lc_navigation block">
@@ -66,6 +110,6 @@
             {% endblock %}
         </main>
         </div>
-    </div>
+    </div>-->
 </body>
 </html>

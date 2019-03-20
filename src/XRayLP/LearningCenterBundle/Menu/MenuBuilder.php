@@ -40,7 +40,7 @@ class MenuBuilder
     public function createMainMenu(array $options)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array('class' => 'nav flex-column', 'currentClass' => 'active'));
+        $menu->setChildrenAttributes(array('class' => 'sidenav sidenav-fixed', 'currentClass' => 'active'));
 
         //adding all menu items
         $menu->addChild('home', array(
