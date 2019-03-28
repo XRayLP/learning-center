@@ -7,7 +7,9 @@
 {% block main %}
     <h4>Infos zu meinem Account</h4>
     
-      <div class="card blue-grey darken-1">
+<div class="row">
+  <div class="col s12">    
+    <div class="card blue-grey darken-1">
         <div class="card-content white-text">
           <span class="card-title">Account</span>
           <div class="divider"></div>
@@ -32,6 +34,68 @@
             </div>
         </div>
       </div>
+  </div>
+</div> 
+
+    <div class="row">
+        <div class="col s12 m8 l6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Anmeldenamen ändern</span>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <input id="old_username" type="email" class="validate">
+                                <label for="old_username">alte E-Mail</label>
+                            </div>
+                
+                            <div class="input-field">
+                                <input id="new_username" type="email" class="validate">
+                                <label for="new_username">neue E-Mail</label>
+                                <span class="helper-text" data-error="falsch" data-success="richtig"></span>
+                            </div>
+                    
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Bestätigen
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col s12 m8 l6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Passwort ändern</span>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <input id="password_old" type="password" class="validate">
+                                <label for="password_old">altes Passwort</label>
+                            </div>
+                        
+                            <div class="input-field">
+                                <input id="password_new1" type="password" class="validate">
+                                <label for="password_new1">neues Passwort</label>
+                            </div>
+                        
+                            <div class="input-field">
+                                <input id="password_new2" type="password" class="validate">
+                                <label for="password_new2">neues Passwort bestätigen</label>
+                            </div>
+                        
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Bestätigen
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
     
     {{ form(form) }}
         {{ form_widget(form, {'attr': {'class': 'col-6'}}) }}
