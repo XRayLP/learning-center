@@ -1,0 +1,15 @@
+{
+    "name": "contao-components/ace",
+    "type": "contao-component",
+    "description": "ACE code editor integration for Contao Open Source CMS",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Leo Feyer",
+            "homepage": "https://github.com/leofeyer"
+        }
+    ],
+    "require": {
+        "contao-components/installer": "^1.0.9"
+    }
+}

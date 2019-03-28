@@ -1,8 +1,12 @@
-{# var breadcrumb: File[] Object #}
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        {% for item in breadcrumb %}
-            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('learningcenter_files', {'fid': item.id}) }}">{{ item.name }}</a></li>
-        {% endfor %}
-    </ol>
-</nav>
+{# var breadcrumb: File[] Object #}    
+    <nav id="breadcrumb-storage">
+        <div class="grey lighten-2">
+            <div class="nav-wrapper">
+              <div class="col s12">
+                {% for item in breadcrumb %}                    
+                  <a href="{{ path('learningcenter_files', {'fid': item.id}) }}" class="breadcrumb green-text text-darken-3">{{ item.name }}</a>
+                {% endfor %}
+              </div>
+            </div>
+        </div>
+    </nav>

@@ -1,7 +1,7 @@
 {% trans_default_domain 'message' %}
 {% block fos_message_content %}
 
-    <h2>{{ thread.subject }}</h2>
+    <h4>{{ thread.subject }}</h4>
 
     {% for message in thread.messages %}
         <div class="messenger_thread_message">
@@ -15,7 +15,7 @@
         </div>
     {% endfor %}
 
-    <h3>{{ 'reply'|trans }}</h3>
+    <h5>{{ 'reply'|trans }}</h5>
 
 
 

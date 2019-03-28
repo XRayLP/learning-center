@@ -1,8 +1,12 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
+    <nav class="nav-extended">
+        <div class="nav-content">
+            {{ knp_menu_render('grade',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
+        </div>
+    </nav>
     <h2>{{ gradeName }}</h2>
-    {{ knp_menu_render('grade',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
 
     {% block grade %}
 

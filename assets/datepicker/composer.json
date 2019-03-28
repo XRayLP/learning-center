@@ -1,0 +1,15 @@
+{
+    "name": "contao-components/datepicker",
+    "type": "contao-component",
+    "description": "Date picker integration for Contao Open Source CMS",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leo Feyer",
+            "homepage": "https://github.com/leofeyer"
+        }
+    ],
+    "require": {
+        "contao-components/installer": "^1.0.9"
+    }
+}

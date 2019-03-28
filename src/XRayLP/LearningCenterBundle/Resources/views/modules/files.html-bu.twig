@@ -19,7 +19,7 @@
 
     {{ test|raw }}
 
-    <div class="btn-toolbar" role="toolbar">
+    <!--<div class="btn-toolbar" role="toolbar">
         <div class="btn-group">
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_upload_modal"><i class="fa fa-upload"></i><span>Upload</span></button>
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#files_folder_modal"><i class="fa fa-folder"></i><span>New Folder</span></button>
@@ -27,7 +27,17 @@
             <button type="button" class="btn btn-primary btn-dark btn-delete" data-toggle="modal" data-target="#files_delete_modal"><i class="fa fa-trash"></i><span>Delete</span></button>
             <button type="button" class="btn btn-primary btn-dark btn-share" data-toggle="modal" data-target="#files_share_modal"><i class="fa fa-trash"></i><span>Share</span></button>
         </div>
+    </div>-->
+
+    <div id="btn-group-storage">
+      <a class="waves-effect waves-light btn storage modal-trigger" href="#files_upload_modal">Upload</a>
+      <a class="waves-effect waves-light btn storage modal-trigger" href="#modal_newfolder">Neuer Ordner</a>
+      <a class="waves-effect waves-light btn storage" href="#">Download</a>
+      <a class="waves-effect waves-light btn storage modal-trigger" href="#modal_delete">Löschen</a>
+      <a class="waves-effect waves-light btn storage modal-trigger" href="#modal_share">Teilen</a>
+      <a></a>
     </div>
+
     {% if files %}
     <div class="row files">
         {% for file in files %}

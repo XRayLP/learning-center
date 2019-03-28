@@ -8,6 +8,12 @@
     <!--<link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />-->
     <script src="{{ asset('bundles/learningcenter/js/app.js') }}"></script>
     <script src="{{ asset('bundles/learningcenter/js/design.js') }}"></script>
+    <script>
+        $(document).ready(function() {    
+            $('.current > a,span').addClass('active');
+
+        });
+    </script>
     <!--JavaScript at end of body for optimized loading-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     {% block javascripts %}
@@ -86,12 +92,40 @@
             {% endfor %}
             <li><a href="#!">first news</a></li>
         </ul>
+        
+        <!--sidenav account-->
+        <ul id="accouint-slide-out" class="sidenav account">
+            <li><a class="subheader"><h4>Profil</h4></a></li>
+            <li><div class="divider"></div></li>     
+            <div class="card-panel transparent z-depth-0">
+              <div class="row account-wrapper valign-wrapper">
+                <div class="col s4">
+                    <img src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png" alt="" class="circle responsive-img">
+                </div>
+                <div class="col s8">
+                  <a href="#name"><span class="black-text name">{{frontendUser.firstname}} {{frontendUser.lastname}}</span></a>
+                  <a href="#email"><span class="black-text name">{{frontendUser.email}}</span></a>
+                </div>
+              </div>
+            </div>
+            <li><div class="divider"></div></li>
+            <li><a href="{{ url('lc_profile') }}" class="waves-effect"><i class="material-icons">account_box</i>Mein Profil</a></li>
+            <li><a class="waves-effect" href="{{ path('learningcenter_logout') }}"><i class="material-icons">assignment_return</i>Abmelden</a></li>
+          </ul>
     </header>
     <!--Sidenav-->
 <ul id="slide-out" class="sidenav sidenav-fixed">
     <li class="active"><a href="#!"><i class="material-icons">home</i>Startseite</a></li>
     {{ knp_menu_render('main',{'template': '@LearningCenter/menu/primaryNav.html.twig'}) }}
 </ul>
+    
+        <main id="lc_main" class="col-12 col-lg-9 col-xl-10">
+            {# FLASH MESSAGES #}
+            {% include '@LearningCenter/modules/widgets/flash.messages.html.twig' %}
+
+            {% block main %}
+            {% endblock %}
+        </main>
 
 <!---------------------------------------------------------------------------------------------------------------------->
     
@@ -106,8 +140,7 @@
             {# FLASH MESSAGES #}
             {% include '@LearningCenter/modules/widgets/flash.messages.html.twig' %}
 
-            {% block main %}
-            {% endblock %}
+
         </main>
         </div>
     </div>-->

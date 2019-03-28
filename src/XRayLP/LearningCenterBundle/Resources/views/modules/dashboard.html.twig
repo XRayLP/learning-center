@@ -1,23 +1,19 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
-    <div class="dashboard">
-        <div class="card">
-            <div class="card-body">
-                <h5>{% trans %}Welcome %name%, in the Learning Center of the School %schoolname%.{% endtrans %}</h5>
-            </div>
+    <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+            <span class="card-title">{% trans %}Welcome %name%, in the Learning Center of the School %schoolname%.{% endtrans %}</span>
         </div>
     </div>
 
-    <div class="dashboard">
-        <div class="card">
-            <div class="card-header">
-                Storage Usage
+    <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+            <p>Storage Usage</p>
+            <div class="progress">
+            <div class="determinate" style="width: {{ storage.0 }}%"></div>
             </div>
-            <div class="card-body">
-                <h3>{{ storage.0 }}%</h3>
-                <p>{{ storage.1 }} von {{ storage.2 }} belegt.</p>
-            </div>
+            <p>{{ storage.1 }} von {{ storage.2 }} belegt.</p>
         </div>
     </div>
 {% endblock %}

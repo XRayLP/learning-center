@@ -87,7 +87,7 @@ class MenuBuilder
     public function createProjectDetailsMenu(array $options)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array('class' => 'nav nav-tabs'));
+        $menu->setChildrenAttributes(array('class' => 'tabs tabs-transparent', 'currentClass' => 'active'));
 
         $routeParameters = array('alias' => $this->requestStack->getCurrentRequest()->get('id'));
 
@@ -96,36 +96,42 @@ class MenuBuilder
             'label' => 'Home',
             'route' => 'lc_projects_detail',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-home');
+        ))->setAttribute('icon', 'fas fa-home')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('projects_members', array(
             'label' => 'Members',
             'route' => 'lc_projects_members',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-book');
+        ))->setAttribute('icon', 'fas fa-book')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('projects_events', array(
             'label' => 'Events',
             'route' => 'lc_projects_events',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-hdd');
+        ))->setAttribute('icon', 'fas fa-hdd')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('projects_chat', array(
             'label' => 'Chat',
             'route' => 'lc_projects_chat',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-comments');
+        ))->setAttribute('icon', 'fas fa-comments')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('projects_settings', array(
             'label' => 'Settings',
             'route' => 'lc_projects_settings',
             'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-cog');
+        ))->setAttribute('icon', 'fas fa-cog')
+        ->setAttribute('class', 'tab');
 
         //set matching items current
         foreach ($menu as $key => $item) {
             if($this->routeKeyVoter->matchItem($item)){
                 $item->setCurrent(true);
+                $item->setAttribute('class', 'active');
             }
         }
         return $menu;
@@ -134,23 +140,26 @@ class MenuBuilder
     public function createGradeMenu(array $options)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array('class' => 'nav nav-tabs'));
+        $menu->setChildrenAttributes(array('class' => 'tabs tabs-transparent', 'currentClass' => 'active'));
 
         //adding all menu items
         $menu->addChild('grade_home', array(
-            'label' => 'Home',
+            'label' => 'home',
             'route' => 'lc_grade',
-        ))->setAttribute('icon', 'fas fa-home');
+        ))->setAttribute('icon', 'fas fa-home')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('grade_files', array(
-            'label' => 'Files',
+            'label' => 'files',
             'route' => 'lc_grade',
-        ))->setAttribute('icon', 'fas fa-file');
+        ))->setAttribute('icon', 'fas fa-file')
+        ->setAttribute('class', 'tab');
 
         $menu->addChild('grade_chat', array(
-            'label' => 'Chat',
+            'label' => 'chat',
             'route' => 'lc_grade_chat',
-        ))->setAttribute('icon', 'fas fa-comments');
+        ))->setAttribute('icon', 'fas fa-comments')
+        ->setAttribute('class', 'tab');
 
         return $menu;
     }
