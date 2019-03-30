@@ -41,14 +41,25 @@ use App\XRayLP\LearningCenterBundle\Request\CreateProjectRequest;
 use App\XRayLP\LearningCenterBundle\Request\UpdateProjectRequest;
 use Symfony\Component\Validator\Constraints\Time;
 
+/**
+ * ProjectController Klasse
+ *
+ * @package App\XRayLP\LearningCenterBundle\Controller
+ */
 class ProjectController extends AbstractController
 {
+    // Event Dispatcher Service, um Events auszulösen
     private $eventDispatcher;
 
+    // Translator, um dynamische Übersetzungen zu gestalten
     private $translator;
 
+    // Entity Manager, um auf Entities der Datenbank zuzugreifen
     private $entityManager;
 
+    /*
+     * Variablen werden die einzelnen Services zugeordnet
+     */
     public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, EntityManagerInterface $entityManager)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -118,57 +129,70 @@ class ProjectController extends AbstractController
             //check users permission to create projects
             if ($this->isGranted('project.create')) {
 
+                // neues Projekt Entity
                 $project = new Project();
+
+                // Projekt Request speichert alle Ergebnisse des Formulars
                 $createProjectRequest = new CreateProjectRequest();
 
-                //Form Creation
+                // Formular wird generiert
                 $form = $this->createForm(CreateProjectType::class, $createProjectRequest);
+                // Falls der Nutzer das Projekt leiten darf, wird das Feld für den Projektleiter aus dem Formular gelöscht
                 if ($this->isGranted('lead', $project)){
                     $form->remove('leader');
                 }
+
+                // Request Objekt wird zum Formular Objekt hinzugefügt
                 $form->handleRequest($request);
 
-                //Form Handle after Submit
-                if($form->isSubmitted() && $form->isValid()){
+                // Überprüfung, ob Formular erfolgreich abgeschickt und validiert wurde
+                if($form->isSubmitted() && $form->isValid())
+                {
+                    // Entity Manager Service
                     $entityManager = $this->getDoctrine()->getManager();
+
+                    // angemeldetes Mitglied
                     $currentUser = $this->getDoctrine()->getRepository(Member::class)->findOneById($this->getUser()->id);
 
-                    //Project Entity
+                    // neues Projekt Entity
                     $project = new Project();
-                    $project->setName($createProjectRequest->getName());
-                    $project->setDescription($createProjectRequest->getDescription());
-                    $project->setPublic($createProjectRequest->getPublic());
-                    //user is leader when he can lead or the chosen teacher will be leader
+                    $project->setName($createProjectRequest->getName()); // Name aus dem Formular als Projekt Name
+                    $project->setDescription($createProjectRequest->getDescription()); // Beschreibung aus Formular als Projekt Beschreibung
+
+                    // Überprüfung, ob Nutzer das Projekt leiten darf
                     if ($this->isGranted('project.lead')){
-                        $project->setLeader($currentUser);
-                        $project->setConfirmed(1);
-                    } else {
-                        $project->setLeader($createProjectRequest->getLeader());
-                        $project->addAdmin($currentUser);
-                        $project->setConfirmed(0);
+                        $project->setLeader($currentUser); // derzeitiger Nutzer als Leiter
+                        $project->setConfirmed(1); // Projekt muss nicht mehr bestätigt werden
+                    } else { // Ansonsten
+                        $project->setLeader($createProjectRequest->getLeader()); // Leiter aus dem Formular verwenden
+                        $project->addAdmin($currentUser); // derzeitiger Nutzer als Admin
+                        $project->setConfirmed(0); // Projekt muss noch vom ausgewähltem Leiter bestätigt werden
                     }
 
-                    //creates new group for the project
+                    // Erstellung einer neuen Contao Gruppe für das Projekt, die für die Verwaltung der Mitglieder zuständig ist
                     $group = new MemberGroup();
-                    $group->setTstamp(time());
-                    $group->setName($project->getName());
-                    $group->setGroupType(4);
+                    $group->setTstamp(time()); // Zeitstempel
+                    $group->setName($project->getName()); // Projekt Name
+                    $group->setGroupType(4); // GruppenTyp: Projekt
                     $entityManager->persist($group);
-                    $entityManager->flush();
+                    $entityManager->flush(); // Abspeichern der Gruppe in der Datenbank
 
-                    //save group in db
-                    $group->addMember($currentUser);
+                    // Mitglieder zur erstellten Gruppe hinzufügen
+                    $group->addMember($currentUser); // derzeitiger Nutzer
+                    // Wenn man keine Berechtigung zum Leiten eines Projekts besitzt, wird noch der ausgewählt Projektleiter zur Gruppe hinzugefügt
                     if (!$this->isGranted('project.lead', $project)) {
                         $group->addMember($createProjectRequest->getLeader());
                     }
 
-                    //save project with group
+                    // Verweis der Gruppe auf das Projekt wird hinzugefügt und in die Datenbank geladen
                     $project->setGroupId($group);
                     $entityManager->persist($project);
                     $entityManager->flush();
 
+                    // Event auslösen, welches noch einen Chat erstellt
                     $this->eventDispatcher->dispatch(Events::PROJECT_CREATE_SUCCESS_EVENT, new ProjectEvent($project));
 
+                    // Weiterleitung zu den Projektdetails, des eben erstellten Projektes
                     return $this->redirectToRoute('lc_projects_detail', ['id' => $project->getId()]);
                 }
 
@@ -191,31 +215,43 @@ class ProjectController extends AbstractController
     /**
      * Project Details
      *
+     * Dieser Controller ist dafür zuständig das Dashboard eines Projektes zu generieren.
+     *
+     * Über diese Annotation wird die Route festgelegt, die zu diesem Controller führt.
      * @Route("/learningcenter/projects/{id}", name="lc_projects_detail", requirements={"id"="\d+"})
      *
+     * Die ID aus der Route wird als Projekt Objekt an die Funktion übergeben.
      * @param Project $project
      * @return RedirectResponse|Response
      */
     public function projectDetails(Project $project)
     {
+        // Überprüfung, ob der Nutzer als Frontend Mitglied angemeldet ist.
         if ($this->isGranted('ROLE_MEMBER'))
         {
+            // Überprüfung, ob der Nutzer Mitglied des Projektes ist
             if ($this->isGranted('project.view', $project)) {
 
+                //ein Event wird ausgeführt um zu Überprüfen, ob das Projekt schon von einem Lehrer bestätigt wurde
                 $this->eventDispatcher->dispatch(Events::PROJECT_PRE_LOAD, (new ProjectEvent($project)));
 
+                //rendern des Twig Templates über den Twig Service
                 $rendered = $this->renderView('@LearningCenter/modules/project/project_details.html.twig',
                     [
+                        // dabei wird das Projekt Objekt als Variable übergeben
                         'project' => $project,
                     ]
                 );
 
+                // das gerenderte Twig Template wird als Response an den Nutzer gesendet
                 return new Response($rendered);
 
             } else {
+                // ist der Nutzer kein Mitglied, wird er zur Projektliste weitergeleitet
                 return $this->redirectToRoute('lc_projects_list');
             }
         } else {
+            // ist der Nutzer nicht als Frontend Mitglied angemeldet, wird er zur Login Seite weitergeleitet
             return $this->redirectToRoute('learningcenter_login');
         }
 

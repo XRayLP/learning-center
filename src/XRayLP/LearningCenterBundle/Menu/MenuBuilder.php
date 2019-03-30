@@ -84,56 +84,60 @@ class MenuBuilder
     }
 
 
+    /*
+     * Generiert das Menü für die Projekt Details.
+     */
     public function createProjectDetailsMenu(array $options)
     {
+        // Wurzel Menüpunkt, dem die anderen Menüpunkte untergeordent werden
         $menu = $this->factory->createItem('root');
+        // Festlegung der class Attribute für die einzelnen Menü elemente, damit das Materilize Design übernommen wird
         $menu->setChildrenAttributes(array('class' => 'tabs tabs-transparent', 'currentClass' => 'active'));
-
-        $routeParameters = array('alias' => $this->requestStack->getCurrentRequest()->get('id'));
-
-        //adding all menu items
-        $menu->addChild('projects_home', array(
-            'label' => 'Home',
-            'route' => 'lc_projects_detail',
-            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
-        ))->setAttribute('icon', 'fas fa-home')
-        ->setAttribute('class', 'tab');
-
-        $menu->addChild('projects_members', array(
+        // derzeitige Projekt ID, die für die Generierung der Links für die einzelnen Unterpunkte benötigt wird
+        $routeParameters = array('id' => $this->requestStack->getCurrentRequest()->get('id'));
+        // Hinzufügen der Menüunterpunkte
+        $menu->addChild('projects_home', array( // Projekt Dashboard
+            'label' => 'Home', // Titel für den Menüeintrag
+            'route' => 'lc_projects_detail', // Routeverlinkung für den Menüpunkt
+            'routeParameters' => $routeParameters, // Projekt ID, für die Route
+        ))->setAttribute('icon', 'fas fa-home') // Icon für den Menüeintrag über FontAwesome
+        ->setAttribute('class', 'tab'); // benötigte Klasse für Materialize
+        $menu->addChild('projects_members', array( // Projekt Mitgliederliste
             'label' => 'Members',
             'route' => 'lc_projects_members',
-            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
+            'routeParameters' => $routeParameters,
         ))->setAttribute('icon', 'fas fa-book')
         ->setAttribute('class', 'tab');
-
-        $menu->addChild('projects_events', array(
+        $menu->addChild('projects_events', array( // Projekt Terminkalender
             'label' => 'Events',
             'route' => 'lc_projects_events',
-            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
+            'routeParameters' => $routeParameters,
         ))->setAttribute('icon', 'fas fa-hdd')
         ->setAttribute('class', 'tab');
-
-        $menu->addChild('projects_chat', array(
+        $menu->addChild('projects_chat', array( // Projekt Chat
             'label' => 'Chat',
             'route' => 'lc_projects_chat',
-            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
+            'routeParameters' => $routeParameters,
         ))->setAttribute('icon', 'fas fa-comments')
         ->setAttribute('class', 'tab');
-
-        $menu->addChild('projects_settings', array(
+        $menu->addChild('projects_settings', array( // Projekt Einstellungen
             'label' => 'Settings',
             'route' => 'lc_projects_settings',
-            'routeParameters' => array('id' => $this->requestStack->getCurrentRequest()->get('id')),
+            'routeParameters' => $routeParameters,
         ))->setAttribute('icon', 'fas fa-cog')
         ->setAttribute('class', 'tab');
 
-        //set matching items current
+        // Durchgehen aller Menüpunkte um zu überprüfen, auf welchem man sich gerade befindet
         foreach ($menu as $key => $item) {
+            // Überprüfung, ob der Menüpunkt die derzeitige Route besitzt
             if($this->routeKeyVoter->matchItem($item)){
+                // Menüpunkt erhält die Klasse current und active
                 $item->setCurrent(true);
                 $item->setAttribute('class', 'active');
             }
         }
+
+        // Rückgabe des Menü Objektes
         return $menu;
     }
 

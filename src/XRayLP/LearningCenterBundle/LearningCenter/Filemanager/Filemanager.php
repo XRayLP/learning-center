@@ -74,18 +74,25 @@ class Filemanager
     }
 
     /**
-     * Returns the percentage of used space of an Users cloud
+     * Gibt das Verhältnis von verbrauchtem und maximalen Speicherplatz der Cloud in Prozent an.
      *
-     * @return float
+     * @return float Fließkommazahl
      */
     public function getUsedSpacePercent()
     {
+        // genutzer Speicherplatz in Byte
         $usedSpace = $this->getUsedSpace()[0];
+
+        // maximaler Speicherplatz in Byte
         $maxSpace = $this->getUsedSpace()[1];
 
+        // Ausrechnen des Verhältnis in Grad für Kreisdiagramme (Bsp)
         $usedSpaceDegree = round(($usedSpace/$maxSpace)*360);
+
+        // Ausrechnen des Verhältnis in Prozent
         $usedSpacePercent = round(($usedSpace/$maxSpace)*100);
 
+        // Rückgabe der Prozentanzahl als Float
         return $usedSpacePercent;
     }
 
@@ -96,52 +103,66 @@ class Filemanager
      */
     public function getUsedSpace()
     {
-        $this->usedSpace = 0;
-
-        $this->getDirSpace($this->user->getHomeDir());
+        $this->usedSpace = $this->getDirSpace($this->user->getHomeDir());
 
         return array($this->usedSpace, $this->user->getCloudSpace());
     }
 
     /**
-     * @param File[] $files
-     * @param $zipname
-     *
+     * Erstellt ein Zip-Archiv
+     * @param File[] $files Array aus Dateien/Ordner, die in ein Zip verpackt werden sollen
+     * @param $zipname Name des Zips als String
      * Source: https://www.virendrachandak.com/techtalk/how-to-create-a-zip-file-using-php/
-     * @return ZipArchive
      */
     public function createZip($files, $zipname): ZipArchive
     {
+        // Eltern Ordner der ersten Datei
         $startDir = $this->doctrine->getRepository(File::class)->findOneByUuid($files[0]->getPid());
-
-        //create new zip
+        // ein neues Zip Archiv erstellen
         $zip = new \ZipArchive();
+        // Zip wird geöffnet um Namen festzulegen und Dateien auszuwählen
         $zip->open('tmp/'.$zipname.'.zip', ZipArchive::CREATE);
+        // durchgehen aller Dateien im File[] Array
         foreach ($files as $file)
         {
-            //add file to zip
+            // Überprüfung, ob es sich um eine Datei handelt
             if ($file->getType() === 'file')
             {
+                // Datei zum Zip Archiv hinzufügen
                 $zip->addFile($file->getPath(), $file->getName());
             }
-            //add a whole directory to zip
+
+            // Ansonsten handelt es sich um einen Ordner
             else
             {
+                // öffnet ein Verzeichnis-Handle
                 $handle = opendir($file->getPath());
-                while(false !== ($entry = readdir($handle)))
+
+                // solange immer eine Datei im Ordner gelesen werden kann wird die Schleife ausgeführt
+                while(false !== ($entry = readdir($handle))) // readdir: gibt den nächsten Eintrag aus einem Verzeichnis zurück
                 {
+                    // die Elternordner werden übersprungen
                     if ($entry != "." && $entry != "..")
                     {
+                        // Pfad zur Datei auf der Maschine
                         $realPath = $file->getPath().'/'.$entry;
+
+                        // neuer Pfad innerhalb des Zip Archivs, indem der Elternordner durch einen leeren String ersetzt wird
                         $zipPath = str_replace($startDir->getPath(), "", $realPath);
 
-                        $zip->addFile($realPath, 'Test/test.jpg');
+                        // Datei wird über den neuen Zip Path zum Zip Archiv hinzugefügt
+                        $zip->addFile($realPath, $zipPath);
                     }
                 }
+                // Verezichnis-Handle wird geschlossen
                 closedir($handle);
             }
         }
+
+        // Zip Archiv wird geschlossen und gespeichert
         $zip->close();
+
+        // Rückgabe des Zip Archivs als Objekt
         return $zip;
     }
 

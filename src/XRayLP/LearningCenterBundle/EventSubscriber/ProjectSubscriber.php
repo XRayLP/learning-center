@@ -58,55 +58,67 @@ class ProjectSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Returns an array of event names this subscriber wants to listen to.
+     * Gibt ein Array von Event Namen zurück, die diese Klasse abhört.
+     * Jedem Event Namen wird eine Funktion zugewiesen, die ausgeführt wird, wenn das Event ausgelöst wird
      *
-     * The array keys are event names and the value can be:
-     *
-     *  * The method name to call (priority defaults to 0)
-     *  * An array composed of the method name to call and the priority
-     *  * An array of arrays composed of the method names to call and respective
-     *    priorities, or 0 if unset
-     *
-     * For instance:
-     *
-     *  * array('eventName' => 'methodName')
-     *  * array('eventName' => array('methodName', $priority))
-     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
-     *
-     * @return array The event names to listen to
+     * @return array Die Event Namen
      */
     public static function getSubscribedEvents()
     {
         return array(
+            // wenn ein Mitglied zu einem Projekt hinzugefügt wird
             Events::PROJECT_MEMBERS_ADD_SUCCESS_EVENT => 'onMembersAddSuccess',
+            // wenn ein Mitglied aus einem Projekt entfernt wird
             Events::PROJECT_MEMBERS_REMOVE_SUCCESS_EVENT => 'onMembersRemoveSuccess',
+            // wenn ein Mitglied im Projekt Rang degradiert wird
             Events::PROJECT_MEMBERS_DEGRADE_SUCCESS_EVENT => 'onMembersDegradeSuccess',
+            // wenn ein Mitglied zum Projektleiter befördert wird
             Events::PROJECT_MEMBERS_PROMOTE_LEADER_SUCCESS_EVENT => 'onMembersPromoteToLeaderSuccess',
+            // wenn ein Mitglied zum Admin befördert wird
             Events::PROJECT_MEMBERS_PROMOTE_ADMIN_SUCCESS_EVENT => 'onMembersPromoteToAdminSuccess',
+            // wenn einem Projekt ein Termin hinzugefügt wird
             Events::PROJECT_EVENTS_ADD_SUCCESS_EVENT => 'onEventAddSucces',
+            // wenn ein Termin aus einem Projekt entfernt wird
             Events::PROJECT_EVENTS_REMOVE_SUCCESS_EVENT => 'onEventRemoveSuccess',
+            // wenn ein Projekt editiert wird
             Events::PROJECT_UPDATE_SUCCESS_EVENT => 'onProjectUpdateSuccess',
+            // bevor ein Projekt gelöscht wird
             Events::PROJECT_PRE_DELETE_EVENT => 'preProjectDelete',
+            // nachdem ein Projekt gelöscht wird
             Events::PROJECT_POST_DELETE_SUCCESS_EVENT => 'postProjectDeleteSuccess',
+            // bevor ein Projekt geladen wird
             Events::PROJECT_PRE_LOAD => 'preProjectLoad',
         );
     }
 
+    /**
+     * Überprüft bevor ein Projekt geladen wird, ob es von einem Leiter bestätigt wurde.
+     *
+     * @param ProjectEvent $event enthält das jeweilige Projekt Objekt
+     */
     public function preProjectLoad(ProjectEvent $event)
     {
+        // Projekt Objekt, des zu überprüfenden Projektes
         $project = $event->getProject();
 
-        //confirm warning
+        // Überprüfung, ob das Projekt noch nicht bestätigt wurde
         if (!$project->getConfirmed())
         {
-            $message = ($this->authorizationChecker->isGranted('project.confirm', $project) ? $this->translator->trans('project.confirm.now')  : $this->translator->trans('project.need.confirm'));
+            // Generierung einer Nachricht, die darüber informiert, dass noch eine Bestätigung benötigt wird
+            $message = (
+                $this->authorizationChecker->isGranted('project.confirm', $project) ? // ist der Nutzer berechtigt ein Projekt zu bestätigen?
+                $this->translator->trans('project.confirm.now')  : // Ja: Nachricht mit Bestätigungs Aufforderung wird über den Translator generiert
+                $this->translator->trans('project.need.confirm') // Nein: Nachricht mit Hinweisen wird über den Translator generiert
+            );
+
+            // Erstellung einer Flash Message (wird beim nächsten Laden der Webseite im Hauptbereich des LMS eingeblendet)
             $this->flashMessage->add(
-                'notice',
+                'notice', // Typ -> Nutzung eines best. Templates
                 array(
-                    'alert' => 'info',
-                    'title' => '',
-                    'message' => $message,
-                    'href' => $this->router->generate('lc_projects_confirm', ['id' => $project->getId()])
+                    'alert' => 'info', // Bootstrap/Materialize Alarmtyp
+                    'title' => '', // Titel der Alarmbox
+                    'message' => $message, // oben generierte Nachricht
+                    'href' => $this->router->generate('lc_projects_confirm', ['id' => $project->getId()]) // Bestätigungslink
                 )
             );
         }
@@ -253,20 +265,42 @@ class ProjectSubscriber implements EventSubscriberInterface
         ));
     }
 
+    /**
+     * Fügt neues Mitglied zum Projektchat hinzu und veschickt eine Flash Message zum Mitglied
+     *
+     * @param ProjectMemberEvent $event enthält Project und Member Objekt
+     */
     public function onMembersAddSuccess(ProjectMemberEvent $event)
     {
+        // hinzugefügtes Mitglied Entity
         $member = $event->getMember();
+
+        // Projekt Entity
         $project = $event->getProject();
 
-        //add member to chat thread
+        // Thread Objekt, des jeweiligen Projektes
         $thread = $project->getThread();
+
+        // hinzufügen des neuen  Mitglieds zum Chat
         $thread->addParticipant($member);
+
+        // Änderungen speichern
         $this->threadManager->saveThread($thread);
 
-        $message = $this->flashMessage->add('notice', array(
-            'alert'     => 'success',
+        // Erstellung einer Flash Message (wird beim nächsten Laden der Webseite im Hauptbereich des LMS eingeblendet)
+        $message = $this->flashMessage->add(
+            'notice', // Typ -> Nutzung eines best. Templates
+            array(
+            'alert'     => 'success', // grüner Alarm
             'title'     => '',
-            'message'   => $this->translator->trans('project.members.add.success', ['{member_name}' => ($member->getFirstname().' '.$member->getLastname()), '{project_name}' => $project->getName()], 'project')
+            // Nachricht an das neu hinzugefügte Mitglied wird über den Translator Service generiert
+            'message'   => $this->translator->trans(
+                'project.members.add.success', // Übersetzungs ID, die die Übersetzung speichert
+                [ // Variablen der Übersetzung werde befüllt
+                    '{member_name}' => ($member->getFirstname().' '.$member->getLastname()), // Mitgliedsname
+                    '{project_name}' => $project->getName() // Projektname
+                ],
+                'project') // Übersetzungsdomain: gibt an in welcher Datei die Übersetzungen gespeichert sind
         ));
     }
 

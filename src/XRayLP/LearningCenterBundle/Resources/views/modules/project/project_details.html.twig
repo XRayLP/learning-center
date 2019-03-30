@@ -1,10 +1,16 @@
+{# Erweiterung und Erben des Standard Projekt Templates #}
 {% extends '@LearningCenter/modules/project/base.html.twig' %}
+
+{# Festlegung der Domain für alle Übersetzungen in diesem Template #}
 {% trans_default_domain 'project' %}
 
+{# Hauptbereich der Projekt Details wird editiert #}
 {% block project %}
     <div class="card">
+        {# Titel für die Projekt Beschreibung wird über den Translator in Twig und die Übersetzungs ID übersetzt #}
         <div class="card-header">{% trans %}project.description{% endtrans %}</div>
         <div class="card-body">
+            {# Einfügen der Projekt Beschreibung aus dem Projekt Objekt, dass im Controller übergeben wurde #}
             <div class="card-text">{{ project.description }}</div>
         </div>
     </div>
