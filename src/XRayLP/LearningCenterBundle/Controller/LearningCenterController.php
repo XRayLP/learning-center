@@ -21,18 +21,29 @@ use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\MemberGroup;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class LearningCenterController
+ *
+ * @package App\XRayLP\LearningCenterBundle\Controller
+ */
 class LearningCenterController extends Controller
 {
 
+    // selbst erstellter Filemanager Service
     private $filemanager;
 
+    // Twig, um Zugriff auf erweiterte Funktionen für Templates zu haben
     private $twig;
 
+    // Entity Manager, um auf Entities der Datenbank zuzugreifen
     private $em;
 
+    /*
+    * Variablen werden die einzelnen Services zugeordnet
+    */
     public function __construct(Filemanager $filemanager, \Twig_Environment $twig, EntityManagerInterface $entityManager)
     {
-        $this->filemanager = $filemanager;
+        $this->filemanager = $filemanager; // Filemanager Service wird deklariert
         $this->twig = $twig;
         $this->em = $entityManager->getRepository(File::class);
     }
