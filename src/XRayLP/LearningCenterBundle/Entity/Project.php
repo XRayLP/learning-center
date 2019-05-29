@@ -13,15 +13,22 @@ use phpDocumentor\Reflection\Types\Boolean;
 use StringUtil;
 
 /**
- * Project Entity
+ * Dieses Entity widerspiegelt das Projekt Objekt und dient als "Bauplan" für die Datenbanktabelle der Projekte.
+ * Jede Variable stellt eine Spalte der Tabelle dar.
  *
+ * Annotation legt fest, dass diese Klasse eine Entity Klasse ist und verweist auf ein Repository
  * @ORM\Entity(repositoryClass="App\XRayLP\LearningCenterBundle\Repository\ProjectRepository")
+ *
+ * Annotation legt Name und Engine für die Datenbanktabelle des Project Entity fest
  * @ORM\Table(name="tl_projects", options={"engine":"InnoDB"})
  * @package App\XRayLP\LearningCenterBundle\Entity
  */
 class Project
 {
     /**
+     * Spalte wird als automatisch generierter eindeutiger Identifikator der Tabelle festgelegt.
+     * Spalte darf nur Ganzzahlen enthalten.
+     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
@@ -29,53 +36,74 @@ class Project
     protected $id;
 
     /**
+     * Spalte enthält das Erstellungsdatum des Projektes als Timestamp (Sekunden seit dem 01.01.70).
+     *
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"}, nullable=true)
      */
     protected $tstamp;
 
     /**
+     * Spalte enthält den Namen des Projektes als Zeichenkette.
+     *
      * @ORM\Column(type="string", length=255, options={"default":""})
      */
     protected $name;
 
     /**
+     * Spalte enthält die ID des Kursleiters.
+     *
      * @ORM\Column(type="integer", length=10)
      */
     protected $leader;
 
     /**
+     * Spalte enthält eine serialisiertes Array der Admin IDs.
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $admins;
 
     /**
+     * Spalte enhält die Projektbeschreibung als lange Zeichenkette.
+     *
      * @ORM\Column(type="text", options={"default":""})
      */
     protected $description;
 
     /**
+     * Spalte enthält ID der zugehörigen Contao Gruppe als Ganzzahl.
+     *
      * @ORM\Column(type="integer")
      */
     protected $groupId;
 
     /**
+     * Spalte enthält die Information, ob das Projekt bestätigt wurde als Boolean.
+     *
      * @ORM\Column(type="boolean", options={"default":"0"})
      */
     protected $confirmed;
 
     /**
+     * Spalte enthält die Information, ob das Projekt öffentlich ist als Boolean.
+     *
+     * @todo noch nicht implementiert
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $public;
 
     /**
+     * Spalte enthält eine Objekt Verbindung zum Thread Objekt, damit der Chat funktioniert.
+     *
      * @ORM\OneToOne(targetEntity="App\XRayLP\LearningCenterBundle\Entity\Thread")
      */
     protected $thread;
 
 
     /**
-     * @return mixed
+     * Gibt die ID als Ganzzahl zurück.
+     *
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +111,9 @@ class Project
     }
 
     /**
-     * @return mixed
+     * Gibt den Zeitstempel als Ganzzahl zurück.
+     *
+     * @return integer
      */
     public function getTstamp()
     {
@@ -91,7 +121,9 @@ class Project
     }
 
     /**
-     * @param mixed $tstamp
+     * Speichert einen neuen Zeitstempel in die Variable.
+     *
+     * @param integer $tstamp
      */
     public function setTstamp($tstamp): void
     {

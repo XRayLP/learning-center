@@ -16,74 +16,86 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use App\XRayLP\LearningCenterBundle\Entity\Member;
 use App\XRayLP\LearningCenterBundle\Entity\Project;
 
+// Klasse erbt aus der Voter Klasse
 class ProjectVoter extends Voter
 {
+    // Variable für das MemberRepository Objekt
     private $memberRepository;
 
+    // Doctrine Service wird in die Klasse implementiert
     public function __construct(RegistryInterface $doctrine)
     {
+        // Variable wird ein Objekt zugeordnet
         $this->memberRepository = $doctrine->getRepository(Member::class);
     }
 
-    //don't need an Project Object
-    const USE = 'project';
-    const CREATE = 'project.create';
-    const LEAD = 'project.lead';
-    const LIST_ALL = 'project.list.all';
+    // Konstanten für die einzelnen Berechtigungen
+    const USE = 'project'; //können die Projektfunktion im wesentlichen Nutzen
+    const CREATE = 'project.create'; // können Projekte erstellen
+    const LEAD = 'project.lead'; // können Projektleiter werden
+    const LIST_ALL = 'project.list.all'; //können alle Projekte einsehen
 
-    //need Project Object
-    const VIEW = 'project.view';
-    const EDIT = 'project.edit';
-    const REMOVE = 'project.remove';
-    const CONFIRM = 'project.confirm';
+    //benötigen Projekt Objekt
+    const VIEW = 'project.view'; // können ein bestimmtes Projekt einsehen
+    const EDIT = 'project.edit'; // können die Daten eines bestimmten Objekts verändern
+    const REMOVE = 'project.remove'; // können ein Projekt löschen
+    const CONFIRM = 'project.confirm'; // können ein Projekt bestätigen
 
-    //project events
-    const EVENT_ADD = 'project.event.add';
-    const EVENT_REMOVE = 'project.event.remove';
-
-
+    //benötigen Projekt und Event Objekt
+    const EVENT_ADD = 'project.event.add'; // können einem Projekt ein Termin hinzufügen
+    const EVENT_REMOVE = 'project.event.remove'; //können einem Projekt ein Termin entfernen
 
     /**
-     * Determines if the attribute and subject are supported by this voter.
+     * Entscheidet ob eine zu überprüfende Berechtigung von diesem Voter unterstütz wird.
      *
-     * @param string $attribute An attribute
-     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
+     * @param string $attribute Attribut
+     * @param mixed $subject Objekt
      *
-     * @return bool True if the attribute and subject are supported, false otherwise
+     * @return bool True wird es unterstützt?
      */
     protected function supports($attribute, $subject)
     {
+        // Überprüfung, ob das zu überpüfende Attribut in dem Array aus den oben angelgeten Konstanten enthalten ist
         if (!in_array($attribute, array(self::VIEW, self::EDIT, self::REMOVE, self::CREATE, self::LEAD, self::CONFIRM, self::EVENT_ADD, self::EVENT_REMOVE))){
             return false;
         }
 
+        // Überprüfung, ob für die Berechtigungen, die eine Projekt Objekt benötigen, auch ein Projekt Objekt übergeben wurde
         if (!$subject instanceof Project && !in_array($attribute, [self::USE, self::CREATE, self::LEAD, self::LIST_ALL])){
             return false;
         }
 
+        // Ansonsten wird einfach true übergeben und die Berechtigung wird von diesem Voter unterstützt
         return true;
     }
 
     /**
-     * Perform a single access check operation on a given attribute, subject and token.
-     * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
+     * Anhand des Attributes wird ermittelt, welche Funktion zur Überprüfung der Berechtigung genutzt werden soll.
+     * $attribute und $subject haben schon die support() Abfrage bestanden
      *
-     * @param string $attribute
-     * @param mixed $subject
+     * @param string $attribute Berechtigung
+     * @param mixed $subject Objekt
      * @param TokenInterface $token
      *
      * @return bool
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        // Nutzer Objekt wird aus dem Token geladen
         $user = $token->getUser();
+
+        // Überprüfung, ob nutzer als FrontendUser angemeldet ist
         if (!$user instanceof FrontendUser) {
             return false;
         }
+
+        // Umwandlung des FrontendUser Objekts zu einem Member Entity
         $member = $this->memberRepository->findOneById($user->id);
 
+        // $subjekt Objekt wird als Project Entity angenommen
         $project = $subject;
 
+        // Zuordnung der Attribute zu den einzelnen Überprüfungsfunktionen
         switch ($attribute){
             case self::USE:
                 return $this->canUse($member);
@@ -106,6 +118,8 @@ class ProjectVoter extends Voter
             case self::EVENT_REMOVE:
                 return $this->canRemoveEvent($project, $member);
         }
+
+        // !dieser Code sollte niemals erreicht werden!
         throw new \LogicException('This code should not be reached!');
     }
 
@@ -119,23 +133,39 @@ class ProjectVoter extends Voter
         return true;
     }
 
+    /*
+     * Ist das Mitglied berechtigt ein Projekt zu leiten?
+     */
     private function canLead(Member $member)
     {
+        // Mitglied = Lehrer, Planer oder Admin?
         return $member->isTeacher() || $member->isPlanner() || $member->isAdmin();
     }
 
+    /*
+     * Ist das Mitglied berechtigt alle Projekte einzusehen?
+     */
     private function canListAll(Member $member)
     {
+        // Mitglied = Admin?
         return $member->isAdmin();
     }
 
+    /*
+     * Ist das Mitglied berechtigt ein best. Projekt einzusehen?
+     */
     private function canView(Project $project, Member $member)
     {
+        // Mitglied = Mitglied des Projektes?
         return $this->isMember($project, $member);
     }
 
+    /*
+     * Ist das Mitglied berechtigt ein Projekt zu verändern?
+     */
     private function canEdit(Project $project, Member $member)
     {
+        // Mitglied = Admin oder Leiter des Projektes?
         return $this->isAdmin($project, $member) || $this->isLeader($project, $member);
     }
 

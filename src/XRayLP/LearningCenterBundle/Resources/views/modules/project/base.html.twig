@@ -1,12 +1,19 @@
+{# Erweiterung und Erben des Standard Templates #}
 {% extends '@LearningCenter/base.html.twig' %}
 
+{# Hauptbereich wird editiert #}
 {% block main %}
     <nav class="nav-extended green darken-3">
         <div class="nav-content">
-    {{ knp_menu_render('project',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
+            {# Rendern des Projekt Menüs über den Menu Renderer #}
+            {{ knp_menu_render('project',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
         </div>
     </nav>
+
+    {# Einfügen des Projektnames, aus dem vom Controller übergebenden Projekt Objekt #}
     <h2>{{ project.name }}</h2>
+
+    {# Neuer Bereich, der von Templates bearbeitet werden kann, die dieses Template erben #}
     {% block project %}
 
     {% endblock %}

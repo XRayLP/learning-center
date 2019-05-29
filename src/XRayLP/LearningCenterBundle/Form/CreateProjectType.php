@@ -44,31 +44,39 @@ class CreateProjectType extends ContaoAbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * Funktion erstellt den Formular Builder, mit dem im Controller dann das Formular generiert werden kann
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //form elements
+        //hinzufügen der Formular Felder
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'project.name',
+            ->add('name', TextType::class, array( // Projekt Name
+                'label' => 'project.name', // Label für das Feld mit Translator ID
             ))
-            ->add('description', TextareaType::class, array(
+            ->add('description', TextareaType::class, array( // Projekt Beschreibung
                 'label' => 'project.description',
             ))
-            ->add('public', CheckboxType::class, array(
-                'label' => 'project.public'
-            ))
+            // hinzufügen eines Event Listener, der ein Event abhört, welches ausgeführt wird bevor das Formular generiert wird
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event){
-
+                // derzeitiges FormBuilder Objekt
                 $form = $event->getForm();
-
+                // Überprüfung, ob der Nutzer keine Rechte besitzt um das Projekt zu leiten
                 if (!$this->authorization->isGranted('project.lead')) {
+                    // hinzufügen eines Auswahlfeldes mit dem Member Entity
                     $form->add('leader', EntityType::class, array(
                         'label' => 'project.leader',
                         'class' => Member::class,
+                        // Query gibt alle Mitglieder Entities zurück, die Lehrer sind
                         'query_builder' => function (EntityRepository $er) {
                             $teachers = $er->createQueryBuilder('u')
                                 ->where("u.memberType = 'ROLE_TEACHER'");
+                            // Überprüfung, ob es keine Lehrer gibt
                             if (empty($teachers)) {
+                                // Schicken einer Flash Message, die den Nutzer darüber informiert
                                 $this->flashMessage->add(
                                     'notice',
                                     array(
@@ -78,15 +86,16 @@ class CreateProjectType extends ContaoAbstractType
                                     )
                                 );
                             }
+                            // Entities werden an das Feld übergeben
                             return $teachers;
                         },
-                        'choice_label' => 'lastname',
-                        'choice_value' => 'id'
+                        'choice_label' => 'lastname', // Nachnamen der Lehrer als Label für das Auswahlfeld
+                        'choice_value' => 'id' // ID als Wert
 
                     ));
                 }
             })
-            ->add('submit', SubmitType::class, array(
+            ->add('submit', SubmitType::class, array( // Absende Button für das Formular
                 'label' => 'project.continue',
             ))
         ;
