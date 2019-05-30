@@ -9,29 +9,22 @@
 		margin-bottom: 1em;
 	}
 	.breadcrumb {
-		margin-right: 1em;
 		margin-left: 1em;
 		margin-top: 1em;
+		&::before {
+			color: $primary;
+		}
 	}
 	.btn-toolbar {
 		margin: 1em;
 		.btn-group {
 			margin-bottom: 1em;
-			.buttonRoundLeft {
-				border-top-right-radius: 5px !important;
-				border-bottom-right-radius: 5px !important;
-			}
-			.buttonRoundRight {
-				border-top-left-radius: 5px !important;
-				border-bottom-left-radius: 5px !important;
-			}
-
 
 			svg {
 				margin-right: 0.5em;
 			}
 		}
-		@include media-breakpoint-down(md) {
+		/**@include media-breakpoint-down(md) {
 			.btn-group {
 				width: 100%;
 				margin-right: 0 !important;
@@ -42,12 +35,12 @@
 					width: 33.333333333%;
 				}
 			}
-		}
+		}**/
 	}
 	
 	.files {
 		> div {
-			color: $gray-700;
+			//color: $gray-700;
 			text-align: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -55,15 +48,12 @@
 			&:hover {
 				text-decoration: none;
 			}
-			.icon {
+			.icon, a {
 				text-align: center;
-				color: $primary;
+				color: $primary !important;
 				margin-bottom: 0.5rem;
-                input {
-
-                }
                 .fa-users {
-                    color: $white;
+                    color: white;
                     position: absolute;
                     margin-left: 5px;
                     margin-top: 5px;
@@ -76,7 +66,7 @@
 			}
 			.date {
 				font-size: 0.75em;
-				color: $gray-500;
+				color: grey;
 			}
 		}
 	}

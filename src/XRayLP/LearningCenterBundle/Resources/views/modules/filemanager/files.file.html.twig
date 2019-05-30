@@ -1,9 +1,7 @@
 {# var file: File Object #}
 
-<div class="col-6 col-md-4 col-lg-3">
+<div class="col s6 m4 l3">
     <div class="icon">
-        <input type="checkbox" name="checks-files" class="form-check-input {% if file.shared == 1 %} shared {% endif %}" id="{{ file.id }}" data-href="{{ path('learningcenter_files.download', {'fid': file.id}) }}">
-
         {% if file.type == 'folder' %}
         <a href="{{ path('learningcenter_files', {'fid': file.id}) }}">
             <i class="fa fa-folder fa-5x"></i>
@@ -32,7 +30,10 @@
             {% endif %}
         </a>
     </div>
-    <span class="name" title="{{ file.name }}">{{ file.name }}</span><br>
+    <label>
+        <input type="checkbox" name="checks-files" class="form-check-input {% if file.shared == 1 %} shared {% endif %}" id="{{ file.id }}" data-href="{{ path('learningcenter_files.download', {'fid': file.id}) }}">
+        <span class="name" title="{{ file.name }}">{{ file.name }}</span><br>
+    </label>
     <span class="date">
         {% if file.shared == 1 %}
             <i class="fa fa-users"></i>

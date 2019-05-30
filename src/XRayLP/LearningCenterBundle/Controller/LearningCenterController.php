@@ -71,6 +71,8 @@ class LearningCenterController extends Controller
             // Array aus genutztem Speicherplatz und maximalen Speicherplatz in absoluten Zahlen
             $sizes = $this->filemanager->getUsedSpace();
 
+            dump($sizes);
+
             // Konvertierung des Speohcerplatz Arrays in komfortbale Einheiten
             foreach ($sizes as $size)
             {

@@ -103,7 +103,8 @@ class Filemanager
      */
     public function getUsedSpace()
     {
-        $this->usedSpace = $this->getDirSpace($this->user->getHomeDir());
+        $this->usedSpace = 0;
+        $this->getDirSpace($this->user->getHomeDir());
 
         return array($this->usedSpace, $this->user->getCloudSpace());
     }
@@ -173,6 +174,7 @@ class Filemanager
             $files = $this->doctrine->getRepository(File::class)->findByPid($dir->getUuid());
             foreach ($files as $file)
             {
+                dump($file);
                 if ($file->getType() == 'folder')
                 {
                     $this->getDirSpace($file);

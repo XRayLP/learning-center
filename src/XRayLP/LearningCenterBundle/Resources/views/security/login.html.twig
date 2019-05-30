@@ -5,13 +5,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>{% block title %}Learning Center{% endblock %}</title>
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />
         <script src="{{ asset('bundles/learningcenter/js/app.js') }}"></script>
     </head>
     <body>
     <div class="container">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-12 col-sm-10 col-md-6 col-xl-6 login-box">
+        <div class="row">
+            <div class="col s12 m10 l6 offset-l3 offset-m1 login-box">
                 <figure class="login-logo text-center">
                     <img src="{{ logo.path }}">
                 </figure>
@@ -26,24 +28,24 @@
                         <input name="_failure_path" value="{{ url('learningcenter_login') }}" type="hidden">
                         <input name="_always_use_target_path" value="0" type="hidden">
 
-                        <div class="widget widget-text input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>
-                            </div>
-                            <input name="username" id="username" placeholder="Benutzername" class="text form-control" value="" type="text"><br>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input name="username" id="username" placeholder="m.mustermann" class="text form-control" value="" type="text">
+                            <label for="username">Benutzername</label>
                         </div>
 
-                        <div class="widget widget-password input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span>
-                            </div>
-                            <input name="password" id="password" placeholder="Passwort" class="text password form-control" value="" type="password">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input name="password" id="password" placeholder="Passwort123" class="text password form-control" value="" type="password">
+                            <label for="password">Passwort</label>
                         </div>
-                        <div class="widget widget-checkbox form-check">
-                            <fieldset class="checkbox_container form-check-label">
-                                <span><input name="autologin" id="autologin" value="1" class="checkbox" type="checkbox"> <label for="autologin">Angemeldet bleiben</label></span>
-                            </fieldset>
-                        </div>
+
+                        <p>
+                            <label>
+                                <input name="autologin" id="autologin" value="1" class="checkbox" type="checkbox">
+                                <span>Angemeldet bleiben</span>
+                            </label>
+                        </p>
                         <div class="widget widget-submit">
                             <button type="submit" class="submit btn btn-primary btn-login">Anmelden</button>
                         </div>

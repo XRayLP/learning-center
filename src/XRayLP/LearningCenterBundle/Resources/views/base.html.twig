@@ -3,27 +3,16 @@
 <html>
 <head>
     <title>{% block title %}Learning Center{% endblock %}</title>
-    <!--Import jQuery-->
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <!--<link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />-->
-    <script src="{{ asset('bundles/learningcenter/js/app.js') }}"></script>
-    <script src="{{ asset('bundles/learningcenter/js/design.js') }}"></script>
-    <script>
-        $(document).ready(function() {    
-            $('.current > a,span').addClass('active');
 
-        });
-    </script>
-    <!--JavaScript at end of body for optimized loading-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ asset('bundles/learningcenter/js/app.js') }}"></script>
+
     {% block javascripts %}
     {% endblock %}
     
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="{{ asset('bundles/learningcenter/js/design.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/learningcenter/js/app.css') }}" rel="stylesheet" />
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -40,6 +29,7 @@
 
                     <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
+                    {% set frontendUser = member() %}
 
                     <ul id="top-nav" class="right">
                         <li><a><span class="btn dropdown-trigger new badge red" data-target='dropdown_news'>{{ notificationsCount() }}</span></a></li>
@@ -80,10 +70,8 @@
     </header>
 
     <!--Sidenav-->
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-        <!-- Rendern der Seitennavigation über den Menu Renderer -->
-        {{ knp_menu_render('main',{'template': '@LearningCenter/menu/primaryNav.html.twig'}) }}
-    </ul>
+    <!-- Rendern der Seitennavigation über den Menu Renderer -->
+    {{ knp_menu_render('main',{'template': '@LearningCenter/menu/primaryNav.html.twig'}) }}
     
     <main id="lc_main" class="col-12 col-lg-9 col-xl-10">
         {# laden der Flash Messages, die vor dem Ladevorgang abgeschickt wurden #}

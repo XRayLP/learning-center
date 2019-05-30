@@ -17,7 +17,7 @@ class ByteConverter
      * @param int $byte
      * @return array
      */
-    public static function byteAutoConvert(int $byte)
+    public static function byteAutoConvert($byte)
     {
         $size = array();
 
@@ -50,7 +50,7 @@ class ByteConverter
      * @param int $byte
      * @return float|int
      */
-    public static function byteToKilobyte(int $byte)
+    public static function byteToKilobyte($byte)
     {
         return round($byte/1000);
     }
@@ -61,7 +61,7 @@ class ByteConverter
      * @param int $byte
      * @return float|int
      */
-    public static function byteToMegabyte(int $byte)
+    public static function byteToMegabyte($byte)
     {
         return round($byte/1000000);
     }
@@ -72,7 +72,7 @@ class ByteConverter
      * @param int $byte
      * @return float|int
      */
-    public static function byteToGigabyte(int $byte)
+    public static function byteToGigabyte($byte)
     {
         return round($byte/1000000000);
     }

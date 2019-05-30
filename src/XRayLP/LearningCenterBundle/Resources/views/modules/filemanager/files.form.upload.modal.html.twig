@@ -2,11 +2,10 @@
 
 {% block modal_header %}
     <h4>Datei hochladen</h4>
-    <div class="divider"></div>
 {% endblock %}
 
 {% block modal_body %}
-    <form action="{{ path('learningcenter_files.upload', {'fid': fid}) }}" class="dropzone">
+    <form action="{{ path('learningcenter_files.upload', {'fid': fid}) }}" class="dropzone" id="dropzone-form">
         <div class="file-field input-field">
             <div class="fallback">
                 <input name="file" type="file" multiple />

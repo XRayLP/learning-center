@@ -10,7 +10,7 @@ var Encore = require('@symfony/webpack-encore');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 Encore
-// the project directory where all compiled assets will be stored
+// the project directory where all compiled assets will be stored src/XRayLP/LearningCenterBundle/Resources/public/js/ | public/bundles/learningcenter/js/
     .setOutputPath('src/XRayLP/LearningCenterBundle/Resources/public/js/')
 
     // the public path used by the web server to access the previous directory
@@ -34,6 +34,8 @@ Encore
 
     // show OS notifications when builds finish/fail
     .enableBuildNotifications()
+
+    .autoProvidejQuery()
 
 // create hashed filenames (e.g. app.abc123.css)
 // .enableVersioning()

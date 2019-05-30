@@ -8,7 +8,10 @@
 require('../scss/app.scss');
 
 //JS
-require('bootstrap');
+const $ = require('jquery');
+global.$ = global.jQuery = $;
+
+require('materialize-css');
 require('dropzone/dist/dropzone');
 require('dropzone/dist/dropzone.css');
 require('tui-calendar');
@@ -20,7 +23,8 @@ require('./modules/files.js');
 require('./modules/members.js');
 require('./modules/notifications.js');
 require('./modules/calendar');
-require('jquery');
+
+
 
 //Main
 $(document).ready(function(){
@@ -39,6 +43,22 @@ $(document).ready(function(){
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");
     });
+
+    $('.sidenav').sidenav();
+
+    $('.sidenav.account').sidenav({
+        edge: 'right'
+    });
+
+    $('.dropdown-trigger').dropdown({
+        alignment:'right'
+    });
+
+    $('.modal').modal();
+
+    $('select').formSelect();
+
+    $('.current').addClass('active');
 
 
 });

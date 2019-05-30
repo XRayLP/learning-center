@@ -20,6 +20,7 @@
     "fine-uploader": "^5.16.2",
     "fullcalendar": "^3.10.0",
     "jsdom": "^11.6.2",
+    "materialize-css": "^1.0.0",
     "moment": "^2.23.0",
     "tui-calendar": "^1.8.1"
   }

@@ -85,15 +85,13 @@ function refreshToolbar()
     let toolbar = $("#filemanager-toolbar");
     let checks = getCheckedBoxes("checks-files", "id");
     if (checks === null) {
-        $(".btn-share").addClass("sr-only");
-        $(".btn-download").addClass("sr-only");
-        $(".btn-delete").addClass("sr-only");
-        $(".btn-create-folder").addClass("buttonRoundLeft");
+        $(".btn-share").addClass("disabled");
+        $(".btn-download").addClass("disabled");
+        $(".btn-delete").addClass("disabled");
     } else {
-        $(".btn-share").removeClass("sr-only");
-        $(".btn-download").removeClass("sr-only");
-        $(".btn-delete").removeClass("sr-only");
-        $(".btn-create-folder").removeClass("buttonRoundLeft");
+        $(".btn-share").removeClass("disabled");
+        $(".btn-download").removeClass("disabled");
+        $(".btn-delete").removeClass("disabled");
     }
 }
 
