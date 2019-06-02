@@ -9,10 +9,26 @@ namespace App\XRayLP\LearningCenterBundle\Form;
 
 
 use Contao\System;
+use FOS\MessageBundle\Util\LegacyFormHelper;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ReplyMessageFormType extends \FOS\MessageBundle\FormType\ReplyMessageFormType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('body', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextareaType'), array(
+                'label' => 'body',
+                'attr'  => array(
+                    'class' => 'materialize-textarea'
+                ),
+                'translation_domain' => 'FOSMessageBundle',
+            ));
+    }
+
     //configures the standard Request Token for Contao
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -687,7 +687,6 @@ class ProjectController extends AbstractController
                     $project = new Project();
                     $project->setName($createProjectRequest->getName());
                     $project->setDescription($createProjectRequest->getDescription());
-                    $project->setPublic($createProjectRequest->getPublic());
                     //user is leader when he can lead or the chosen teacher will be leader
                     if ($this->isGranted('project.lead')){
                         $project->setLeader($currentUser);

@@ -2,16 +2,17 @@
 {% trans_default_domain 'project' %}
 
 {% block main %}
-    {% if is_granted('project.create') %}
-    <a class="btn btn-outline-primary" href="{{ url('lc_projects_create') }}">{% trans %}project.create{% endtrans %}</a>
-    {% endif %}
+    <div class="col s12">
+        <h4>Meine Projekte</h4>
+    </div>
     {% if showProjects %}
-    <table class="table table-striped">
+        <div class="col s12">
+            <table>
         <thead>
             <tr>
-                <th scope="col">{% trans %}project.state{% endtrans %}</th>
-                <th scope="col">{% trans %}project.name{% endtrans %}</th>
-                <th scope="col">{% trans %}project.description{% endtrans %}</th>
+                <th>{% trans %}project.state{% endtrans %}</th>
+                <th>{% trans %}project.name{% endtrans %}</th>
+                <th>{% trans %}project.description{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -29,10 +30,18 @@
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table></div>
+    {% endif %}
+
+    {% if is_granted('project.create') %}
+        <div class="col s12">
+            <a class="btn" href="{{ url('lc_projects_create') }}">{% trans %}project.create{% endtrans %}</a>
+        </div>
     {% endif %}
 
     {% if is_granted('project.list.all') %}
-        <a class="btn btn-outline-secondary" href="">{% trans %}project.list.all{% endtrans %}</a>
+        <div class="col s12">
+            <a class="btn" href="">{% trans %}project.list.all{% endtrans %}</a>
+        </div>
     {% endif %}
 {% endblock %}

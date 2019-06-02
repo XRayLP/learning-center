@@ -1,12 +1,19 @@
 {% extends '@LearningCenter/modules/project/base.html.twig' %}
 
 {% block project %}
-    <p>TEST</p>
+
     {{ include('@LearningCenter/modules/chat/chat.thread.html.twig') }}
 
-    <form action="{{ url('lc_projects_chat_send', {'id': project.id}) }}" method="post">
-        {{ form_widget(form) }}
 
-        <input class="btn btn-primary" type="submit" />
+    <form class="reply" action="{{ url('lc_projects_chat_send', {'id': project.id}) }}" method="post">
+        <div class="col s12">
+            <h6>Antworten</h6>
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form) }}
+        </div>
+        <div class="col s12">
+            <button class="btn" type="submit">Abschicken</button>
+        </div>
     </form>
 {% endblock %}

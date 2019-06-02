@@ -6,8 +6,6 @@
     {{ form_widget(form) }}
     {{ form_end(form) }}
 
-    <hr>
-
     {% if is_granted('project.remove', project) %}
         <div class="card border-danger">
             <div class="card-header">{% trans %}project.delete{% endtrans %}</div>

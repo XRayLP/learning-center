@@ -92,7 +92,7 @@ class MenuBuilder
         // Wurzel Menüpunkt, dem die anderen Menüpunkte untergeordent werden
         $menu = $this->factory->createItem('root');
         // Festlegung der class Attribute für die einzelnen Menü elemente, damit das Materilize Design übernommen wird
-        $menu->setChildrenAttributes(array('class' => 'tabs tabs-transparent', 'currentClass' => 'active'));
+        $menu->setChildrenAttributes(array('class' => 'tabs tabs-fixed-width tab-demo z-depth-1 tabs-nav', 'currentClass' => 'active'));
         // derzeitige Projekt ID, die für die Generierung der Links für die einzelnen Unterpunkte benötigt wird
         $routeParameters = array('id' => $this->requestStack->getCurrentRequest()->get('id'));
         // Hinzufügen der Menüunterpunkte

@@ -60,6 +60,8 @@ $(document).ready(function(){
 
     $('.current').addClass('active');
 
+    //var height = $(window).height() - ($('.navbar-fixed').height() + $('.tabs').height() + $('.reply').height());
+    //$('.chatlogs').css('height', height);
 
 });
 

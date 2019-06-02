@@ -6,12 +6,14 @@
 
 {# Hauptbereich der Projekt Details wird editiert #}
 {% block project %}
-    <div class="card">
-        {# Titel für die Projekt Beschreibung wird über den Translator in Twig und die Übersetzungs ID übersetzt #}
-        <div class="card-header">{% trans %}project.description{% endtrans %}</div>
-        <div class="card-body">
-            {# Einfügen der Projekt Beschreibung aus dem Projekt Objekt, dass im Controller übergeben wurde #}
-            <div class="card-text">{{ project.description }}</div>
+    <div class="col s12">
+        <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+                {# Titel für die Projekt Beschreibung wird über den Translator in Twig und die Übersetzungs ID übersetzt #}
+                <span class="card-title">{% trans %}project.description{% endtrans %}</span>
+                {# Einfügen der Projekt Beschreibung aus dem Projekt Objekt, dass im Controller übergeben wurde #}
+                <p>{{ project.description }}.</p>
+            </div>
         </div>
     </div>
 {% endblock %}

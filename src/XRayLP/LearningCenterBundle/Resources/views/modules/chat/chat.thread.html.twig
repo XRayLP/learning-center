@@ -1,21 +1,18 @@
 {% trans_default_domain 'message' %}
 {% block fos_message_content %}
-
-    <h4>{{ thread.subject }}</h4>
-
-    {% for message in thread.messages %}
-        <div class="messenger_thread_message">
-            <div class="messenger_thread_message_info">
-                {% trans with {'%sender%': message.sender.username, '%date%': message.createdAt|date} %}message_info{% endtrans %}
+    <div class="chatlogs">
+        <div class="chatbox col s12">
+        {% for message in thread.messages %}
+            <div class="chat messenger_thread_message {% if message.sender.id == frontendUser.id %} self {% endif %}">
+                <div class="user-photo messenger_thread_message_info">
+                    <img class="responsive-img" src="/bundles/learningcenter/avatar/{{ message.sender.id }}.png">
+                </div>
+                <p class="chat-message">{{ message.body }}</p>
+                <!--{% trans with {'%sender%': message.sender.username, '%date%': message.createdAt|date} %}message_info{% endtrans %}-->
             </div>
-
-            <div class="messenger_thread_message_body" id="message_{{ message.id }}">
-                {{ message.body }}
-            </div>
+        {% endfor %}
         </div>
-    {% endfor %}
-
-    <h5>{{ 'reply'|trans }}</h5>
+    </div>
 
 
 

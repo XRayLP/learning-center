@@ -59,6 +59,9 @@ class CreateProjectType extends ContaoAbstractType
             ))
             ->add('description', TextareaType::class, array( // Projekt Beschreibung
                 'label' => 'project.description',
+                'attr' => array(
+                    'class' => 'materialize-textarea'
+                ),
             ))
             // hinzufügen eines Event Listener, der ein Event abhört, welches ausgeführt wird bevor das Formular generiert wird
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event){

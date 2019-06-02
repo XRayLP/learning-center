@@ -258,7 +258,7 @@ class Project
     /**
      * @return bool
      */
-    public function getPublic(): bool
+    public function getPublic()
     {
         return $this->public;
     }
@@ -266,7 +266,7 @@ class Project
     /**
      * @param bool $public
      */
-    public function setPublic(bool $public): void
+    public function setPublic($public): void
     {
         $this->public = $public;
     }

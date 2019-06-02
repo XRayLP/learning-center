@@ -26,8 +26,6 @@ final class CreateProjectRequest
 
     private $leader;
 
-    private $public;
-
     /**
      * @return mixed
      */
@@ -74,22 +72,6 @@ final class CreateProjectRequest
     public function setLeader($leader)
     {
         $this->leader = $leader;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPublic()
-    {
-        return $this->public;
-    }
-
-    /**
-     * @param mixed $public
-     */
-    public function setPublic($public): void
-    {
-        $this->public = $public;
     }
 
 

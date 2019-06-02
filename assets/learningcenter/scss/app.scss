@@ -30,6 +30,10 @@ a {
   color: $primary;
 }
 
+table {
+  margin-bottom: 1em;
+}
+
 main, footer {
   padding-left: 300px;
 }
@@ -47,7 +51,17 @@ main, footer {
 }
 
 #accountslide {
-  margin-top: 2px!important;
+  height: 100%;
+  border-radius: 0;
+  border: transparent;
+  box-shadow: none;
+  img {
+    vertical-align: middle;
+    max-height: 3em;
+    width: auto;
+    border-radius: 50%;
+    border: white solid 2px;
+  }
 }
 
 #dropdown_news {
@@ -119,4 +133,46 @@ h4{
   padding-left: 0.5em;
   font-family: "Helvetica Neue";
   font-size: 2em;
+}
+.tabs-nav {
+  .tab {
+    a {
+      color: $primary;
+    }
+  }
+}
+.chatlogs {
+  width: 100%;
+  height: 40em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.chat {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  margin-bottom: 1em;
+  .user-photo img {
+    width: 3em;
+    height: 3em;
+    background: #ccc;
+    border-radius: 50%;
+  }
+  .chat-message {
+    width: 80%;
+    padding: 1em;
+    margin: 0 0.66em;
+    background: lightgrey;
+    border-radius: 0.5em;
+
+  }
+  &.self {
+    .user-photo {
+      order: 2;
+    }
+    .chat-message {
+      order: 1
+    }
+
+  }
 }

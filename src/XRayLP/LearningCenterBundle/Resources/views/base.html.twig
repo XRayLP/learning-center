@@ -33,8 +33,11 @@
 
                     <ul id="top-nav" class="right">
                         <li><a><span class="btn dropdown-trigger new badge red" data-target='dropdown_news'>{{ notificationsCount() }}</span></a></li>
-                        <li><a class="btn-floating sidenav-trigger show-on-large btn-large waves-effect waves-light red"
-                               data-target='accouint-slide-out' id="accountslide"><img class="responsive-img" src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png"></a></li>
+                        <li>
+                                <a class="btn-floating sidenav-trigger show-on-large btn-large waves-effect waves-light transparent" data-target='accouint-slide-out' id="accountslide">
+                                    <img class="responsive-img" src="/bundles/learningcenter/avatar/{{ frontendUser.id }}.png">
+                                </a>
+                        </li>
                     </ul>   
                 </div>
             </nav>
@@ -78,8 +81,10 @@
         {% include '@LearningCenter/modules/widgets/flash.messages.html.twig' %}
 
         {# dieser Block stellt den Hauptbereich des LMS dar und kann von anderen Templates erweitert werden #}
-        {% block main %}
-        {% endblock %}
+        <div class="row">
+            {% block main %}
+            {% endblock %}
+        </div>
     </main>
 
 <!---------------------------------------------------------------------------------------------------------------------->

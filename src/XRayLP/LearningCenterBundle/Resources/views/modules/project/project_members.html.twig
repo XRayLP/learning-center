@@ -3,88 +3,78 @@
 
 
 {% block project %}
-    <table class="table table-striped mt-4">
-        <caption>Projekt Mitglieder</caption>
-        <thead>
-        <tr>
-            <th>Rang</th>
-            <th>Profilbild</th>
-            <th>Vorname</th>
-            <th>Nachname</th>
-            <th>Options</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for projectMember in projectMembers %}
+    <div class="col s12">
+        <table>
+            <caption>Projekt Mitglieder</caption>
+            <thead>
             <tr>
-                {% set user = projectMember.member %}
-                {% if projectMember.isLeader %}
-                    <td><i class="fas fa-crown text-center text-warning fa-fw"></i></td>
-                {% elseif projectMember.isAdmin %}
-                    <td><i class="fab fa-angular text-center text-danger fa-fw"></i></td>
-                {% else %}
-                    <td><i class="fas fa-user text-center fa-fw"></i></td>
-                {% endif %}
-                <td><img src="{{ projectMember.memberManagement.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Optionen
-                    </button>
-                    <div class="dropdown-menu">
-                            <a class="dropdown-item" href="">{% trans %}project.members.options.goto{% endtrans %}</a>
-                        {% if is_granted('project.promoteToLeader', projectMember) %}
-                            <a type="button" class="dropdown-item" href="#" data-toggle="modal" data-target="#confirmPromoteModal_{{ projectMember.member.id }}">{% trans %}project.members.options.promote.leader{% endtrans %}</a>
-                        {% endif %}
-                        {% if is_granted('project.promoteToAdmin', projectMember) %}
-                            <a class="dropdown-item" href="{{ url('lc_projects_members_promote_admin', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.promote.admin{% endtrans %}</a>
-                        {% endif %}
-                        {% if is_granted('project.degradeToMember', projectMember) %}
-                            <a class="dropdown-item" href="{{ url('lc_projects_members_degrade', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.degrade.member{% endtrans %}</a>
-                        {% endif %}
-                        {% if is_granted('project.removeMember', projectMember) %}
-                            <a class="dropdown-item" href="{{ url('lc_projects_members_remove', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.remove{% endtrans %}</a>
-                        {% endif %}
-                    </div>
-                </td>
+                <th>Rang</th>
+                <th>Profilbild</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Options</th>
             </tr>
-        {% endfor %}
-        {% if is_granted('project.edit', project) %}
-            <tr id="add-users">
-                <td class="clickable" data-href=""><a href="{{ url('lc_projects_members_add', {'id': project.id}) }}"><i class="fas fa-plus text-success"></i></a></td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-            </tr>
-        {% endif %}
-        </tbody>
+            </thead>
+            <tbody>
+            {% for projectMember in projectMembers %}
+                <tr>
+                    {% set user = projectMember.member %}
+                    {% if projectMember.isLeader %}
+                        <td><i class="fas fa-crown text-center text-warning fa-fw"></i></td>
+                    {% elseif projectMember.isAdmin %}
+                        <td><i class="fab fa-angular text-center text-danger fa-fw"></i></td>
+                    {% else %}
+                        <td><i class="fas fa-user text-center fa-fw"></i></td>
+                    {% endif %}
+                    <td><img src="{{ projectMember.memberManagement.avatar }}" width="36" height="36" style="border-radius: 100%" /></td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>
+                        <a class='dropdown-trigger btn' href='#dropdown{{ user.id }}' data-target='dropdown{{ user.id }}'>Optionen</a>
+                        <ul id='dropdown{{ user.id }}' class='dropdown-content'>
+                            <li><a class="dropdown-item" href="{{ url('learningcenter_user.details', {'username': user.username}) }}">{% trans %}project.members.options.goto{% endtrans %}</a></li>
+                            {% if is_granted('project.promoteToLeader', projectMember) %}
+                                <li><a type="button" class="dropdown-item" href="#confirmPromoteModal_{{ projectMember.member.id }}">{% trans %}project.members.options.promote.leader{% endtrans %}</a></li>
+                            {% endif %}
+                            {% if is_granted('project.promoteToAdmin', projectMember) %}
+                                <li><a class="dropdown-item" href="{{ url('lc_projects_members_promote_admin', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.promote.admin{% endtrans %}</a></li>
+                            {% endif %}
+                            {% if is_granted('project.degradeToMember', projectMember) %}
+                                <li><a class="dropdown-item" href="{{ url('lc_projects_members_degrade', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.degrade.member{% endtrans %}</a></li>
+                            {% endif %}
+                            {% if is_granted('project.removeMember', projectMember) %}
+                                <li><a class="dropdown-item" href="{{ url('lc_projects_members_remove', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.members.options.remove{% endtrans %}</a></li>
+                            {% endif %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if is_granted('project.edit', project) %}
+                <tr id="add-users">
+                    <td class="clickable" data-href=""><a href="{{ url('lc_projects_members_add', {'id': project.id}) }}"><i class="fas fa-plus text-success"></i></a></td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+            {% endif %}
+            </tbody>
 
-        {% for projectMember in projectMembers %}
-            {% if is_granted('project.promoteToLeader', projectMember) %}
-                <div id="confirmPromoteModal_{{ projectMember.member.id }}" class="modal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
+            {% for projectMember in projectMembers %}
+                {% if is_granted('project.promoteToLeader', projectMember) %}
+                    <div id="confirmPromoteModal_{{ projectMember.member.id }}" class="modal">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">{% trans %}project.confirm{% endtrans %}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>{{ 'project.members.options.promote.leader.confirm'|trans({'%name%': projectMember.member.username}) }}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-primary" href="{{ url('lc_projects_members_promote_leader', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.confirm{% endtrans %}</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}project.decline{% endtrans %}</button>
-                            </div>
+                            <h4>{% trans %}project.confirm{% endtrans %}</h4>
+                            <p>{{ 'project.members.options.promote.leader.confirm'|trans({'%name%': projectMember.member.username}) }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn waves-effect waves-green btn-flat" href="{{ url('lc_projects_members_promote_leader', {'id': project.id, 'member_id': projectMember.member.id}) }}">{% trans %}project.confirm{% endtrans %}</a>
                         </div>
                     </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+                {% endif %}
+            {% endfor %}
 
-    </table>
+        </table>
+    </div>
 
 {% endblock %}

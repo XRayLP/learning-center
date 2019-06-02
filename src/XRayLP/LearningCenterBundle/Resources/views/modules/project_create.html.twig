@@ -2,6 +2,37 @@
 
 {% block main %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+        <div class="row">
+            <div class="input-field col s12">
+                {{ form_widget(form.name) }}
+                {{ form_label(form.name) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.name) }}</span>
+            </div>
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div class="input-field col s12">
+                {{ form_widget(form.description) }}
+                {{ form_label(form.description) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.description) }}</span>
+            </div>
+            <div class="form-error">
+                {{ form_errors(form.description) }}
+            </div>
+
+
+            <div class="input-field col s12">
+                {{ form_widget(form.leader) }}
+                {{ form_label(form.leader) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.leader) }}</span>
+            </div>
+            <div class="form-error">
+                {{ form_errors(form.leader) }}
+            </div>
+        </div>
+
+
+
     {{ form_end(form) }}
 {% endblock %}

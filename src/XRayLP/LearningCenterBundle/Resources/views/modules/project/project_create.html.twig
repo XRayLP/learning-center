@@ -1,12 +1,37 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
+    <div class="col s12">
+        <h4>
+            Neues Projekt erstellen
+        </h4>
+    </div>
     {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-    {% if form.leader is defined %}
-        {{ form_row(form.leader) }}
-    {% endif %}
-        {{ form_row(form.submit) }}
+        <div class="row">
+            <div class="input-field col s12">
+                {{ form_widget(form.name) }}
+                {{ form_label(form.name) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.name) }}</span>
+            </div>
+
+
+            <div class="input-field col s12">
+                {{ form_widget(form.description) }}
+                {{ form_label(form.description) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.description) }}</span>
+            </div>
+
+
+            {% if form.leader is defined %}
+            <div class="input-field col s12">
+                {{ form_widget(form.leader) }}
+                {{ form_label(form.leader) }}
+                <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.leader) }}</span>
+            </div>
+            {% endif %}
+            <div class="col s12">
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
     {{ form_end(form) }}
 {% endblock %}
