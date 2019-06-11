@@ -260,6 +260,47 @@ class FilesController extends Controller
     }
 
     /**
+     * @Route("/learningcenter/catalog/download/{fid}", name="lc_catalog.download")
+     * @param $fid
+     * @param Request $request
+     * @return BinaryFileResponse|RedirectResponse
+     */
+    public function downloadShare($fid, Request $request)
+    {
+        //Check if the User isn't granted
+        if (\System::getContainer()->get('security.authorization_checker')->isGranted('ROLE_MEMBER'))
+        {
+            //get file ids
+            $arrId = array($fid);
+
+            //get file entities from database
+            $files = $this->getDoctrine()->getRepository(File::class)->findBy(['id' => $arrId]);
+
+            //one file
+            if (count($files) === 1 && $files[0]->getType() == 'file')
+            {
+                $file = $files[0];
+                $displayName = $file->getName();
+                $response = new BinaryFileResponse('../'.$file->getPath());
+                $response->headers->set ( 'Content-Type', 'text/plain' );
+                $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, $displayName );
+                return $response;
+            } else {
+                $zipname = $this->getDoctrine()->getRepository(File::class)->findOneByUuid($files[0]->getPid())->getName();
+                $id = uniqid($zipname);
+                $zip = $this->filemanager->createZip($files, $id);
+                $response = new BinaryFileResponse('tmp/'.$id.'.zip');
+                $response->headers->set ( 'Content-Type', 'application/zip' );
+                $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, $zipname.'.zip' );
+                return $response;
+            }
+            return $this->redirectToRoute('learningcenter_catalog');
+        } else {
+            return new RedirectResponse('learningcenter_login');
+        }
+    }
+
+    /**
      * for the share file form
      *
      * @param $fid

@@ -97,7 +97,7 @@ class Catalog
                     if ($this->objFiles->type == 'file') {
                         foreach ($arrGroups as $arrGroup) {
                             if (in_array($arrGroup->getId(), unserialize($this->objFiles->shared_groups))) {
-                                $strHref = $this->router->generate('learningcenter_files.download', array('fid' => $this->objFiles->id));
+                                $strHref = $this->router->generate('lc_catalog.download', array('fid' => $this->objFiles->id));
                                 $strGroup = MemberGroupModel::findById($arrGroup->getId())->name;
 
 

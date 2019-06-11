@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block modal_body %}
+    <h5>Verfügbare Shares:</h5>
     <div class="files-shares"></div>
-    <div class="collapse" id="collapseAddShare">
-        <div class="card card-body">
-            {{ form_start(share) }}
-            {{ form_widget(share) }}
-            {{ form_end(share) }}
-        </div>
+    <h5>Einen neuen Share hinzufügen:</h5>
+    <div id="add-share">
+        {{ form_start(share) }}
+            {{ form_widget(share.memberGroups) }}
+            {{ form_widget(share.submit) }}
+        {{ form_end(share) }}
     </div>
 {% endblock %}

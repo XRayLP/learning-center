@@ -4,17 +4,18 @@
 
     <div class="catalog-timeline">
     {% for file in files %}
-        <div class="card text-center">
-            <div class="card-header">{{ file.shared_group }}</div>
-            <div class="card-body">
-                <h5>{{ file.name }}</h5>
-
-                <a class="btn btn-primary" href="{{ file.href }}"><i class="fas fa-download"></i><span>Download</span></a>
+    <div class="col s12 l6 offset-l3">
+        <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+                <span class="card-title">{{ file.name }}</span>
+                <p>{{ file.shared_group }}</p>
+                <p>{{ file.shared_time }}</p>
             </div>
-            <div class="card-footer text-muted">
-                {{ file.shared_time }}
+            <div class="card-action">
+                <a href="{{ file.href }}"><i class="fas fa-download"></i> Download</a>
             </div>
         </div>
+    </div>
     {% endfor %}
     </div>
 {% endblock %}

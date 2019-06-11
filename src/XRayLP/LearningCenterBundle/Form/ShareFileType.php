@@ -54,13 +54,13 @@ class ShareFileType extends ContaoAbstractType
             ->add('file', HiddenType::class, array(
                 'data_class' => null,
             ))
-            ->add('groupType', ChoiceType::class, array(
+            /*->add('groupType', ChoiceType::class, array(
                 'placeholder' => 'Gruppen Typ',
                 'choices' => [
                     'Kurse' => 3,
                     'Projekte' => 4
                 ],
-            ))
+            ))*/
             ->add('submit', SubmitType::class)
         ;
 
@@ -70,7 +70,6 @@ class ShareFileType extends ContaoAbstractType
 
             $form->add('memberGroups', ChoiceType::class, array(
                 'data_class' => MemberGroup::class,
-                'placeholder' => 'Gruppen',
                 'choices' => $groups,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
@@ -86,7 +85,7 @@ class ShareFileType extends ContaoAbstractType
             }
         );
 
-        $builder->get('groupType')->addEventListener(
+        /*$builder->get('groupType')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
                 // It's important here to fetch $event->getForm()->getData(), as
@@ -99,7 +98,7 @@ class ShareFileType extends ContaoAbstractType
                 // the parent to the callback functions!
                 $formModifier($event->getForm()->getParent(), $data);
             }
-        );
+        );*/
 
         //transforms file object to an integer and reverse
         $builder->get('file')->addModelTransformer(new CallbackTransformer(

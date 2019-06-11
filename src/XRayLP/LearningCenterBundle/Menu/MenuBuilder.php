@@ -144,19 +144,13 @@ class MenuBuilder
     public function createGradeMenu(array $options)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array('class' => 'tabs tabs-transparent', 'currentClass' => 'active'));
+        $menu->setChildrenAttributes(array('class' => 'tabs tabs-fixed-width tab-demo z-depth-1 tabs-nav', 'currentClass' => 'active'));
 
         //adding all menu items
         $menu->addChild('grade_home', array(
             'label' => 'home',
             'route' => 'lc_grade',
         ))->setAttribute('icon', 'fas fa-home')
-        ->setAttribute('class', 'tab');
-
-        $menu->addChild('grade_files', array(
-            'label' => 'files',
-            'route' => 'lc_grade',
-        ))->setAttribute('icon', 'fas fa-file')
         ->setAttribute('class', 'tab');
 
         $menu->addChild('grade_chat', array(

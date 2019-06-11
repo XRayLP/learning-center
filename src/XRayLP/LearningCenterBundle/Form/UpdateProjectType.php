@@ -30,10 +30,13 @@ class UpdateProjectType extends ContaoAbstractType
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Description',
-                'translation_domain' => 'project'
+                'translation_domain' => 'project',
+                'attr' => array(
+                    'class' => 'materialize-textarea'
+                ),
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Continue',
+                'label' => 'Ändern',
                 'translation_domain' => 'project'
             ))
         ;

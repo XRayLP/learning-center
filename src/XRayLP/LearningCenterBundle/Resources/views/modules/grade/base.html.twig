@@ -1,12 +1,12 @@
 {% extends '@LearningCenter/base.html.twig' %}
 
 {% block main %}
-    <nav class="nav-extended green darken-3">
-        <div class="nav-content">
-            {{ knp_menu_render('grade',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
-        </div>
-    </nav>
-    <h2>{{ gradeName }}</h2>
+
+    {{ knp_menu_render('grade',{'template': '@LearningCenter/menu/projectNav.html.twig'}) }}
+    {# Einfügen des Projektnames, aus dem vom Controller übergebenden Projekt Objekt #}
+    <div class="col s12">
+        <h5>{{ gradeName }}</h5>
+    </div>
 
     {% block grade %}
 

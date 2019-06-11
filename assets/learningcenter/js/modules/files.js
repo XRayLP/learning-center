@@ -104,7 +104,7 @@ function generateShareView(file_ids) {
     shareDiv.html('');
     for (i = 0; i < shares.length; i++) {
         var share = shares[i];
-        shareDiv.append("<div class='share'>"+ share['name'] +"<button class='btn btn-danger btn-remove-share' data-share-id='" + share['id'] + "'>Remove</button></div>");
+        shareDiv.append("<div class='share'>"+ share['name'] +" <button class='btn btn-danger btn-remove-share' data-share-id='" + share['id'] + "'>Remove</button></div>");
     }
 };
 
@@ -128,9 +128,13 @@ function getShares(file_ids) {
             shareDiv.html('');
             for (i = 0; i < shares.length; i++) {
                 var share = shares[i];
-                shareDiv.append("<div class='share'>"+ share['name'] +"<button class='btn btn-danger btn-remove-share' data-share-id='" + share['id'] + "'>Remove</button></div>");
+                shareDiv.append("<div class='share'>"+ share['name'] +" <button class='btn btn-danger btn-remove-share' data-share-id='" + share['id'] + "'>Remove</button></div>");
             }
-            shareDiv.append("<button class='btn btn-success btn-share-add' type='button' data-toggle='collapse' data-target='#collapseAddShare' aria-expanded='false' aria-controls='collapseAddShare'>Add</button>");
+
+            if (shares.length == 0) {
+                shareDiv.append("<p>keine Shares angelegt!</p>");
+            }
+            //shareDiv.append("<button class='btn btn-success btn-share-add' type='button' data-toggle='collapse' data-target='#collapseAddShare' aria-expanded='false' aria-controls='collapseAddShare'>Add</button>");
 
             $(".btn-remove-share").on("click", function () {
                 var checks = getCheckedBoxes("checks-files", "id");

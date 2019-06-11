@@ -3,37 +3,51 @@
 
 {% block project %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.name) }}
+            {{ form_label(form.name) }}
+            <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.name) }}</span>
+        </div>
+
+
+        <div class="input-field col s12">
+            {{ form_widget(form.description) }}
+            {{ form_label(form.description) }}
+            <span class="helper-text" data-error="wrong" data-success="right">{{ form_help(form.description) }}</span>
+        </div>
+
+        <div class="col s12">
+            {{ form_widget(form.save) }}
+        </div>
+    </div>
     {{ form_end(form) }}
 
     {% if is_granted('project.remove', project) %}
-        <div class="card border-danger">
-            <div class="card-header">{% trans %}project.delete{% endtrans %}</div>
-            <div class="card-body text-danger">
-                <p class="card-text">{% trans %}project.delete.text{% endtrans %}</p>
-                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalConfirmDelete">{% trans %}project.delete.button{% endtrans %}</button>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="Confirm Modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalConfirmDeleteTitle">{% trans %}project.delete.confirm{% endtrans %}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <div class="row">
+            <div class="col s12">
+                <div class="card red darken-4">
+                    <div class="card-content white-text">
+                        <span class="card-title">{% trans %}project.delete{% endtrans %}</span>
+                        <p>{% trans %}project.delete.text{% endtrans %}</p>
                     </div>
-                    <div class="modal-body">
-                        {% trans with {'{name}': project.name} %}project.delete.confirm.text{% endtrans %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}project.delete.cancel{% endtrans %}</button>
-                        <a type="button" class="btn btn-danger" href="{{ url('lc_projects_delete', {'id': project.id}) }}">{% trans %}project.delete.confirm.button{% endtrans %}</a>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modal-delete">{% trans %}project.delete.button{% endtrans %}</a>
                     </div>
                 </div>
             </div>
         </div>
 
+
+        <!-- Modal Structure -->
+        <div id="modal-delete" class="modal">
+            <div class="modal-content">
+                <h4>{% trans %}project.delete.confirm{% endtrans %}</h4>
+                <p>{% trans with {'{name}': project.name} %}project.delete.confirm.text{% endtrans %}</p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="modal-close waves-effect waves-green btn-flat" href="{{ url('lc_projects_delete', {'id': project.id}) }}">{% trans %}project.delete.confirm.button{% endtrans %}</a>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
